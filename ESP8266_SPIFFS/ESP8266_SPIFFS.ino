@@ -27,7 +27,7 @@ void setup()
   Serial.begin(115200);  
   SPI.begin();                     
   bool Result  = InitalizeFileSystem(); 
-  if (!(SPIFFS.exists ("/usage_log.csv") ))  //Prüfe ob Datei usage_log.csvschon exisiert.
+  if (!(SPIFFS.exists ("/usage_log.csv") ))  //Prüfe ob Datei usage_log.csv schon exisiert.
   {   
     myfile = SPIFFS.open("/usage_log.csv", "w");  //Öffne die Datei usage_log.csv im Root Verzeichnis zum schreiben (w – write)
     if (!myfile) 

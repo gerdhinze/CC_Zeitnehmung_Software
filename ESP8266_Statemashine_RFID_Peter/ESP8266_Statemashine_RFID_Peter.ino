@@ -3,10 +3,15 @@
 #define PW  "12345678"                        // set your wifi password
 #endif
 
+
+#include <sstream>
+#include <string>
+
 #include <ESP8266WiFi.h>            // we need wifi to get internet access
 #include <time.h>                   // for time() ctime()
 #include <SPI.h>
 #include <MFRC522.h>
+#include <FS.h>           // Nutze die SPIFFS library
 
 #define SS_PIN 4
 #define RST_PIN 0
@@ -30,6 +35,7 @@ int IDs_init_position = 2;
 int maxarraysize = 40;
 bool scanning = false;  // Variable, um den Scan-Status zu verfolgen um IDs ein
 unsigned long race_start_time = 0;
+File myfile;                   // erstelle ein SPIFFS Handling Variable
 
 void setup() {
   Serial.begin(115200);
@@ -37,6 +43,7 @@ void setup() {
   mfrc522.PCD_Init();
   pinMode(LS1, INPUT);
   pinMode(LS2, INPUT);
+  InitalizeFileSystem();    
   lastResetTime = millis();  // Initialisiere die letzte Reset-Zeit auf die aktuelle Zeit
   IDs[0] = 0;
   IDs[1] = 1;
@@ -75,7 +82,10 @@ void loop() {  //TODO Menue hizufügen
       clearAll();
     }
     if (command == "race") {
-      race();  //TODO implementiern
+      race(); 
+    }
+    if (command == "read") {
+      read_times(2); 
     }
   }
 }
@@ -180,8 +190,9 @@ void clearAll() {
 void race(){
   bool racemode = true;
   Serial.println("Racemode");
+  creat_file_for_IDs();
+  timer_reset();
   while (racemode){
-    timer_reset();
     while (Serial.available()) {
       String command = Serial.readStringUntil('\n');
       if (command == "q") {
@@ -189,13 +200,52 @@ void race(){
         racemode = false;
       }
       if (command == "start") {
+        bool racestart = true;
         race_start_time = get_time();
         print_time(realtime_set);
         print_time(race_start_time);
+        while (racestart){
+          while (Serial.available()) {
+            String command = Serial.readStringUntil('\n');
+            if (command == "q") {
+              Serial.println("stop");
+              racestart = false;
+            }
+            
+          }
+          uint64_t rfidID = 0;
+          std::string path;
+          if (mfrc522.PICC_IsNewCardPresent()) {
+            if (mfrc522.PICC_ReadCardSerial()) {
+              for (byte i = 0; i < mfrc522.uid.size; i++) {
+                rfidID = (rfidID << 8) | mfrc522.uid.uidByte[i];
+              }
+              int position = position_im_array(IDs,rfidID);
+              path = "/"+std::to_string(position)+".csv";
+              myfile = SPIFFS.open(path.c_str(), "a");
+              myfile.println(get_time());
+              myfile.close();
+              Serial.print(position);
+              Serial.print(" ");
+              Serial.println(get_time());
+
+            }else{
+            int position = position_im_array(IDs,rfidID);
+            path = "/"+std::to_string(position)+".csv";
+            myfile = SPIFFS.open(path.c_str(), "a");
+            myfile.println(get_time());
+            myfile.close();
+            Serial.print(position);
+            Serial.print(" ");
+            Serial.println(get_time());
+            }
+          }
+        }
+      }
     } 
   }
-  }
 }
+
 
 void timer_reset(){
   lastResetTime = millis();
@@ -234,4 +284,50 @@ void print_time(unsigned long ms) {
 
 }
 
+void InitalizeFileSystem() {
+  bool initok = false;
+  initok = SPIFFS.begin();
+  if (!(initok)) // Format SPIFS, of not formatted. - Try 1
+  {
+    Serial.println("Format SPIFFS");
+    SPIFFS.format();
+    initok = SPIFFS.begin();
+  }
+  if (!(initok)) // Format SPIFS, of not formatted. - Try 2
+  {
+    SPIFFS.format();
+    initok = SPIFFS.begin();
+  }
+  if (initok) { Serial.println("SPIFFS ist OK"); } else { Serial.println("SPIFFS ist nicht OK"); }
+}
 
+int position_im_array(uint64_t arr[],uint64_t value){
+  for (int i = 0; i < IDs_init_position; i++) {
+      if (arr[i] == value) {
+        return i;  // Wert bereits vorhanden, gib die Position zurück
+      }
+    }
+    return 0;
+}
+
+void creat_file_for_IDs(){
+  std::string path;
+  for (int i = 0; i < IDs_init_position; i++){
+    path = "/"+std::to_string(i)+".csv";
+    myfile = SPIFFS.open(path.c_str(), "o");
+    myfile.close();
+    Serial.println(path.c_str());
+    }
+
+}
+
+
+void read_times(int ID_position){
+  std::string path;
+  path = "/"+std::to_string(ID_position)+".csv";
+  myfile = SPIFFS.open(path.c_str(), "r");
+  while (myfile.position()<myfile.size()){            // lese Dateiinhbalt Zeile für Zeile bis um Ende der Datei
+    Serial.println(myfile.readStringUntil('\n'));
+  } 
+  myfile.close();
+}
