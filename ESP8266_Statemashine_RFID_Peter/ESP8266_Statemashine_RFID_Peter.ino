@@ -1,6 +1,6 @@
 #ifndef STASSID
-#define WLAN_SSID "HUAWEI"                            // set your SSID
-#define PW  "15111962"                        // set your wifi password
+#define WLAN_SSID "x3"                            // set your SSID
+#define PW  "12345678"                        // set your wifi password
 #endif
 
 #include <ESP8266WiFi.h>            // we need wifi to get internet access
@@ -24,10 +24,12 @@ time_t now;                         // this are the seconds since Epoch (1970) -
 tm tm;                              // the structure tm holds time information in a more convenient way
 int ms;
 unsigned long lastResetTime = 0;  // Variable zum Speichern der letzten Reset-Zeit
+unsigned long realtime_set = 0;
 uint64_t IDs[10];                 //Array in dem die IDs gespeichert werden
 int IDs_init_position = 2;
 int maxarraysize = 40;
 bool scanning = false;  // Variable, um den Scan-Status zu verfolgen um IDs ein
+unsigned long race_start_time = 0;
 
 void setup() {
   Serial.begin(115200);
@@ -179,12 +181,57 @@ void race(){
   bool racemode = true;
   Serial.println("Racemode");
   while (racemode){
+    timer_reset();
     while (Serial.available()) {
       String command = Serial.readStringUntil('\n');
       if (command == "q") {
         Serial.println("Race end");
         racemode = false;
       }
+      if (command == "start") {
+        race_start_time = get_time();
+        print_time(realtime_set);
+        print_time(race_start_time);
     } 
   }
+  }
 }
+
+void timer_reset(){
+  lastResetTime = millis();
+  delay(2000);
+  time(&now);
+  localtime_r(&now, &tm);
+  realtime_set = tm.tm_sec*1000 + tm.tm_min*60*1000 +tm.tm_hour *60 *60 *1000;
+}
+
+unsigned long get_time(){
+  return realtime_set+millis()-lastResetTime;
+}
+
+
+void print_time(unsigned long ms) {
+  // Berechne die Stunden, Minuten, Sekunden und Millisekunden
+  unsigned long hours = ms / 3600000;
+  ms = ms % 3600000;
+  unsigned long minutes = ms / 60000;
+  ms = ms % 60000;
+  unsigned long seconds = ms / 1000;
+  unsigned long milliseconds = ms % 1000;
+
+  // Gib das formatierte Ergebnis aus
+  Serial.print(hours);
+  Serial.print(":");
+  if (minutes < 10) Serial.print("0");
+  Serial.print(minutes);
+  Serial.print(":");
+  if (seconds < 10) Serial.print("0");
+  Serial.print(seconds);
+  Serial.print(":");
+  if (milliseconds < 10) Serial.print("00");
+  else if (milliseconds < 100) Serial.print("0");
+  Serial.println(milliseconds);
+
+}
+
+
