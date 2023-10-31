@@ -1,104 +1,75 @@
-#include <SPI.h>
-#include <MFRC522.h>
 
-#define SS_PIN 4
-#define RST_PIN 0
-#define LS1 5
-#define LS2 16
+class Queue {
+private:
+    static const int MAX_SIZE = 10;
+    int elements[MAX_SIZE];
+    int front;
+    int rear;
+    int count;
 
-MFRC522 mfrc522(SS_PIN, RST_PIN);
+public:
+    Queue() {
+        front = 0;
+        rear = -1;
+        count = 0;
+    }
 
-unsigned long lastResetTime = 0; // Variable zum Speichern der letzten Reset-Zeit
-bool resetRequested = false; // Flag, um einen Reset anzufordern
+    bool isEmpty() {
+        return count == 0;
+    }
+
+    bool isFull() {
+        return count == MAX_SIZE;
+    }
+
+    void enqueue(int item) {
+        if (isFull()) {
+            // Wenn die Queue voll ist, entfernen Sie das älteste Element (vorderstes Element).
+            front = (front + 1) % MAX_SIZE;
+            count--;
+        }
+
+        rear = (rear + 1) % MAX_SIZE;
+        elements[rear] = item;
+        count++;
+    }
+
+    int dequeue() {
+        if (!isEmpty()) {
+            int item = elements[front];
+            front = (front + 1) % MAX_SIZE;
+            count--;
+            return item;
+        } else {
+            Serial.println("Queue is empty. Cannot dequeue.");
+            return -1; // You can return a special value to indicate an empty queue
+        }
+    }
+
+    void printQueue() {
+        Serial.print("Queue: ");
+        for (int i = 0; i < count; i++) {
+            int index = (front + i) % MAX_SIZE;
+            Serial.print(elements[index]);
+            Serial.print(" ");
+        }
+        Serial.println();
+    }
+};
+
+Queue myQueue;
 
 void setup() {
-  Serial.begin(9600);
-  SPI.begin();
-  mfrc522.PCD_Init();
-  pinMode(LS1, INPUT);
-  pinMode(LS2, INPUT);
-  lastResetTime = millis(); // Initialisiere die letzte Reset-Zeit auf die aktuelle Zeit
-}
-
-void resetTimer() {
-  lastResetTime = millis(); // Setze den Timer auf die aktuelle Zeit zurück
-  Serial.println("Timer zurückgesetzt");
-}
-
-void printTimeDifference(unsigned long milliseconds) 
-{
-  unsigned long seconds = milliseconds / 1000;
-  unsigned long minutes = seconds / 60;
-  unsigned long hours = minutes / 60;
-  
-  // Berechne die Millisekunden, die nach Stunden, Minuten und Sekunden übrig bleiben
-  unsigned long remainingMilliseconds = milliseconds % 1000;
-  seconds %= 60;
-  minutes %= 60;
-
-  Serial.print(hours);
-  Serial.print("h ");
-  Serial.print(minutes);
-  Serial.print("min ");
-  Serial.print(seconds);
-  Serial.print("sek ");
-  Serial.print(remainingMilliseconds);
-  Serial.print("ms");
+    Serial.begin(115200);
 }
 
 void loop() {
-  unsigned long currentTime = millis(); // Aktuelle Zeit abrufen
+    // Fügen Sie ständig neue Elemente zur Queue hinzu
+    int newItem = random(9); // Beispiel: Zufällige Zahl zwischen 0 und 99
+    myQueue.enqueue(newItem);
 
-  if (resetRequested) 
-  {
-    resetTimer();
-    resetRequested = false; // Setze die Flag zurück
-  }
+    // Ausgabe der Queue-Elemente am Serial Monitor
+    myQueue.printQueue();
 
-  if (mfrc522.PICC_IsNewCardPresent()) 
-  {
-    if (mfrc522.PICC_ReadCardSerial()) 
-    {
-      Serial.print("Event 1: NCF-Tag gelesen: ID = ");
-//      for (byte i = 0; i < mfrc522.uid.size; i++) 
-//      {
-//        Serial.print(mfrc522.uid.uidByte[i], HEX);
-//        Serial.print(" ");
-//      }
-      long code=0;
-
-      for (byte i = 0; i < mfrc522.uid.size; i++)
-      {
-      code=((code + mfrc522.uid.uidByte[i]) * 10); 
-      }
-      
-      Serial.print(code);
-      Serial.print(" - Zeit seit dem letzten Reset: ");
-      printTimeDifference(currentTime - lastResetTime);
-      Serial.println();
-    }
-  }
-
-  bool value_LS1 = digitalRead(LS1);
-  bool value_LS2 = digitalRead(LS2);
-
-  if (value_LS1) {
-    Serial.print("Event 2: Lichtschranke 1 ausgelöst - Zeit seit dem letzten Reset: ");
-    printTimeDifference(currentTime - lastResetTime);
-    Serial.println();
-  }
-
-  if (value_LS2) {
-    Serial.print("Event 3: Lichtschranke 2 ausgelöst - Zeit seit dem letzten Reset: ");
-    printTimeDifference(currentTime - lastResetTime);
-    Serial.println();
-  }
-
-  // Überprüfen, ob serielle Daten verfügbar sind, um den Timer zurückzusetzen
-  while (Serial.available()) {
-    String command = Serial.readStringUntil('\n');
-    if (command == "reset") {
-      resetRequested = true; // Setze die Flag, um einen Reset anzufordern
-    }
-  }
+    delay(1000); // Warten Sie für eine Sekunde, bevor Sie ein neues Element hinzufügen
 }
