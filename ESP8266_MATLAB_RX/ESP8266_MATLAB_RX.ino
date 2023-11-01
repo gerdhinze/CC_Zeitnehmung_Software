@@ -1,5 +1,3 @@
-
-int number =0;
 void setup() {
   Serial.begin(115200); // Starte die serielle Kommunikation mit einer Baudrate von 115200
 }
@@ -12,12 +10,12 @@ void loop() {
     
     // Wenn der Eingabebefehl "get" ist, gib eine zufällige Zahl aus
     if (input.equals("get")) {
-      Serial.println("Zahl: " + String(number)); // Sende die Zahl zurück zum Serial Monitor
+      int randomNumber = random(100); // Erzeuge eine zufällige Zahl zwischen 0 und 99
+      Serial.print("Zufällige Zahl: " + String(randomNumber)); // Sende die Zahl zurück zum Serial Monitor
     } 
-    else if (input.startsWith("set ")) {
-      // Extrahiere den Wert aus dem Eingabestring und setze die Variable
-      number = input.substring(4).toInt(); // Beginne ab dem 5. Zeichen (Index 4)
-      Serial.println("Wert wurde auf " + String(number) + " gesetzt");
+    else {
+      Serial.println("Ungültiger Befehl. Bitte 'get' eingeben."); // Falls der Befehl nicht "get" ist, gib eine Fehlermeldung aus
     }
   }
+  
 }
