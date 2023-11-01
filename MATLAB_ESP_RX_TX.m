@@ -23,7 +23,7 @@ try
     % Zeigen Sie die Antwort in der MATLAB-Konsole an
     disp(['Antwort vom ESP8266: ' response]);
 catch
-    disp('Fehler beim Lesen von Daten vom Arduino.');
+    disp('Fehler beim Lesen von Daten vom ESP.');
    
 end
 end
