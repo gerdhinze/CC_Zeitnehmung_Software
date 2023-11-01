@@ -64,7 +64,7 @@ void loop() {
     myQueue.enqueue(newItem);
 
     Serial.print(count);
-    Serial.print(".:");
+    Serial.print(". --> ");
     // Output of the queue in serial monitor
     myQueue.printQueue();
 

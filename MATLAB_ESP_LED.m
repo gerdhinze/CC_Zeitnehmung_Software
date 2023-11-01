@@ -1,6 +1,6 @@
 %MATLAB Code for Serial Communication between Arduino and MATLAB
 
-x=serial('COM3','BAUD', 9600);
+x=serial('COM3','BAUD', 115200);
 
 fopen(x);
 go = true;
