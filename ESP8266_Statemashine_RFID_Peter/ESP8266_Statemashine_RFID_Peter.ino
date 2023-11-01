@@ -317,7 +317,8 @@ void creat_file_for_IDs(){
   std::string path;
   for (int i = 0; i < IDs_init_position; i++){
     path = "/"+std::to_string(i)+".csv";
-    myfile = SPIFFS.open(path.c_str(), "w");
+    myfile = SPIFFS.open(path.c_str(), "a");
+    myfile.println(IDs[i],HEX);
     myfile.close();
     Serial.println(path.c_str());
     }
