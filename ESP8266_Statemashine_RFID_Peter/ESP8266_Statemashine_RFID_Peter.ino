@@ -80,12 +80,16 @@ void loop() {  //TODO Menue hizufügen
     }
     if (command == "clear") {
       clearAll();
+      delete_all();
     }
     if (command == "race") {
       race(); 
     }
     if (command == "read") {
       read_times(2); 
+    }
+    if (command == "init") { //nur zum debugen
+      InitalizeFileSystem();
     }
   }
 }
@@ -98,7 +102,7 @@ void set_ID() {  //zeigt an wo im Array die ID ist und fügt diese hinzu fall no
   Serial.println();
 }
 
-uint64_t get_ID() {
+uint64_t get_ID() { //gibt ID als uint64_t zurück. "q" um abzubrachen. bei abruch wird 0 zurück gegeben 
   uint64_t rfidID = 0;
   bool scan = true;  // Variable, um den Scan-Status zu verfolgen
 
@@ -190,8 +194,8 @@ void clearAll() {
 void race(){
   bool racemode = true;
   Serial.println("Racemode");
-  creat_file_for_IDs();
   timer_reset();
+  creat_file_for_IDs();
   while (racemode){
     while (Serial.available()) {
       String command = Serial.readStringUntil('\n');
@@ -259,7 +263,6 @@ unsigned long get_time(){
   return realtime_set+millis()-lastResetTime;
 }
 
-
 void print_time(unsigned long ms) {
   // Berechne die Stunden, Minuten, Sekunden und Millisekunden
   unsigned long hours = ms / 3600000;
@@ -314,13 +317,15 @@ void creat_file_for_IDs(){
   std::string path;
   for (int i = 0; i < IDs_init_position; i++){
     path = "/"+std::to_string(i)+".csv";
-    myfile = SPIFFS.open(path.c_str(), "o");
+    myfile = SPIFFS.open(path.c_str(), "a");
+    myfile.print("Race init ");
+    myfile.println(get_time());
+    myfile.println(IDs[i],HEX);
     myfile.close();
     Serial.println(path.c_str());
     }
 
 }
-
 
 void read_times(int ID_position){
   std::string path;
@@ -330,4 +335,24 @@ void read_times(int ID_position){
     Serial.println(myfile.readStringUntil('\n'));
   } 
   myfile.close();
+}
+
+bool delete_file(int ID_position){
+  std::string path;
+  path = "/"+std::to_string(ID_position)+".csv";
+  // check if file exists 
+  if (SPIFFS.exists (path.c_str())){  //Prüfe ob Datei usage_log.csv schon exisiert.
+    SPIFFS.remove(path.c_str());  //Lösche Datei  
+    Serial.print(path.c_str());
+    Serial.println(" wurde gelöscht.");
+    return true;
+  }
+  else{return false;}
+
+}
+
+void delete_all(){
+  for (int i = 0; i<maxarraysize; i++){
+    delete_file(i);
+  }
 }
