@@ -194,8 +194,8 @@ void clearAll() {
 void race(){
   bool racemode = true;
   Serial.println("Racemode");
-  creat_file_for_IDs();
   timer_reset();
+  creat_file_for_IDs();
   while (racemode){
     while (Serial.available()) {
       String command = Serial.readStringUntil('\n');
@@ -318,6 +318,8 @@ void creat_file_for_IDs(){
   for (int i = 0; i < IDs_init_position; i++){
     path = "/"+std::to_string(i)+".csv";
     myfile = SPIFFS.open(path.c_str(), "a");
+    myfile.print("Race init ");
+    myfile.println(get_time());
     myfile.println(IDs[i],HEX);
     myfile.close();
     Serial.println(path.c_str());
