@@ -273,7 +273,6 @@ void racemode() {
 
 void timer_reset() {
   lastResetTime = millis();
-  delay(2000);
   time(&now);
   localtime_r(&now, &tm);
   realtime_set = tm.tm_sec * 1000 + tm.tm_min * 60 * 1000 + tm.tm_hour * 60 * 60 * 1000;
