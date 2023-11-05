@@ -47,7 +47,7 @@ public:
         for (int i = 0; i < count; i++) {
             int index = (front + i) % MAX_SIZE;
             Serial.print(elements[index]);
-            Serial.print(" ");
+            Serial.print("..");
         }
         Serial.println();
     }

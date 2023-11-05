@@ -17,7 +17,7 @@ void loop() {
     else if (input.startsWith("set ")) {
       // Extrahiere den Wert aus dem Eingabestring und setze die Variable
       number = input.substring(4).toInt(); // Beginne ab dem 5. Zeichen (Index 4)
-      Serial.println("Wert wurde auf " + String(number) + " gesetzt");
+      Serial.println("Wert_wurde_auf_" + String(number) + "_gesetzt");
     }
   }
 }
