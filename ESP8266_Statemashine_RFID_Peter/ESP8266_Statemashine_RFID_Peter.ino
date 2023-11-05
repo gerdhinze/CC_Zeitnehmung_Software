@@ -1,6 +1,4 @@
 #ifndef STASSID
-#define WLAN_SSID "x3"  // set your SSID
-#define PW "12345678"   // set your wifi password
 #endif
 
 
@@ -25,6 +23,9 @@ MFRC522 mfrc522(SS_PIN, RST_PIN);
 #define MY_TZ "CET-1CEST,M3.5.0/02,M10.5.0/03"
 
 /* Globals */
+bool Wifi;
+String WLAN_SSID;  
+String PW;   // your wifi password
 time_t now;  // this are the seconds since Epoch (1970) - UTC
 tm tm;       // the structure tm holds time information in a more convenient way
 int ms;
@@ -47,18 +48,9 @@ void setup() {
   lastResetTime = millis();  // Initialisiere die letzte Reset-Zeit auf die aktuelle Zeit
   IDs[0] = 0;
   IDs[1] = 1;
-
   //Network und RtC setup
+  Wifi_setup();
   configTime(MY_TZ, MY_NTP_SERVER);  // --> Here is the IMPORTANT ONE LINER needed in your sketch!
-
-  // start network
-  WiFi.persistent(false);
-  WiFi.mode(WIFI_STA);
-  WiFi.begin(WLAN_SSID, PW);
-  while (WiFi.status() != WL_CONNECTED) {
-    delay(200);
-    Serial.print(".");
-  }
 }
 
 void loop() {  
@@ -413,5 +405,131 @@ void read_files() {
     }
   } else {
     Serial.println("no exisitng files.");
+  }
+}
+
+void Wifi_setup() {
+  // Netzwerk starten
+  delay(5000);
+  Serial.println();
+  Serial.println("Is WiFi setup available? (y/n)");
+  bool wifisetup = true;
+
+  while (wifisetup) {
+    while (Serial.available()) {
+      String command = Serial.readStringUntil('\n');
+      if (command == "y") {
+        Wifi = true;
+        
+        // Überprüfe, ob die Datei wifi_data.txt existiert
+        if (SPIFFS.exists("wifi_data.txt")) {
+          // Datei existiert, lese WLAN-Einstellungen aus der Datei
+          myfile = SPIFFS.open("wifi_data.txt", "r");
+          WLAN_SSID = myfile.readStringUntil('\n');
+          PW = myfile.readStringUntil('\n');
+          myfile.close();
+          
+          Serial.println("Current WiFi settings:");
+          Serial.print("WLAN_SSID: ");
+          Serial.println(WLAN_SSID);
+          Serial.print("Password: ");
+          Serial.println(PW);
+          Serial.println("Change WiFi settings? (y/n)");
+          
+          bool wait_for_userinput = true;
+          while (wait_for_userinput) {
+            while (Serial.available()) {
+              String userinput = Serial.readStringUntil('\n');
+              if (userinput == "y") {
+                set_wifi_settings();
+                wait_for_userinput = false;
+              }
+              if (userinput == "n") {
+                wait_for_userinput = false;
+              }
+            }
+          }
+        } else {
+          // Datei wifi_data.txt existiert nicht, führe die Einrichtung der WLAN-Einstellungen durch
+          set_wifi_settings();
+        }
+
+        connect_wifi(); // Verbinde zum WLAN
+        wifisetup = false;
+      }
+      if (command == "n") {
+        Wifi = false;
+        // Hier könntest du die Zeit einstellen, falls gewünscht
+        wifisetup = false;
+      }
+    }
+  }
+}
+
+void connect_wifi(){
+  WiFi.persistent(false);
+  WLAN_SSID.trim();  //ohne trim problem bei wlansettings aus dem file lesen
+  PW.trim();
+  Serial.println(WLAN_SSID);
+  Serial.println(PW);
+  WiFi.mode(WIFI_STA);
+  WiFi.begin(WLAN_SSID, PW);
+  while (WiFi.status() != WL_CONNECTED) {
+    delay(200);
+    Serial.print(".");
+  }
+  if (WiFi.status() == WL_CONNECTED){
+    Serial.println("Connected");
+  }
+}
+
+void set_wifi_settings() {
+  Serial.println("Enter WLAN SSID ");
+  bool wait_for_SSID = true;
+  while (wait_for_SSID) {
+    while (Serial.available()) {
+      WLAN_SSID = Serial.readStringUntil('\n');
+      if (WLAN_SSID != "") {
+        wait_for_SSID = false;
+      }
+    }
+  }
+  Serial.println("Enter Passwort ");
+  bool wait_for_PW = true;
+  while (wait_for_PW) {
+    while (Serial.available()) {
+      PW = Serial.readStringUntil('\n');
+      if (PW != "") {
+        wait_for_PW = false;
+      }
+    }
+  }
+  Serial.println("New WIFI settings are:");
+  Serial.print("WLAN SSID: ");
+  Serial.println(WLAN_SSID);
+  Serial.print("Passwort: ");
+  Serial.println(PW);
+  Serial.println("1 Change");
+  Serial.println("2 Use and save");
+  Serial.println("3 Use and don't save");
+  bool wait_for_user = true;
+  while (wait_for_user) {
+    while (Serial.available()) {
+      String user_choice = Serial.readStringUntil('\n');
+      if (user_choice == "1") {
+        wait_for_user = false;
+        set_wifi_settings();
+      }
+      if (user_choice == "2") {
+        myfile = SPIFFS.open("wifi_data.txt", "w");
+        myfile.println(WLAN_SSID);
+        myfile.println(PW);
+        myfile.close();
+        wait_for_user = false;
+      }
+      if (user_choice == "3") {
+        wait_for_user = false;
+      }
+    }
   }
 }
