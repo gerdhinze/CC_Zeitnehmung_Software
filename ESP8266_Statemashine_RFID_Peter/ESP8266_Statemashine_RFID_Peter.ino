@@ -23,6 +23,7 @@ MFRC522 mfrc522(SS_PIN, RST_PIN);
 #define MY_TZ "CET-1CEST,M3.5.0/02,M10.5.0/03"
 
 /* Globals */
+unsigned int station = 1;
 bool Wifi;
 String WLAN_SSID;
 String PW;   // your wifi password
@@ -49,7 +50,7 @@ void setup() {
   IDs[0] = 0;
   IDs[1] = 1;
   //Network und RtC setup
-  Wifi_setup();
+  Wifi_setup(); // 5 sec delai
   configTime(MY_TZ, MY_NTP_SERVER);  // --> Here is the IMPORTANT ONE LINER needed in your sketch!
 }
 
@@ -82,6 +83,13 @@ void loop() {
     }
     if (command == "wifi") {
       wifimenue();
+    }
+    if (command == "time") {
+      print_time(get_time());
+    }
+    if (command == "time set") {
+      timer_reset();
+      configTime(MY_TZ, MY_NTP_SERVER);
     }
   }
 }
@@ -186,12 +194,12 @@ void clearAll() {
 
 void racemode() {
   //racemode init
-  bool racemode = true;
   Serial.println("Racemode");
   timer_reset();
   creat_file_for_IDs();
   Serial.println("start or q");
   //racemode ready
+  bool racemode = true;
   while (racemode) {
     while (Serial.available()) {
       String option = Serial.readStringUntil('\n');
@@ -202,7 +210,6 @@ void racemode() {
       //start
       if (option == "start") {
         //start init
-        bool racestart = true;
         race_start_time = get_time();
         Serial.print("start ");
         print_time(race_start_time);
@@ -215,8 +222,8 @@ void racemode() {
           myfile.println(race_start_time);
           myfile.close();
         }
-
         // race aktiv
+        bool racestart = true;
         while (racestart) {
           while (Serial.available()) {
             String stop_command = Serial.readStringUntil('\n');
@@ -235,22 +242,21 @@ void racemode() {
           // RFID erkannt
           uint64_t rfidID = 0;
           if (mfrc522.PICC_IsNewCardPresent()) {
-            if (mfrc522.PICC_ReadCardSerial()) {
-              for (byte i = 0; i < mfrc522.uid.size; i++) {
-                rfidID = (rfidID << 8) | mfrc522.uid.uidByte[i];
-              }
-              int position = position_im_array(IDs, rfidID);
-              path = "/" + std::to_string(position) + ".csv";
+          if (mfrc522.PICC_ReadCardSerial()) {
+            for (byte i = 0; i < mfrc522.uid.size; i++) {
+              rfidID = (rfidID << 8) | mfrc522.uid.uidByte[i];
+            }
+            int position = position_im_array(IDs, rfidID);
+            path = "/" + std::to_string(position) + ".csv";
               myfile = SPIFFS.open(path.c_str(), "a");
               myfile.println(get_time());
               myfile.close();
               Serial.print(position);
               Serial.print(" ");
               Serial.println(get_time());
-              // RFID erkannt aber keine ID gelesen bzw nicht im IDs array
-            } else {
-              int position = position_im_array(IDs, rfidID);
-              path = "/" + std::to_string(position) + ".csv";
+          } else {
+            int position = position_im_array(IDs, rfidID);
+            path = "/" + std::to_string(position) + ".csv";
               myfile = SPIFFS.open(path.c_str(), "a");
               myfile.println(get_time());
               myfile.close();
@@ -259,8 +265,9 @@ void racemode() {
               Serial.println(get_time());
             }
           }
+
           if (digitalRead(LS2)) {
-            path = "/1.csv";
+          path = "/1.csv";
             myfile = SPIFFS.open(path.c_str(), "a");
             myfile.println(get_time());
             myfile.close();
@@ -343,6 +350,8 @@ void creat_file_for_IDs() {
   for (int i = 0; i < IDs_init_position; i++) {
     path = "/" + std::to_string(i) + ".csv";
     myfile = SPIFFS.open(path.c_str(), "a");
+    myfile.print("Station: ");
+    myfile.println(station);
     myfile.print("Race init ");
     myfile.println(get_time());
     myfile.println(IDs[i], HEX);
@@ -471,6 +480,7 @@ void Wifi_setup() {
       if (command == "n") {
         Wifi = false;
        // setTimeManually(); //Todo
+        print_time(get_time());
         wifisetup = false;
       }
     }
