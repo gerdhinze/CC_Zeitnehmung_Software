@@ -1,6 +1,4 @@
 #ifndef STASSID
-#define WLAN_SSID "x3"  // set your SSID
-#define PW "12345678"   // set your wifi password
 #endif
 
 
@@ -25,6 +23,10 @@ MFRC522 mfrc522(SS_PIN, RST_PIN);
 #define MY_TZ "CET-1CEST,M3.5.0/02,M10.5.0/03"
 
 /* Globals */
+unsigned int station = 1;
+bool Wifi;
+String WLAN_SSID;
+String PW;   // your wifi password
 time_t now;  // this are the seconds since Epoch (1970) - UTC
 tm tm;       // the structure tm holds time information in a more convenient way
 int ms;
@@ -47,21 +49,12 @@ void setup() {
   lastResetTime = millis();  // Initialisiere die letzte Reset-Zeit auf die aktuelle Zeit
   IDs[0] = 0;
   IDs[1] = 1;
-
   //Network und RtC setup
+  Wifi_setup(); // 5 sec delai
   configTime(MY_TZ, MY_NTP_SERVER);  // --> Here is the IMPORTANT ONE LINER needed in your sketch!
-
-  // start network
-  WiFi.persistent(false);
-  WiFi.mode(WIFI_STA);
-  WiFi.begin(WLAN_SSID, PW);
-  while (WiFi.status() != WL_CONNECTED) {
-    delay(200);
-    Serial.print(".");
-  }
 }
 
-void loop() {  
+void loop() {
   while (Serial.available()) {
     String command = Serial.readStringUntil('\n');
     if (command == "set") {
@@ -87,6 +80,16 @@ void loop() {
     }
     if (command == "init") {  //nur zum debugen
       InitalizeFileSystem();
+    }
+    if (command == "wifi") {
+      wifimenue();
+    }
+    if (command == "time") {
+      print_time(get_time());
+    }
+    if (command == "time set") {
+      timer_reset();
+      configTime(MY_TZ, MY_NTP_SERVER);
     }
   }
 }
@@ -191,12 +194,12 @@ void clearAll() {
 
 void racemode() {
   //racemode init
-  bool racemode = true;
   Serial.println("Racemode");
   timer_reset();
   creat_file_for_IDs();
   Serial.println("start or q");
   //racemode ready
+  bool racemode = true;
   while (racemode) {
     while (Serial.available()) {
       String option = Serial.readStringUntil('\n');
@@ -207,28 +210,27 @@ void racemode() {
       //start
       if (option == "start") {
         //start init
-        bool racestart = true;
         race_start_time = get_time();
         Serial.print("start ");
         print_time(race_start_time);
         //startzeit wird in die Files geschriben
         std::string path;
-        for (int i = 0; i<IDs_init_position; i++){
+        for (int i = 0; i < IDs_init_position; i++) {
           path = "/" + std::to_string(i) + ".csv";
           myfile = SPIFFS.open(path.c_str(), "a");
           myfile.print("race start time ");
           myfile.println(race_start_time);
           myfile.close();
         }
-
         // race aktiv
+        bool racestart = true;
         while (racestart) {
           while (Serial.available()) {
             String stop_command = Serial.readStringUntil('\n');
             if (stop_command == "q") {
               Serial.println("stop");
               racestart = false;
-              for (int i = 0; i<IDs_init_position; i++){
+              for (int i = 0; i < IDs_init_position; i++) {
                 path = "/" + std::to_string(i) + ".csv";
                 myfile = SPIFFS.open(path.c_str(), "a");
                 myfile.print("race stop time ");
@@ -240,22 +242,21 @@ void racemode() {
           // RFID erkannt
           uint64_t rfidID = 0;
           if (mfrc522.PICC_IsNewCardPresent()) {
-            if (mfrc522.PICC_ReadCardSerial()) {
-              for (byte i = 0; i < mfrc522.uid.size; i++) {
-                rfidID = (rfidID << 8) | mfrc522.uid.uidByte[i];
-              }
-              int position = position_im_array(IDs, rfidID);
-              path = "/" + std::to_string(position) + ".csv";
+          if (mfrc522.PICC_ReadCardSerial()) {
+            for (byte i = 0; i < mfrc522.uid.size; i++) {
+              rfidID = (rfidID << 8) | mfrc522.uid.uidByte[i];
+            }
+            int position = position_im_array(IDs, rfidID);
+            path = "/" + std::to_string(position) + ".csv";
               myfile = SPIFFS.open(path.c_str(), "a");
               myfile.println(get_time());
               myfile.close();
               Serial.print(position);
               Serial.print(" ");
               Serial.println(get_time());
-              // RFID erkannt aber keine ID gelesen bzw nicht im IDs array
-            } else {
-              int position = position_im_array(IDs, rfidID);
-              path = "/" + std::to_string(position) + ".csv";
+          } else {
+            int position = position_im_array(IDs, rfidID);
+            path = "/" + std::to_string(position) + ".csv";
               myfile = SPIFFS.open(path.c_str(), "a");
               myfile.println(get_time());
               myfile.close();
@@ -264,7 +265,16 @@ void racemode() {
               Serial.println(get_time());
             }
           }
-// TODO Lichtschranken hinzufügen
+
+          if (digitalRead(LS2)) {
+          path = "/1.csv";
+            myfile = SPIFFS.open(path.c_str(), "a");
+            myfile.println(get_time());
+            myfile.close();
+            Serial.print("1");
+            Serial.print(" ");
+            Serial.println(get_time());
+          }
         }
       }
     }
@@ -340,6 +350,8 @@ void creat_file_for_IDs() {
   for (int i = 0; i < IDs_init_position; i++) {
     path = "/" + std::to_string(i) + ".csv";
     myfile = SPIFFS.open(path.c_str(), "a");
+    myfile.print("Station: ");
+    myfile.println(station);
     myfile.print("Race init ");
     myfile.println(get_time());
     myfile.println(IDs[i], HEX);
@@ -415,3 +427,180 @@ void read_files() {
     Serial.println("no exisitng files.");
   }
 }
+
+void Wifi_setup() {
+  // Netzwerk starten
+  delay(5000);
+  Serial.println();
+  Serial.println("Is WiFi setup available? (y/n)");
+  bool wifisetup = true;
+
+  while (wifisetup) {
+    while (Serial.available()) {
+      String command = Serial.readStringUntil('\n');
+      if (command == "y") {
+        Wifi = true;
+
+        // Überprüfe, ob die Datei wifi_data.txt existiert
+        if (SPIFFS.exists("wifi_data.txt")) {
+          // Datei existiert, lese WLAN-Einstellungen aus der Datei
+          myfile = SPIFFS.open("wifi_data.txt", "r");
+          WLAN_SSID = myfile.readStringUntil('\n');
+          PW = myfile.readStringUntil('\n');
+          myfile.close();
+
+          Serial.println("Current WiFi settings:");
+          Serial.print("WLAN_SSID: ");
+          Serial.println(WLAN_SSID);
+          Serial.print("Password: ");
+          Serial.println(PW);
+          Serial.println("Change WiFi settings? (y/n)");
+
+          bool wait_for_userinput = true;
+          while (wait_for_userinput) {
+            while (Serial.available()) {
+              String userinput = Serial.readStringUntil('\n');
+              if (userinput == "y") {
+                set_wifi_settings();
+                wait_for_userinput = false;
+              }
+              if (userinput == "n") {
+                wait_for_userinput = false;
+              }
+            }
+          }
+        } else {
+          // Datei wifi_data.txt existiert nicht, führe die Einrichtung der WLAN-Einstellungen durch
+          set_wifi_settings();
+        }
+
+        connect_wifi();  // Verbinde zum WLAN
+        wifisetup = false;
+      }
+      if (command == "n") {
+        Wifi = false;
+       // setTimeManually(); //Todo
+        print_time(get_time());
+        wifisetup = false;
+      }
+    }
+  }
+}
+
+void connect_wifi() {
+  WiFi.persistent(false);
+  WLAN_SSID.trim();  //ohne trim problem bei wlansettings aus dem file lesen
+  PW.trim();
+  Serial.println(WLAN_SSID);
+  Serial.println(PW);
+  WiFi.mode(WIFI_STA);
+  WiFi.begin(WLAN_SSID, PW);
+  delay(2000);
+  while (WiFi.status() != WL_CONNECTED) {
+    delay(200);
+    Serial.print(".");
+  }
+  if (WiFi.status() == WL_CONNECTED) {
+    Serial.println("Connected");
+  }
+}
+
+void set_wifi_settings() {
+  Serial.println("Enter WLAN SSID ");
+  bool wait_for_SSID = true;
+  while (wait_for_SSID) {
+    while (Serial.available()) {
+      WLAN_SSID = Serial.readStringUntil('\n');
+      if (WLAN_SSID != "") {
+        wait_for_SSID = false;
+      }
+    }
+  }
+  Serial.println("Enter Passwort ");
+  bool wait_for_PW = true;
+  while (wait_for_PW) {
+    while (Serial.available()) {
+      PW = Serial.readStringUntil('\n');
+      if (PW != "") {
+        wait_for_PW = false;
+      }
+    }
+  }
+  Serial.println("New WIFI settings are:");
+  Serial.print("WLAN SSID: ");
+  Serial.println(WLAN_SSID);
+  Serial.print("Passwort: ");
+  Serial.println(PW);
+  Serial.println("1 Change");
+  Serial.println("2 Use and save");
+  Serial.println("3 Use and don't save");
+  bool wait_for_user = true;
+  while (wait_for_user) {
+    while (Serial.available()) {
+      String user_choice = Serial.readStringUntil('\n');
+      if (user_choice == "1") {
+        wait_for_user = false;
+        set_wifi_settings();
+      }
+      if (user_choice == "2") {
+        myfile = SPIFFS.open("wifi_data.txt", "w");
+        myfile.println(WLAN_SSID);
+        myfile.println(PW);
+        myfile.close();
+        wait_for_user = false;
+      }
+      if (user_choice == "3") {
+        wait_for_user = false;
+      }
+    }
+  }
+}
+
+void delete_wifi_settings() {
+  if (SPIFFS.exists("wifi_data.txt")) {
+    SPIFFS.remove("wifi_data.txt");
+    Serial.println("Wifi data deleted.");
+  } else {
+    Serial.println("No Wifi data saved.");
+  }
+}
+
+void wifimenue() {
+  bool wifi_menue = true;
+  Serial.println("Options:");
+  Serial.println("change");
+  Serial.println("delete");
+  Serial.println("show");
+  while (wifi_menue) {
+    while (Serial.available()) {
+      String wifi_command = Serial.readStringUntil('\n');
+      if (wifi_command == "delete") {
+        delete_wifi_settings();
+        wifi_menue = false;
+      }
+      if (wifi_command == "change") {
+        set_wifi_settings();
+        connect_wifi();
+        wifi_menue = false;
+      }
+      if (wifi_command == "show") {
+        Serial.println("Current WiFi settings:");
+        Serial.print("WLAN_SSID: ");
+        Serial.println(WLAN_SSID);
+        Serial.print("Password: ");
+        Serial.println(PW);
+        if (SPIFFS.exists("wifi_data.txt")) {
+          myfile = SPIFFS.open("wifi_data.txt", "r");
+          while (myfile.position() < myfile.size()) {  // lese Dateiinhalt Zeile für Zeile bis um Ende der Datei
+            Serial.println(myfile.readStringUntil('\n'));
+          }
+          myfile.close();
+        } else {
+          Serial.print("No data saved");
+        }
+        wifi_menue = false;
+      }
+    }
+  }
+}
+
