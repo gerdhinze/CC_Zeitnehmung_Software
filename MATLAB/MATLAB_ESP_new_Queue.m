@@ -51,7 +51,7 @@ try
     end
 
 catch
-    disp('Fehler beim Lesen von Daten vom Arduino.');
+    disp('Fehler beim Lesen von Daten vom ESP.');
    
 end
 end
