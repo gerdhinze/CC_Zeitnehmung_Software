@@ -11,13 +11,13 @@ try
     
     queue_size = 50; % Anpassen der Größe
     dataReceived = fscanf(esp, '%s', queue_size);
-    
+
     % Ausgeben der Daten in der Console
     disp('Empfangene Daten vom Arduino:');
     disp(dataReceived);
-    
+
 catch
-    disp('Fehler beim Lesen von Daten vom Arduino.');
+    disp('Fehler beim Lesen von Daten vom ESP.');
    
 end
 end
