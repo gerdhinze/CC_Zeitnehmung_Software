@@ -5,10 +5,10 @@
 #include <sstream>
 #include <string>
 
-#include <time.h>         // for time() ctime()
+#include <time.h>  // for time() ctime()
 #include <SPI.h>
-#include <MFRC522.h>    //NFC Reader
-#include <FS.h>  // Nutze die SPIFFS library
+#include <MFRC522.h>  //NFC Reader
+#include <FS.h>       // Nutze die SPIFFS library
 
 
 #define SS_PIN 4
@@ -17,10 +17,10 @@
 #define LS2 16
 
 //Globals
-File myfile;                   // erstelle ein SPIFFS Handling Variable
-MFRC522 mfrc522(SS_PIN, RST_PIN); //NFC Reader
-time_t now;  // this are the seconds since Epoch (1970) - UTC
-tm tm;       // the structure tm holds time information in a more convenient way
+File myfile;                       // erstelle ein SPIFFS Handling Variable
+MFRC522 mfrc522(SS_PIN, RST_PIN);  //NFC Reader
+time_t now;                        // this are the seconds since Epoch (1970) - UTC
+tm tm;                             // the structure tm holds time information in a more convenient way
 unsigned long last_reset;
 unsigned long time_by_user;
 
@@ -34,83 +34,97 @@ void setup() {
 void loop() {
   while (Serial.available()) {
     String menue_c = Serial.readStringUntil('\n');
-    if (menue_c == "set_time"){
-      set_time();
+    if (menue_c == "sync_time") { //fertig
+      sync_time();
     }
-    if (menue_c == "set_ID"){
+    if (menue_c == "get_time") { //fertig
+      get_time();
+    }
+    if (menue_c == "read_log") {
+      //read_log(); //ToDo
+    }
+    if (menue_c == "ready") {
+      ready();
+    }
+    if (menue_c == "set_ID") {
       set_ID();
     }
-    if (menue_c == "race"){
-      race();
-    }
-    if (menue_c == "file"){
-      file();
-    }
   }
 }
 
-void set_time(){
-  bool set_time_l=true;
-  {
-    //Serial.println("test set_time");
-    print_time(get_time());
+void read_log() {  //Todo
+  //fügt am ende endlog im ID spalte hinzu
+  //gibt den ganzen log zeile für zeile aus
+}
+
+void sync_time() {
+  String usertime = "0";
+  while(usertime == "0"){
     while (Serial.available()) {
-      String set_time_c = Serial.readStringUntil('\n');
-      if (set_time_c=="sync"){
-        sync_time(25*60*1000);  //Stehlt die Zeit auf 00:25:00:000
-      }
-      if (set_time_c=="q"){
-        set_time_l=false;
-      }
-    }
+      usertime = Serial.readStringUntil('\n');
+    }                                                  //convertiert string hh:mm:ss
   }
+  sync_time_ms(timeStringToMilliseconds(usertime));  // Todo Convertieterstring einfüge
 }
 
-void set_ID(){
-  bool set_ID_l=true;
-  while (set_ID_l){
+void get_time() {
+  print_time(get_time_in_ms());
+}
+
+void set_ID() {
+  bool set_ID_l = true;
+  while (set_ID_l) {
     Serial.println("test set_ID");
-  set_ID_l=false;
+    set_ID_l = false;
   }
 }
 
-void race(){
-  bool race_l=true;
-  while (race_l){
-    Serial.println("test race");
-  race_l=false;
-  }
-}
-
-void file(){
-  bool file_l=true;
-  while (file_l){
-    Serial.println("test file");
-  file_l=false;
-  }
-}
-
-unsigned long get_time() {  //gibt die Uhrzeit in ms aus
-  return time(&now)*1000 + (millis()%1000) - last_reset + time_by_user;
-}
-
-void timer_syncro(){
-  bool timer_syncro_l = true
-  while(timer_syncro_l){
+void ready() {
+  bool ready_l = true;
+  Serial.println("ready");
+  //Todo funktionen mist
+  while (ready_l) {
     while (Serial.available()) {
-    String timer_syncro_c = Serial.readStringUntil('\n');
-    // erwatet string im format hh:mm:ss
-
-
+      String ready_c = Serial.readStringUntil('\n');
+      if (ready_c == "start") {
+        //start(); //TODO
+      }
+      if (ready_c == "q") {
+        ready_l = false;
+      }
+    }
   }
 }
 
-void sync_time(unsigned long current_time_by_user){ //Uhrzeit in ms einstellen 
-   last_reset = time(&now)*1000 + (millis()%1000);
-   time_by_user = current_time_by_user;
+void file() {
+  bool file_l = true;
+  while (file_l) {
+    Serial.println("test file");
+    file_l = false;
+  }
 }
 
-void print_time(unsigned long ms) { //Ausgabe format hh:mm:ss:msmsms
+unsigned long get_time_in_ms() {  //gibt die Uhrzeit in ms aus
+  return time(&now) * 1000 + (millis() % 1000) - last_reset + time_by_user;
+}
+
+unsigned long timeStringToMilliseconds(String timeStr) {
+  int hours, minutes, seconds;
+  if (sscanf(timeStr.c_str(), "%d:%d:%d", &hours, &minutes, &seconds) == 3) {
+    unsigned long totalMilliseconds = (hours * 3600UL + minutes * 60UL + seconds) * 1000UL;
+    return totalMilliseconds;
+  } else {
+    // Rückgabe eines Fehlwertes, z.B. 0, wenn das Parsen fehlschlägt
+    return 0;
+  }
+}
+
+void sync_time_ms(unsigned long current_time_by_user) {  //Uhrzeit in ms einstellen
+  last_reset = time(&now) * 1000 + (millis() % 1000);
+  time_by_user = current_time_by_user;
+}
+
+void print_time(unsigned long ms) {  //Ausgabe format hh:mm:ss:msmsms
   // Berechne die Stunden, Minuten, Sekunden und Millisekunden
   unsigned long hours = ms / 3600000;
   ms = ms % 3600000;
@@ -126,27 +140,27 @@ void print_time(unsigned long ms) { //Ausgabe format hh:mm:ss:msmsms
   Serial.print(minutes);
   Serial.print(":");
   if (seconds < 10) Serial.print("0");
-  Serial.print(seconds);
-  Serial.print(":");
-  if (milliseconds < 10) Serial.print("00");
-  else if (milliseconds < 100) Serial.print("0");
-  Serial.println(milliseconds);
+  Serial.println(seconds);
 }
 
 boolean InitalizeFileSystem() {  //vom SPIFFS Demoprogramm kopiert, Wird in der setup benötigt für File-Managmante
   bool initok = false;
   initok = SPIFFS.begin();
-  if (!(initok)) // Format SPIFS, of not formatted. - Try 1
+  if (!(initok))  // Format SPIFS, of not formatted. - Try 1
   {
     Serial.println("Format SPIFFS");
     SPIFFS.format();
     initok = SPIFFS.begin();
   }
-  if (!(initok)) // Format SPIFS, of not formatted. - Try 2
+  if (!(initok))  // Format SPIFS, of not formatted. - Try 2
   {
     SPIFFS.format();
     initok = SPIFFS.begin();
   }
-  if (initok) { Serial.println("SPIFFS ist OK"); } else { Serial.println("SPIFFS ist nicht OK"); }
+  if (initok) {
+    Serial.println("SPIFFS ist OK");
+  } else {
+    Serial.println("SPIFFS ist nicht OK");
+  }
   return initok;
 }
