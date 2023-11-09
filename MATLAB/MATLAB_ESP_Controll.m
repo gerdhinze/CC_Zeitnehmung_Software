@@ -1,7 +1,7 @@
 %Datatable
 
 % Warten auf Benutzereingabe in der MATLAB-Konsole
-    yuserInput = input('Connect to ESP1 (y/n): ', 's');
+    userInput = input('Connect to ESP1 (y/n): ', 's');
     if strcmpi(userInput, 'y')
         % Erstellen der seriellen Verbindung zum ESP über USB
         esp1 = serial('COM3', 'BAUD', 115200);
@@ -40,7 +40,7 @@
 while not(strcmpi(userInput, 'exit'))
 
 % Lesen der Daten vom ESP
-try
+%try
      % Überprüfen, ob der Befehl 'exit' ist, um das Programm zu beenden
     if strcmpi(userInput, 'exit')
         break;
@@ -48,7 +48,7 @@ try
     
     % Warten auf Benutzereingabe in der MATLAB-Konsole
     userInput = input('Befehl eingeben: ', 's');
-    switch userinput
+    switch userInput
         case 'set_time'
             % Send command to ESP8266
             if isvalid(esp1)
@@ -162,27 +162,12 @@ try
         case 'race'
         otherwise
     end
-
-    fprintf(esp1, userInput);
-    fprintf(esp2, userInput);
-
-    while esp1.BytesAvailable > 0
-        daten = fscanf(esp1, '%s'); % Daten vom ESP8266 lesen
-        fprintf(datei, '%s\n', daten); % Daten in die Datei schreiben
-        disp(['Antwort vom ESP1: ' daten]);
-    end
-
-    while esp2.BytesAvailable > 0
-        daten = fscanf(esp2, '%s'); % Daten vom ESP8266 lesen
-        fprintf(datei, '%s\n', daten); % Daten in die Datei schreiben
-        disp(['Antwort vom ESP2: ' daten]);
-    end
-
-catch
-    disp('Fehler beim Lesen von Daten vom ESP.');
+    
+%catch
+    %disp('Fehler beim Lesen von Daten vom ESP.');
 
 end
-end
+%end
 %Schließen der seriellen Verbindung zum Arduino
 if isvalid(esp1)
     fclose(esp1);
