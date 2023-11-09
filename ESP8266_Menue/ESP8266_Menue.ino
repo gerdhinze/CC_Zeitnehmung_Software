@@ -51,13 +51,13 @@ void loop() {
 
 void set_time(){
   bool set_time_l=true;
-  while (set_time_l){
+  {
     //Serial.println("test set_time");
     print_time(get_time());
     while (Serial.available()) {
       String set_time_c = Serial.readStringUntil('\n');
       if (set_time_c=="sync"){
-        sync_time(25*60*1000);
+        sync_time(25*60*1000);  //Stehlt die Zeit auf 00:25:00:000
       }
       if (set_time_c=="q"){
         set_time_l=false;
@@ -90,11 +90,22 @@ void file(){
   }
 }
 
-unsigned long get_time() {
+unsigned long get_time() {  //gibt die Uhrzeit in ms aus
   return time(&now)*1000 + (millis()%1000) - last_reset + time_by_user;
 }
 
-void sync_time(unsigned long current_time_by_user){
+void timer_syncro(){
+  bool timer_syncro_l = true
+  while(timer_syncro_l){
+    while (Serial.available()) {
+    String timer_syncro_c = Serial.readStringUntil('\n');
+    // erwatet string im format hh:mm:ss
+
+
+  }
+}
+
+void sync_time(unsigned long current_time_by_user){ //Uhrzeit in ms einstellen 
    last_reset = time(&now)*1000 + (millis()%1000);
    time_by_user = current_time_by_user;
 }
