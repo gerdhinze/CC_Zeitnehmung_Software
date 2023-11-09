@@ -40,23 +40,20 @@ void loop() {
     if (menue_c == "get_time") { //fertig
       get_time();
     }
+    if (menue_c == "set_ID") {
+      set_ID(); //gibt nur die ID zurück
+    }
     if (menue_c == "read_log") {
       //read_log(); //ToDo
     }
     if (menue_c == "ready") {
       ready();
     }
-    if (menue_c == "set_ID") {
-      set_ID();
-    }
+
   }
 }
 
-void read_log() {  //Todo
-  //fügt am ende endlog im ID spalte hinzu
-  //gibt den ganzen log zeile für zeile aus
-}
-
+//vvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvv
 void sync_time() {
   String usertime = "0";
   while(usertime == "0"){
@@ -70,6 +67,7 @@ void sync_time() {
 void get_time() {
   print_time(get_time_in_ms());
 }
+//^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 void set_ID() {
   bool set_ID_l = true;
@@ -77,6 +75,12 @@ void set_ID() {
     Serial.println("test set_ID");
     set_ID_l = false;
   }
+}
+
+void read_log() {  //Todo
+  //fügt am ende endlog im ID spalte hinzu
+  //gibt den ganzen log zeile für zeile aus
+  //wartet auf bestätigungs wort und löscht den log
 }
 
 void ready() {
@@ -104,6 +108,7 @@ void file() {
   }
 }
 
+//vvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvv 
 unsigned long get_time_in_ms() {  //gibt die Uhrzeit in ms aus
   return time(&now) * 1000 + (millis() % 1000) - last_reset + time_by_user;
 }
