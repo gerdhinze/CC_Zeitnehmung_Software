@@ -92,7 +92,7 @@ void get_time() {
 }
 //^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-void set_ID() {
+void set_ID() { //Todo
   bool set_ID_l = true;
   while (set_ID_l) {
     Serial.println("test set_ID");
@@ -116,7 +116,7 @@ void ready() {
     while (Serial.available()) {
       String ready_c = Serial.readStringUntil('\n');
       if (ready_c == "start") {
-        //start(); //TODO
+        start();
       }
       if (ready_c == "q") {
         ready_l = false;
@@ -127,11 +127,21 @@ void ready() {
 }
 
 void start(){
-  //map erstellen 
-  NFCEventTracker tracker;
+  NFCEventTracker tracker; //map erstellen 
+  myfile.println("Station start Time"); //start log eintragen
+  bool start_l = true;
+  while(start_l){
+    while (Serial.available()){
+      String start_c = Serial.readStringUntil('\n');
+      if (start_c == "q"){
+        myfile.println("Station end Time"); //stop log eintragen 
+        start_l = false;
+      }
 
-  //map löschen
-  tracker.clear();
+    }
+  }
+
+  tracker.clear(); //map löschen
 }
 
 void file() {
