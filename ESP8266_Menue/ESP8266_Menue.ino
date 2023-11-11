@@ -46,6 +46,8 @@ time_t now;                        // this are the seconds since Epoch (1970) - 
 tm tm;                             // the structure tm holds time information in a more convenient way
 unsigned long last_reset;
 unsigned long time_by_user;
+int station = 1;
+String logpath = "log.csv";
 
 void setup() {
   Serial.begin(115200);
@@ -63,11 +65,11 @@ void loop() {
     if (menue_c == "get_time") { //fertig
       get_time();
     }
-    if (menue_c == "set_ID") {
+    if (menue_c == "set_ID") { //fertig
       set_ID(); //gibt nur die ID zurück
     }
     if (menue_c == "read_log") {
-      //read_log(); //ToDo
+      read_log(); 
     }
     if (menue_c == "ready") {
       ready();
@@ -90,11 +92,10 @@ void sync_time() {
 void get_time() {
   print_time(get_time_in_ms());
 }
-//^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-void set_ID() { //Todo
-  bool set_ID_l = true;
+void set_ID() { //gibt die ID in HEX am Serial aus; "q" zum abrechen 
   Serial.println("Ready to scan");
+  bool set_ID_l = true;
   while (set_ID_l) {
     if (mfrc522.PICC_IsNewCardPresent()) {
       if (mfrc522.PICC_ReadCardSerial()) {
@@ -103,32 +104,52 @@ void set_ID() { //Todo
           rfidID = (rfidID << 8) | mfrc522.uid.uidByte[i];
         }
         Serial.println(rfidID,HEX);
-        set_ID_l = false;
+        set_ID_l = false;   //geht nach erkannter ID aus der funktion
       }
     }
-    if (Serial.readStringUntil('\n') == "q"){set_ID_l = false;} //q um abzubrechen 
+    if (Serial.readStringUntil('\n') == "q"){set_ID_l = false;} //q um abzubrechen   TODO testen wie konstat des ist
   }
 }
 
-void read_log() {  //Todo
+void read_log() {  //fügt endlog hinzu und gibt den inhalt zeile für zeie aus, danach wird das file mit gelöscht 
   //fügt am ende endlog im ID spalte hinzu
+  myfile = SPIFFS.open(logpath,"a");
+  myfile.printf("%d endlog %lu\n", station, get_time_in_ms());
+  myfile.close();
   //gibt den ganzen log zeile für zeile aus
+  myfile = SPIFFS.open(logpath,"r");
+  while (myfile.position() < myfile.size()) {  
+    Serial.println(myfile.readStringUntil('\n'));
+  }
+  myfile.close();
   //wartet auf bestätigungs wort und löscht den log
+ // bool wait_for_delete =true;
+ // while(wait_for_delete){
+ //   while (Serial.available()) {        //ToDO schaun ob ma des löschen kann 
+ //     if(Serial.readStringUntil('\n') == "delete"){
+        SPIFFS.remove(logpath);
+        Serial.println("deleted");
+ //       wait_for_delete = false;
+ //     }
+ //   }
+ // }
 }
+//^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 void ready() {
   // ready init start
+  myfile = SPIFFS.open(logpath,"a");  //öffnet file in dem die logs geschrieben werden im anhang modus
   Serial.println("ready"); //Todo funktionen mist
-  myfile = SPIFFS.open("log.csv","a");  //öffnet file in dem die logs geschrieben werden im anhang modus
   bool ready_l = true;
   // ready init stop
   while (ready_l) {
-    while (Serial.available()) {
+    while (Serial.available()) {        //ToDO schaun ob ma des löschen kann 
       String ready_c = Serial.readStringUntil('\n');
       if (ready_c == "start") {
         start();
       }
       if (ready_c == "q") {
+        Serial.println("q");
         ready_l = false;
         myfile.close(); //schliest wieder das file für logs
       }
@@ -138,16 +159,18 @@ void ready() {
 
 void start(){
   NFCEventTracker tracker; //map erstellen 
-  myfile.println("Station start Time"); //start log eintragen
+  myfile.printf("%d start %lu\n", station, get_time_in_ms()); //start log eintragen
+  Serial.printf("%d start %lu\n", station, get_time_in_ms());
   bool start_l = true;
   while(start_l){
-    while (Serial.available()){
+    while (Serial.available()){       //ToDO schaun ob ma des löschen kann
       String start_c = Serial.readStringUntil('\n');
       if (start_c == "q"){
-        myfile.println("Station end Time"); //stop log eintragen 
+        myfile.printf("%d stop %d\n", station, get_time_in_ms()); //stop log eintragen 
+        Serial.printf("%d stop %d\n", station, get_time_in_ms());
+        //ToDO schaun ob ma des file schliesen muss
         start_l = false;
       }
-
     }
   }
 
