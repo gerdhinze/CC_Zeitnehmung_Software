@@ -74,6 +74,9 @@ void loop() {
     if (menue_c == "ready") {
       ready();
     }
+    if (menue_c == "test") {
+      test();
+    }
 
   }
 }
@@ -160,8 +163,12 @@ void ready() {
 void start(){
   NFCEventTracker tracker; //map erstellen 
   unsigned long time = get_time_in_ms();
-  myfile.printf("%d start %lu\n", station, time); //start log eintragen
-  Serial.printf("%d start %lu\n", station, time);
+  Serial.print(station);
+  Serial.print(" start ");
+  Serial.println(time);
+  myfile.print(station);
+  myfile.print(" start ");
+  myfile.println(time);
   bool start_l = true;
   while(start_l){
     
@@ -170,27 +177,58 @@ void start(){
     if (digitalRead(LS2)) {
       time = get_time_in_ms();
       if (!tracker.is_duplicate_event(1, time, 1000)) {
-        myfile.printf("%d 1 %d\n", station, time);
-        Serial.printf("%d 1 %d\n", station, time);
+        Serial.print(station);
+        Serial.print(" 1 ");
+        Serial.println(time);
+        myfile.print(station);
+        myfile.print(" 1 ");
+        myfile.println(time);
       }
     }
     //Card scan
-    
-
-
-
-
-
-
+    if (mfrc522.PICC_IsNewCardPresent()) {
+      time = get_time_in_ms();
+      if (mfrc522.PICC_ReadCardSerial()) {
+        uint64_t rfidID = 0;
+        for (byte i = 0; i < mfrc522.uid.size; i++) {
+          rfidID = (rfidID << 8) | mfrc522.uid.uidByte[i];
+        }
+        if (!tracker.is_duplicate_event(rfidID, time, 1000)) {
+          Serial.print(station);
+          Serial.print(" ");
+          Serial.print(rfidID,HEX);
+          Serial.print(" ");
+          Serial.println(time);
+          myfile.print(station);
+          myfile.print(" ");
+          myfile.print(rfidID,HEX);
+          myfile.print(" ");
+          myfile.println(time);
+        }
+      }else{ //keine  ID gelesen
+        if (!tracker.is_duplicate_event(0, time, 1000)) {
+          Serial.print(station);
+          Serial.print(" 0 ");
+          Serial.println(time);
+          myfile.print(station);
+          myfile.print(" 0 ");
+          myfile.println(time);
+        }
+      }
+    }
 
     while (Serial.available()){       //ToDO schaun ob ma des löschen kann
       String start_c = Serial.readStringUntil('\n');
       if (start_c == "q"){
         time = get_time_in_ms();
-        myfile.printf("%d stop %d\n", station, time); //stop log eintragen 
-        Serial.printf("%d stop %d\n", station, time);
+        Serial.print(station);
+          Serial.print(" stop ");
+          Serial.println(time);
+          myfile.print(station);
+          myfile.print(" stop ");
+          myfile.println(time);;
         //ToDO schaun ob ma des file schliesen muss
-        tracker.clear(); //map löschen
+       // tracker.clear(); //map löschen
         start_l = false;
       }
     }
@@ -260,4 +298,21 @@ boolean InitalizeFileSystem() {  //vom SPIFFS Demoprogramm kopiert, Wird in der 
     Serial.println("SPIFFS ist nicht OK");
   }
   return initok;
+}
+
+
+
+
+
+
+
+
+void test(){
+  unsigned long jetzt=0;
+  while (true){
+    if ((get_time_in_ms()-jetzt) > 1000){
+      Serial.println(get_time_in_ms());
+      jetzt = get_time_in_ms();
+    }
+  }
 }
