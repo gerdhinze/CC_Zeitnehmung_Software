@@ -4,11 +4,34 @@
 
 #include <sstream>
 #include <string>
+#include <map>
+
 
 #include <time.h>  // for time() ctime()
 #include <SPI.h>
 #include <MFRC522.h>  //NFC Reader
 #include <FS.h>       // Nutze die SPIFFS library
+
+class NFCEventTracker{
+public:
+    bool is_duplicate_event(unsigned long nfc_id, unsigned long timestamp)
+    {
+        std::map<unsigned long/*nfc id*/, unsigned long/*timestamp*/>::const_iterator last = _last_events.find(nfc_id);
+        if (last != _last_events.end()) {
+            unsigned long last_timestamp = last->second;
+            if (timestamp - last_timestamp < 1000)
+                return true;
+        }
+        _last_events[nfc_id] = timestamp;
+        return false;
+    }
+
+    void clear() { _last_events.clear(); }
+
+private:
+    std::map<unsigned long/*nfc id*/, unsigned long/*timestamp*/> _last_events;
+};
+
 
 
 #define SS_PIN 4
@@ -69,7 +92,7 @@ void get_time() {
 }
 //^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-void set_ID() {
+void set_ID() { //Todo
   bool set_ID_l = true;
   while (set_ID_l) {
     Serial.println("test set_ID");
@@ -84,20 +107,41 @@ void read_log() {  //Todo
 }
 
 void ready() {
+  // ready init start
+  Serial.println("ready"); //Todo funktionen mist
+  myfile = SPIFFS.open("log.csv","a");  //öffnet file in dem die logs geschrieben werden im anhang modus
   bool ready_l = true;
-  Serial.println("ready");
-  //Todo funktionen mist
+  // ready init stop
   while (ready_l) {
     while (Serial.available()) {
       String ready_c = Serial.readStringUntil('\n');
       if (ready_c == "start") {
-        //start(); //TODO
+        start();
       }
       if (ready_c == "q") {
         ready_l = false;
+        myfile.close(); //schliest wieder das file für logs
       }
     }
   }
+}
+
+void start(){
+  NFCEventTracker tracker; //map erstellen 
+  myfile.println("Station start Time"); //start log eintragen
+  bool start_l = true;
+  while(start_l){
+    while (Serial.available()){
+      String start_c = Serial.readStringUntil('\n');
+      if (start_c == "q"){
+        myfile.println("Station end Time"); //stop log eintragen 
+        start_l = false;
+      }
+
+    }
+  }
+
+  tracker.clear(); //map löschen
 }
 
 void file() {
@@ -107,6 +151,8 @@ void file() {
     file_l = false;
   }
 }
+
+
 
 //vvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvv 
 unsigned long get_time_in_ms() {  //gibt die Uhrzeit in ms aus
