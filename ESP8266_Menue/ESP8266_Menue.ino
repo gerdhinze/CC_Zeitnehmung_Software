@@ -14,12 +14,12 @@
 
 class NFCEventTracker{
 public:
-    bool is_duplicate_event(unsigned long nfc_id, unsigned long timestamp)
+    bool is_duplicate_event(unsigned long nfc_id, unsigned long timestamp,unsigned long delaytime)
     {
         std::map<unsigned long/*nfc id*/, unsigned long/*timestamp*/>::const_iterator last = _last_events.find(nfc_id);
         if (last != _last_events.end()) {
             unsigned long last_timestamp = last->second;
-            if (timestamp - last_timestamp < 1000)
+            if (timestamp - last_timestamp < delaytime)
                 return true;
         }
         _last_events[nfc_id] = timestamp;
@@ -44,8 +44,8 @@ File myfile;                       // erstelle ein SPIFFS Handling Variable
 MFRC522 mfrc522(SS_PIN, RST_PIN);  //NFC Reader
 time_t now;                        // this are the seconds since Epoch (1970) - UTC
 tm tm;                             // the structure tm holds time information in a more convenient way
-unsigned long last_reset;
-unsigned long time_by_user;
+unsigned long last_reset = 0;
+unsigned long time_by_user = 0;
 int station = 1;
 String logpath = "log.csv";
 
@@ -164,6 +164,25 @@ void start(){
   Serial.printf("%d start %lu\n", station, time);
   bool start_l = true;
   while(start_l){
+    
+    // Renn aufzeichnung
+    //Lichtschranke
+    if (digitalRead(LS2)) {
+      time = get_time_in_ms();
+      if (!tracker.is_duplicate_event(1, time, 1000)) {
+        myfile.printf("%d 1 %d\n", station, time);
+        Serial.printf("%d 1 %d\n", station, time);
+      }
+    }
+    //Card scan
+    
+
+
+
+
+
+
+
     while (Serial.available()){       //ToDO schaun ob ma des löschen kann
       String start_c = Serial.readStringUntil('\n');
       if (start_c == "q"){
@@ -175,18 +194,7 @@ void start(){
         start_l = false;
       }
     }
-    // Renn aufzeichnung
-    //Lichtschranke
-    if (digitalRead(LS2)) {
-      time = get_time_in_ms();
-      if (!tracker.is_duplicate_event(1, time)) {
-        myfile.printf("%d 1 %d\n", station, time);
-        Serial.printf("%d 1 %d\n", station, time);
-      }
-    }
   }
-
-  
 }
 
 
