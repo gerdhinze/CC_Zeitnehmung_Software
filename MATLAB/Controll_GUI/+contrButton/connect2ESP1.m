@@ -1,12 +1,9 @@
-function connect2ESP1()
-    comPort = get(Port1, 'string');
+function connect2ESP1(comPort)
     try
-        % Versuche, eine Verbindung zum angegebenen COM-Port herzustellen
-        esp1 = serialport(comPort, 115200);
+        esp1 = serial(comPort, 'BAUD', 115200);
         fopen(esp1);
         disp(['Verbindung zum COM-Port ' comPort ' hergestellt.']);
     catch
-        % Wenn ein Fehler auftritt, zeige eine Fehlermeldung an
-        disp(['Fehler beim Herstellen der Verbindung zum COM-Port ' comPort '.']);
+        errordlg(['Fehler beim Herstellen der Verbindung zum COM-Port ' comPort], 'Fehler');
     end
 end
