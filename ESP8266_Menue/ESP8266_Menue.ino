@@ -159,31 +159,36 @@ void ready() {
 
 void start(){
   NFCEventTracker tracker; //map erstellen 
-  myfile.printf("%d start %lu\n", station, get_time_in_ms()); //start log eintragen
-  Serial.printf("%d start %lu\n", station, get_time_in_ms());
+  unsigned long time = get_time_in_ms();
+  myfile.printf("%d start %lu\n", station, time); //start log eintragen
+  Serial.printf("%d start %lu\n", station, time);
   bool start_l = true;
   while(start_l){
     while (Serial.available()){       //ToDO schaun ob ma des löschen kann
       String start_c = Serial.readStringUntil('\n');
       if (start_c == "q"){
-        myfile.printf("%d stop %d\n", station, get_time_in_ms()); //stop log eintragen 
-        Serial.printf("%d stop %d\n", station, get_time_in_ms());
+        time = get_time_in_ms();
+        myfile.printf("%d stop %d\n", station, time); //stop log eintragen 
+        Serial.printf("%d stop %d\n", station, time);
         //ToDO schaun ob ma des file schliesen muss
+        tracker.clear(); //map löschen
         start_l = false;
+      }
+    }
+    // Renn aufzeichnung
+    //Lichtschranke
+    if (digitalRead(LS2)) {
+      time = get_time_in_ms();
+      if (!tracker.is_duplicate_event(1, time)) {
+        myfile.printf("%d 1 %d\n", station, time);
+        Serial.printf("%d 1 %d\n", station, time);
       }
     }
   }
 
-  tracker.clear(); //map löschen
+  
 }
 
-void file() {
-  bool file_l = true;
-  while (file_l) {
-    Serial.println("test file");
-    file_l = false;
-  }
-}
 
 
 
