@@ -94,9 +94,19 @@ void get_time() {
 
 void set_ID() { //Todo
   bool set_ID_l = true;
+  Serial.println("Ready to scan");
   while (set_ID_l) {
-    Serial.println("test set_ID");
-    set_ID_l = false;
+    if (mfrc522.PICC_IsNewCardPresent()) {
+      if (mfrc522.PICC_ReadCardSerial()) {
+        uint64_t rfidID = 0;
+        for (byte i = 0; i < mfrc522.uid.size; i++) {
+          rfidID = (rfidID << 8) | mfrc522.uid.uidByte[i];
+        }
+        Serial.println(rfidID,HEX);
+        set_ID_l = false;
+      }
+    }
+    if (Serial.readStringUntil('\n') == "q"){set_ID_l = false;} //q um abzubrechen 
   }
 }
 
