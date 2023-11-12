@@ -51,10 +51,10 @@ txttime_esp3_Label = uilabel(controll_gui, 'Position', [620,285,130,40], 'Text',
 serialPortDropdown = uidropdown(controll_gui, 'Position', [50 230 100 40], 'Items', {'Team1', 'Team2', 'Team3', 'Team4'}, 'ValueChangedFcn', @(dropdown, event) selectedTeamCallback(dropdown));
 
 % Button for setting the IDs
-btnSetID = uibutton(controll_gui, 'push', 'Text', 'Set ID', 'Position', [160 230 100 40], 'BackgroundColor', 'yellow', 'ButtonPushedFcn', @(btnSetID, event) setIDButtonCallback(serialPortDropdown));
+btnSetID = uibutton(controll_gui, 'push', 'Text', 'Set ID', 'Position', [160 230 100 40], 'BackgroundColor', [1, 0.5, 0], 'ButtonPushedFcn', @(btnSetID, event) setIDButtonCallback(serialPortDropdown));
 
 %"Ready" button
-btnReady = uibutton(controll_gui, 'push', 'Text', 'Ready', 'Position', [160 170 100 40], 'BackgroundColor', [1, 0.5, 0],'ButtonPushedFcn', @(btnReady, event) readyButtonCallback());
+btnReady = uibutton(controll_gui, 'push', 'Text', 'Ready', 'Position', [160 170 100 40], 'BackgroundColor', 'yellow','ButtonPushedFcn', @(btnReady, event) readyButtonCallback());
 
 %"Start" button
 btnStart = uibutton(controll_gui, 'push', 'Text', 'Start', 'Position', [160 110 100 40], 'BackgroundColor', 'green', 'ButtonPushedFcn', @(btnStart, event) startButtonCallback());
