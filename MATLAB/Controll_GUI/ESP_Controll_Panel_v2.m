@@ -28,7 +28,7 @@ txtPort3 = uieditfield(controll_gui, 'text', 'Position', [510 520 100 40], 'Valu
 btnConnect3 = uibutton(controll_gui, 'push', 'Text', 'Connect', 'Position', [620 520 100 40], 'ButtonPushedFcn', @(btnConnect, event) connectButton3Callback(txtPort3));
 
 % Button to synchronize time
-btnSync = uibutton(controll_gui, 'push', 'Text', 'Sync-Time', 'Position', [50 350 70 40], 'ButtonPushedFcn', @(btnSync, event) syncButtonCallback());
+btnSync = uibutton(controll_gui, 'push', 'Text', 'Sync-Time', 'Position', [50 350 100 40], 'ButtonPushedFcn', @(btnSync, event) syncButtonCallback());
 
 % Button to stop
 btnStop = uibutton(controll_gui, 'push', 'Text', 'Stop', 'Position', [620 20 100 40], 'BackgroundColor', 'red', 'ButtonPushedFcn', @(btnStop, event) stopButtonCallback());
@@ -36,6 +36,8 @@ btnStop = uibutton(controll_gui, 'push', 'Text', 'Stop', 'Position', [620 20 100
 % Button to disconnect all
 btnDisconnectAll = uibutton(controll_gui, 'push', 'Text', 'Disconnect All', 'Position', [160 460 100 40], 'ButtonPushedFcn', @(btnDisconnectAll, event) disconnectAllButtonCallback());
 
+% Button to search for ports
+btnSearchPorts = uibutton(controll_gui, 'push', 'Text', 'Search Ports', 'Position', [160 400 100 40], 'BackgroundColor', 'yellow', 'ButtonPushedFcn', @(btnSearchPorts, event) searchPortsCallback());
 %##########################################################################
 %       CALLBACK - Functions
 %##########################################################################
@@ -102,3 +104,23 @@ function disconnectAllButtonCallback()
         errordlg('Fehler beim Trennen aller Verbindungen.', 'Fehler');
     end
 end
+
+% Callback function for the "Search Ports" button
+function searchPortsCallback()
+    try
+        % Get the list of available serial ports
+        availablePorts = serialportlist("available");
+        
+        % Convert the cell array of port names to a string
+        portsString = sprintf('Available Ports:\n%s\n', strjoin(availablePorts, '\n'));
+        
+        % Display the ports in the uitextarea
+        txtAreaPorts.Value = portsString;
+        
+        disp('Serial ports list updated.');
+    catch
+        errordlg('Error updating the serial ports list.', 'Error');
+    end
+end
+
+
