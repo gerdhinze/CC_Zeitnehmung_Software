@@ -31,7 +31,7 @@ btnConnect3 = uibutton(controll_gui, 'push', 'Text', 'Connect', 'Position', [620
 btnSync = uibutton(controll_gui, 'push', 'Text', 'Sync-Time', 'Position', [50 350 70 40], 'ButtonPushedFcn', @(btnSync, event) syncButtonCallback());
 
 % Button to stop
-btnStop = uibutton(controll_gui, 'push', 'Text', 'Stop', 'Position', [560 20 70 40], 'BackgroundColor', 'red', 'ButtonPushedFcn', @(btnStop, event) stopButtonCallback());
+btnStop = uibutton(controll_gui, 'push', 'Text', 'Stop', 'Position', [620 20 100 40], 'BackgroundColor', 'red', 'ButtonPushedFcn', @(btnStop, event) stopButtonCallback());
 
 % Button to disconnect all
 btnDisconnectAll = uibutton(controll_gui, 'push', 'Text', 'Disconnect All', 'Position', [160 460 100 40], 'ButtonPushedFcn', @(btnDisconnectAll, event) disconnectAllButtonCallback());
