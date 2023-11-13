@@ -5,6 +5,8 @@ controll_gui.MenuBar = 'none';
 controll_gui.Color = 'white';
 controll_gui.Position = [50,50,750,600];
 
+T = readtable('CCTM2023.csv'); %%%%%Änderung Philipp
+
 %ESP Connection
 %Available comports
 % Create a uitextarea
@@ -48,8 +50,7 @@ txtArea_time_esp3 = uitextarea(controll_gui, 'Position', [510 290 100 30], 'Edit
 txttime_esp3_Label = uilabel(controll_gui, 'Position', [620,285,130,40], 'Text', '@ Station 3','FontSize',15);
 
 %dropdownmenue for the teamname
-CCTM = readtable('CCTM2023.csv'); %Crazy Car Teilnehmer
-serialPortDropdown = uidropdown(controll_gui, 'Position', [50 230 100 40], 'Items', CCTM.Teamname, 'ValueChangedFcn', @(dropdown, event) selectedTeamCallback(dropdown)); %Änderung Philipp
+serialPortDropdown = uidropdown(controll_gui, 'Position', [50 230 100 40], 'Items', T.Teamname, 'ValueChangedFcn', @(dropdown, event) selectedTeamCallback(dropdown)); %%%%%%Äbderung Philipp
 
 % Button for setting the IDs
 btnSetID = uibutton(controll_gui, 'push', 'Text', 'Set ID', 'Position', [160 230 100 40], 'BackgroundColor', [1, 0.5, 0], 'ButtonPushedFcn', @(btnSetID, event) setIDButtonCallback(serialPortDropdown));
