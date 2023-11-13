@@ -1,3 +1,6 @@
+%global parameters
+global port1Number;
+
 % GUI erstellen
 controll_gui = uifigure('Name', 'Controll-GUI');
 controll_gui.ToolBar = 'none';
@@ -98,16 +101,14 @@ end
 
 % Callback function for the Sync button
 function syncButtonCallback()
-    try
-        % Call the function to synchronize time
-        contrButton.sync_time();
-        disp('Zeit erfolgreich synchronisiert.');
-    catch
-        % Handle errors if the synchronization fails
-        errordlg('Fehler beim Synchronisieren der Zeit.', 'Fehler');
-    end
+    % Call the function to synchronize time
+    [realtime_esp1, realtime_esp2, realtime_esp3]= contrButton.sync_time(esp1, esp2, esp3);
+    txtArea_time_esp1.Value = realtime_esp1;
+    txtArea_time_esp2.Value = realtime_esp2;
+    txtArea_time_esp3.Value = realtime_esp3;
 end
 
+%Callback function for the stop button
 function stopButtonCallback()
     try
         contrButton.stop();
@@ -117,12 +118,12 @@ function stopButtonCallback()
     end
 end
 
+% Callback function for the "disconnect" button
 function disconnectAllButtonCallback()
     try
-        contrButton.disconnect_esp_all();
-        disp('Alle Verbindungen getrennt.');
+        contrButton.disconnect_esp_all(port1Number, port2Number, port3Number);
     catch
-        errordlg('Fehler beim Trennen aller Verbindungen.', 'Fehler');
+    errordlg('Fehler beim Trennen aller Verbindungen.', 'Fehler');
     end
 end
 
