@@ -46,7 +46,7 @@ time_t now;                        // this are the seconds since Epoch (1970) - 
 tm tm;                             // the structure tm holds time information in a more convenient way
 unsigned long last_reset = 0;
 unsigned long time_by_user = 0;
-int station = 1;
+int station = 3;
 String logpath = "log.csv";
 
 void setup() {
