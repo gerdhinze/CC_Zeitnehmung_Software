@@ -1,12 +1,11 @@
-%global parameters
-global port1Number;
-
 % GUI erstellen
 controll_gui = uifigure('Name', 'Controll-GUI');
 controll_gui.ToolBar = 'none';
 controll_gui.MenuBar = 'none';
 controll_gui.Color = 'white';
 controll_gui.Position = [50,50,750,600];
+
+T = readtable('CCTM2023.csv'); %%%%%Änderung Philipp
 
 %ESP Connection
 %Available comports
@@ -51,8 +50,7 @@ txtArea_time_esp3 = uitextarea(controll_gui, 'Position', [510 290 100 30], 'Edit
 txttime_esp3_Label = uilabel(controll_gui, 'Position', [620,285,130,40], 'Text', '@ Station 3','FontSize',15);
 
 %dropdownmenue for the teamname
-CCTM = readtable('CCTM2023.csv'); %Crazy Car Teilnehmer
-serialPortDropdown = uidropdown(controll_gui, 'Position', [50 230 100 40], 'Items', CCTM.Teamname, 'ValueChangedFcn', @(dropdown, event) selectedTeamCallback(dropdown)); %Änderung Philipp
+serialPortDropdown = uidropdown(controll_gui, 'Position', [50 230 100 40], 'Items', T.Teamname, 'ValueChangedFcn', @(dropdown, event) selectedTeamCallback(dropdown)); %%%%%%Äbderung Philipp
 
 % Button for setting the IDs
 btnSetID = uibutton(controll_gui, 'push', 'Text', 'Set ID', 'Position', [160 230 100 40], 'BackgroundColor', [1, 0.5, 0], 'ButtonPushedFcn', @(btnSetID, event) setIDButtonCallback(serialPortDropdown));
@@ -102,14 +100,16 @@ end
 
 % Callback function for the Sync button
 function syncButtonCallback()
-    % Call the function to synchronize time
-    [realtime_esp1, realtime_esp2, realtime_esp3]= contrButton.sync_time(esp1, esp2, esp3);
-    txtArea_time_esp1.Value = realtime_esp1;
-    txtArea_time_esp2.Value = realtime_esp2;
-    txtArea_time_esp3.Value = realtime_esp3;
+    try
+        % Call the function to synchronize time
+        contrButton.sync_time();
+        disp('Zeit erfolgreich synchronisiert.');
+    catch
+        % Handle errors if the synchronization fails
+        errordlg('Fehler beim Synchronisieren der Zeit.', 'Fehler');
+    end
 end
 
-%Callback function for the stop button
 function stopButtonCallback()
     try
         contrButton.stop();
@@ -119,12 +119,12 @@ function stopButtonCallback()
     end
 end
 
-% Callback function for the "disconnect" button
 function disconnectAllButtonCallback()
     try
-        contrButton.disconnect_esp_all(port1Number, port2Number, port3Number);
+        contrButton.disconnect_esp_all();
+        disp('Alle Verbindungen getrennt.');
     catch
-    errordlg('Fehler beim Trennen aller Verbindungen.', 'Fehler');
+        errordlg('Fehler beim Trennen aller Verbindungen.', 'Fehler');
     end
 end
 
