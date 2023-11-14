@@ -13,7 +13,7 @@ controll_gui.Position = [50,50,750,600];
 
 %Command window
 % Create a uitextarea
-txtCommand_Label = uilabel(controll_gui, 'Position', [280,450,200,40], 'Text', 'Controll window:','FontSize',20);
+txtCommand_Label = uilabel(controll_gui, 'Position', [280,450,200,40], 'Text', 'Commandline:','FontSize',20);
 txtAreaCommand = uitextarea(controll_gui, 'Position', [280 340 330 120], 'Editable', false);
 
 %Available comports
@@ -125,7 +125,17 @@ function connectButton3Callback(txtPort3, txtAreaCommand)
     end
 end
 
-%Callback function for the disconnect button
+%Callback function for the disconnect button(s)
+function disconnectAllButtonCallback(txtAreaCommand)
+    try
+        contrButton.disconnect_esp_all();
+        disp('Alle Verbindungen getrennt.');
+        txtAreaCommand.Value = 'Alle Verbindungen getrennt.';
+    catch
+    errordlg('Fehler beim Trennen aller Verbindungen.', 'Fehler');
+    end
+end
+
 function disconnectButton1Callback(txtPort1, txtAreaCommand)
     try
         port1Number = txtPort1.Value;
@@ -191,17 +201,6 @@ function stopButtonCallback(txtAreaCommand)
     end
 end
 
-% Callback function for the "disconnect" button
-function disconnectAllButtonCallback(txtAreaCommand)
-    try
-        contrButton.disconnect_esp_all();
-        disp('Alle Verbindungen getrennt.');
-        txtAreaCommand.Value = 'Alle Verbindungen getrennt.';
-    catch
-    errordlg('Fehler beim Trennen aller Verbindungen.', 'Fehler');
-    end
-end
-
 % Callback function for the "Search Ports" button
 function searchPortsCallback(txtAreaPorts, txtAreaCommand)
     try
@@ -232,7 +231,7 @@ function setIDButtonCallback(dropdown, txtAreaCommand)
     try
         % Get the selected team from the dropdown menu
         selectedTeam = dropdown.Value;
-        
+      
         % Call the function to set the ID (replace with your actual set_ID logic)
         contrButton.set_ID(selectedTeam);
         txtAreaCommand.Value = ['ID erfolgreich gesetzt for Team: ' selectedTeam];
@@ -259,7 +258,7 @@ function startButtonCallback()
         contrButton.start();
         disp('Start');
     catch
-        errordlg('Fehler beim Vorbereiten des Systems.', 'Error');
+        errordlg('Fehler beim Starten des Systems.', 'Error');
     end
 end
 
