@@ -48,6 +48,7 @@ unsigned long last_reset = 0;
 unsigned long time_by_user = 0;
 int station = 3;
 String logpath = "log.csv";
+bool logiswritten;
 
 void setup() {
   Serial.begin(115200);
@@ -70,6 +71,9 @@ void loop() {
     }
     if (menue_c == "read_log") {
       read_log(); 
+    }
+    if (menue_c == "delete_log"){
+      delete_log();
     }
     if (menue_c == "ready") {
       ready();
@@ -115,33 +119,52 @@ void set_ID() { //gibt die ID in HEX am Serial aus; "q" zum abrechen
 }
 
 void read_log() {  //fügt endlog hinzu und gibt den inhalt zeile für zeie aus, danach wird das file mit gelöscht 
-  //fügt am ende endlog im ID spalte hinzu
-  myfile = SPIFFS.open(logpath,"a");
-  myfile.printf("%d endlog %lu\n", station, get_time_in_ms());
-  myfile.close();
-  //gibt den ganzen log zeile für zeile aus
-  myfile = SPIFFS.open(logpath,"r");
-  while (myfile.position() < myfile.size()) {  
-    Serial.println(myfile.readStringUntil('\n'));
+  if (logiswritten){
+    //fügt am ende endlog im ID spalte hinzu
+    myfile = SPIFFS.open(logpath,"a");
+    myfile.printf("%d endlog %lu\n", station, get_time_in_ms());
+    myfile.close();
+    logiswritten = false;
   }
-  myfile.close();
+  if (SPIFFS.exists(logpath)){
+    //gibt den ganzen log zeile für zeile aus
+    myfile = SPIFFS.open(logpath,"r");
+    while (myfile.position() < myfile.size()) {  
+      Serial.println(myfile.readStringUntil('\n'));
+    }
+    myfile.close();
+  }
+  else{
+    Serial.printf("%d nolog %lu\n", station, get_time_in_ms());
+  }
   //wartet auf bestätigungs wort und löscht den log
  // bool wait_for_delete =true;
  // while(wait_for_delete){
  //   while (Serial.available()) {        //ToDO schaun ob ma des löschen kann 
  //     if(Serial.readStringUntil('\n') == "delete"){
-        SPIFFS.remove(logpath);
-        Serial.println("deleted");
+ //       SPIFFS.remove(logpath);
+ //       Serial.println("deleted");
  //       wait_for_delete = false;
  //     }
  //   }
  // }
+}
+
+void delete_log(){
+  if (SPIFFS.exists(logpath)){
+    SPIFFS.remove(logpath);
+    Serial.println("deleted");
+  }else{
+    Serial.println("nolog");
+  }
+
 }
 //^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 void ready() {
   // ready init start
   myfile = SPIFFS.open(logpath,"a");  //öffnet file in dem die logs geschrieben werden im anhang modus
+  logiswritten = true;  
   Serial.println("ready"); //Todo funktionen mist
   bool ready_l = true;
   // ready init stop
@@ -309,7 +332,13 @@ boolean InitalizeFileSystem() {  //vom SPIFFS Demoprogramm kopiert, Wird in der 
 
 void test(){
   unsigned long jetzt=0;
-  while (true){
+  bool test = true;
+  while (test){
+    while (Serial.available()) {        
+      if(Serial.readStringUntil('\n') == "q"){
+        test = false;
+      }
+    }
     if ((get_time_in_ms()-jetzt) > 1000){
       Serial.println(get_time_in_ms());
       jetzt = get_time_in_ms();
