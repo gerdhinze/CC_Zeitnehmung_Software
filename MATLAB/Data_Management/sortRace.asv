@@ -1,0 +1,10 @@
+%% Start Test Programm
+close all force;
+clear all;
+clc;
+
+RaceData = readtable("RaceMain.csv");
+
+Car1 = RaceData.ID == 'B34968A6';
+
+'C344E1AA'

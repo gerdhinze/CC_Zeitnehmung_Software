@@ -15,13 +15,37 @@ function initControlButton(ccHandle)
     lblStationName3.Position = [580,350,425,400];
     lblStationName3.FontSize = 30;
 
+    %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+    %Erstellen Sie einen Button, der den in der Textbox eingegebenen Text anzeigt
+    bt.connect_ESP1 = uicontrol('Style', 'pushbutton', 'String', 'Zeige Text', ...
+    'Position', [50,450,175,25], ...
+    'Callback', @(src, event) disp(get(textbox, 'String')));
+
+    guidata(txt.Port1);
+    guidata(bt.connect_ESP1);
+
+    % Erstellen Sie eine Textbox im GUI
+    txt.Port1 = uicontrol('Style', 'edit', 'String', 'Hier Text eingeben', ...
+    'Position', [50,500,175,25]);
+
+    % Erstellen Sie eine Textbox im GUI
+    txt.Port1 = uicontrol('Style', 'edit', 'String', 'Hier Text eingeben', ...
+    'Position', [300, 100, 200, 30]);
+
+    % Erstellen Sie einen Button, der den in der Textbox eingegebenen Text anzeigt
+    bt.connect_ESP1 = uicontrol('Style', 'pushbutton', 'String', 'Zeige Text', ...
+    'Position', [350, 50, 100, 30], ...
+    'Callback', @(src, event) disp(get(textbox, 'String')));
+
+    %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+    
     %%% Connect ESP1
-    bt.connect_ESP1 = uibutton(ccHandle);
-    bt.connect_ESP1.Text = 'Connect ESP1';
+    %bt.connect_ESP1 = uibutton(ccHandle,"Enable","on");
+    %bt.connect_ESP1.Text = 'Connect ESP1';
     %bt.stDraw.Tag = 'stRace';
-    bt.connect_ESP1.Position = [50,500,175,25];
-    bt.connect_ESP1.FontSize = 16;
-    bt.connect_ESP1.ButtonPushedFcn = @contrButton.connect2ESP1;
+    %bt.connect_ESP1.Position = [50,500,175,25];
+    %bt.connect_ESP1.FontSize = 16;
+    %bt.connect_ESP1.ButtonPushedFcn = @contrButton.connect2ESP1;
 
     %%% Connect ESP2
     bt.connect_ESP2 = uibutton(ccHandle);
@@ -29,7 +53,7 @@ function initControlButton(ccHandle)
     %bt.stDraw.Tag = 'stRace';
     bt.connect_ESP2.Position = [300,500,175,25];
     bt.connect_ESP2.FontSize = 16;
-    bt.connect_ESP1.ButtonPushedFcn = @contrButton.connect2ESP2;
+    bt.connect_ESP2.ButtonPushedFcn = @contrButton.connect2ESP2;
 
     %%% Connect ESP3
     bt.connect_ESP3 = uibutton(ccHandle);
@@ -40,14 +64,16 @@ function initControlButton(ccHandle)
     %bt.connect_ESP1.ButtonPushedFcn = @ctrlBut.bt_duelgen;
 
 
-    txt.Port1 = uitextarea(ccHandle);
-    txt.Port1.Position = [50,450,175,25];
+    %txt.Port1 = uitextarea(ccHandle);
+    %txt.Port1.Position = [50,450,175,25];
+    %txt.Port1.ValueChangedFcn = @(src,event) textEntered(src,event,bt.connect_ESP1);
 
-    txt.Port1 = uitextarea(ccHandle);
-    txt.Port1.Position = [300,450,175,25];
+    txt.Port2 = uitextarea(ccHandle);
+    txt.Port2.Position = [300,450,175,25];
+   % txt.Port1.ValueChangedFcn = @(src,event) textEntered(src,event,bt.connect_ESP2);
    
-    txt.Port1 = uitextarea(ccHandle);
-    txt.Port1.Position = [550,450,175,25];
+    txt.Port3 = uitextarea(ccHandle);
+    txt.Port3.Position = [550,450,175,25];
 
      %%% Select Port ESP1
     bt.select_Port1 = uibutton(ccHandle);
