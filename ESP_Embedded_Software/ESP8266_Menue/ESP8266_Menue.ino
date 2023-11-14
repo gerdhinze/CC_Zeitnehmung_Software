@@ -268,7 +268,7 @@ unsigned long get_time_in_ms() {  //gibt die Uhrzeit in ms aus
 
 unsigned long timeStringToMilliseconds(String timeStr) {
   int hours, minutes, seconds;
-  if (sscanf(timeStr.c_str(), "%d:%d:%d", &hours, &minutes, &seconds) == 3) {
+  if (sscanf(timeStr.c_str(), "%2d:%2d:%2d", &hours, &minutes, &seconds) == 3) {
     unsigned long totalMilliseconds = (hours * 3600UL + minutes * 60UL + seconds) * 1000UL;
     return totalMilliseconds;
   } else {
@@ -290,15 +290,14 @@ void print_time(unsigned long ms) {  //Ausgabe format hh:mm:ss:msmsms
   ms = ms % 60000;
   unsigned long seconds = ms / 1000;
   unsigned long milliseconds = ms % 1000;
-
   // Gib das formatierte Ergebnis aus
-  Serial.print(hours);
-  Serial.print(":");
-  if (minutes < 10) Serial.print("0");
-  Serial.print(minutes);
-  Serial.print(":");
-  if (seconds < 10) Serial.print("0");
-  Serial.println(seconds);
+   // Erstelle einen String für die formatierte Ausgabe
+  String formatted_time = (hours < 10 ? "0" : "") + String(hours) + ":" +
+                          (minutes < 10 ? "0" : "") + String(minutes) + ":" +
+                          (seconds < 10 ? "0" : "") + String(seconds);
+
+  // Sende den formatierten String an den Serial Monitor
+  Serial.println(formatted_time);
 }
 
 boolean InitalizeFileSystem() {  //vom SPIFFS Demoprogramm kopiert, Wird in der setup benötigt für File-Managmante
