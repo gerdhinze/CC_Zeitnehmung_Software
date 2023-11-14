@@ -1,13 +1,20 @@
-function disconnect_esp_all(port1Number, port2Number, port3Number)
-    if ismember(port1Number, availablePorts.SerialPorts)
+function disconnect_esp_all()
+    global esp1;
+    global esp2;
+    global esp3;
+    if strcmp(get(esp1, 'Status'), 'open')
         fclose(esp1);
         delete(esp1);
-    elseif ismember(port2Number, availablePorts.SerialPorts)
+        clear esp1;
+    end
+    if strcmp(get(esp2, 'Status'), 'open')
         fclose(esp2);
         delete(esp2);
-    elseif ismember(port3Number, availablePorts.SerialPorts)
+        clear esp2;
+    end
+    if strcmp(get(esp3, 'Status'), 'open')
         fclose(esp3);
         delete(esp3);
+        clear esp3;
     end 
-    disp('Alle Verbindungen getrennt.');
 end

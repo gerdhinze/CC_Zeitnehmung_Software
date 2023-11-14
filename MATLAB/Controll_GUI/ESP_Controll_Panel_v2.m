@@ -1,5 +1,6 @@
-%global parameters
-global port1Number;
+%Gloabal variables
+global esp1 esp2 esp3;
+
 
 % GUI erstellen
 controll_gui = uifigure('Name', 'Controll-GUI');
@@ -31,7 +32,7 @@ txtPort3 = uieditfield(controll_gui, 'text', 'Position', [510 520 100 40], 'Valu
 btnConnect3 = uibutton(controll_gui, 'push', 'Text', 'Connect', 'Position', [620 520 100 40], 'ButtonPushedFcn', @(btnConnect, event) connectButton3Callback(txtPort3));
 
 % Button to synchronize time
-btnSync = uibutton(controll_gui, 'push', 'Text', 'Sync-Time', 'Position', [50 340 100 40], 'ButtonPushedFcn', @(btnSync, event) syncButtonCallback());
+btnSync = uibutton(controll_gui, 'push', 'Text', 'Sync-Time', 'Position', [160 340 100 40], 'ButtonPushedFcn', @(btnSync, event) syncButtonCallback());
 
 % Button to stop
 btnStop = uibutton(controll_gui, 'push', 'Text', 'Stop', 'Position', [620 50 100 40], 'BackgroundColor', 'red', 'ButtonPushedFcn', @(btnStop, event) stopButtonCallback());
@@ -63,6 +64,8 @@ btnReady = uibutton(controll_gui, 'push', 'Text', 'Ready', 'Position', [160 170 
 %"Start" button
 btnStart = uibutton(controll_gui, 'push', 'Text', 'Start', 'Position', [160 110 100 40], 'BackgroundColor', 'green', 'ButtonPushedFcn', @(btnStart, event) startButtonCallback());
 
+%"read_log" button
+btnRead_log = uibutton(controll_gui, 'push', 'Text', 'read logged data', 'Position', [160 110 100 40], 'ButtonPushedFcn', @(btnRead_log, event) read_logButtonCallback());
 %##########################################################################
 %       CALLBACK - Functions
 %##########################################################################
@@ -82,7 +85,7 @@ function connectButton2Callback(txtPort2)
     try
         % Port-Nummer aus dem Textfeld abrufen und die Verbindung herstellen
         port2Number = txtPort2.Value;
-        contrButton.connect2ESP1(port2Number);
+        contrButton.connect2ESP2(port2Number);
     catch
         % Fehlerbehandlung, falls die Verbindung nicht hergestellt werden kann
         errordlg('Fehler beim Herstellen der Verbindung.', 'Fehler');
@@ -93,7 +96,7 @@ function connectButton3Callback(txtPort3)
     try
         % Port-Nummer aus dem Textfeld abrufen und die Verbindung herstellen
         port3Number = txtPort3.Value;
-        contrButton.connect2ESP1(port3Number);
+        contrButton.connect2ESP3(port3Number);
     catch
         % Fehlerbehandlung, falls die Verbindung nicht hergestellt werden kann
         errordlg('Fehler beim Herstellen der Verbindung.', 'Fehler');
@@ -103,7 +106,7 @@ end
 % Callback function for the Sync button
 function syncButtonCallback()
     % Call the function to synchronize time
-    [realtime_esp1, realtime_esp2, realtime_esp3]= contrButton.sync_time(esp1, esp2, esp3);
+    [realtime_esp1, realtime_esp2, realtime_esp3]= contrButton.sync_time();
     txtArea_time_esp1.Value = realtime_esp1;
     txtArea_time_esp2.Value = realtime_esp2;
     txtArea_time_esp3.Value = realtime_esp3;
@@ -122,7 +125,8 @@ end
 % Callback function for the "disconnect" button
 function disconnectAllButtonCallback()
     try
-        contrButton.disconnect_esp_all(port1Number, port2Number, port3Number);
+        contrButton.disconnect_esp_all();
+        disp('Alle Verbindungen getrennt.');
     catch
     errordlg('Fehler beim Trennen aller Verbindungen.', 'Fehler');
     end
@@ -184,5 +188,14 @@ function startButtonCallback()
         disp('Start');
     catch
         errordlg('Error while preparing the system.', 'Error');
+    end
+end
+
+%Callback function for the "read_log" button
+function read_logButtonCallback()
+    try
+
+    catch
+
     end
 end
