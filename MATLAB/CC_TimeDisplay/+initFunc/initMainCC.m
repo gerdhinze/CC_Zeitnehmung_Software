@@ -1,0 +1,109 @@
+function ccHandle = initMainCC(ccHandle)
+
+    tab.MainCC = uitab(ccHandle);
+    tab.MainCC.Title = 'MainCC';
+    tab.MainCC.BackgroundColor = 'white';
+    tab.MainCC.ForegroundColor = 'black';
+    tab.MainCC = misc.drawTabHeader(tab.MainCC, 'HAUPTBEWERB');
+    tab.MainCC.Tag = 'MainCC';
+
+    header = {'Position', 'Teamname', 'Bildungseinrichtung', 'Runden', 'Zeit', 'Meter'};
+    
+    tableHeaderText = sprintf(['%s\t\t\t%s\t\t\t%s\t\t\t%s\t\t\t%s\t\t\t%s'], header{1}, header{2}, header{3}, header{4}, header{5}, header{6});
+    tableHeader = uilabel(tab.MainCC);
+    tableHeader.Text = tableHeaderText;
+    tableHeader.Position = [95,775,1800,58];
+    tableHeader.FontSize = 50;
+    tableHeader.FontName = 'American Captain';
+    tableHeader.FontWeight = 'bold';
+    
+    tableCC.Pos = uilabel(tab.MainCC,'Tag','Pos');
+    tableCC.Name = uilabel(tab.MainCC,'Tag','Name');
+    tableCC.Inst = uilabel(tab.MainCC,'Tag','Inst');
+    tableCC.Rnd = uilabel(tab.MainCC,'Tag','Rnd');
+    tableCC.Time = uilabel(tab.MainCC,'Tag','Time');
+    tableCC.Meter = uilabel(tab.MainCC,'Tag','Meter');
+
+    tableCC.Pos.VerticalAlignment = 'top';
+    tableCC.Name.VerticalAlignment = 'top';
+    tableCC.Inst.VerticalAlignment = 'top';
+    tableCC.Rnd.VerticalAlignment = 'top';
+    tableCC.Time.VerticalAlignment = 'top';
+    tableCC.Meter.VerticalAlignment = 'top';
+
+
+    hOffset = -140;
+    fontSizeRes = 40;
+    fontNameRes = 'SPEEDKINGS';
+    
+    tableCC.Pos.Position = [160,hOffset,300,900];
+    tableCC.Name.Position = [375,hOffset,300,900];
+    tableCC.Inst.Position = [775,hOffset,300,900];
+    tableCC.Rnd.Position = [1250,hOffset,300,900];
+    tableCC.Time.Position = [1425,hOffset,300,900];
+    tableCC.Meter.Position = [1700,hOffset,300,900];
+    
+    tableCC.Pos.FontName = fontNameRes;
+    tableCC.Name.FontName = fontNameRes;
+    tableCC.Inst.FontName = fontNameRes;
+    tableCC.Rnd.FontName = fontNameRes;
+    tableCC.Time.FontName = fontNameRes;
+    tableCC.Meter.FontName = fontNameRes;
+    
+    tableCC.Pos.FontSize = fontSizeRes;
+    tableCC.Name.FontSize = fontSizeRes;
+    tableCC.Inst.FontSize = fontSizeRes;
+    tableCC.Rnd.FontSize = fontSizeRes;
+    tableCC.Time.FontSize = fontSizeRes;
+    tableCC.Meter.FontSize = fontSizeRes;
+
+    %%%% Fastest Block %%%%
+    lblFastestBlock = uilabel(tab.MainCC);
+    lblFastestBlock.Text = 'Schnellster Rennblock:';
+    lblFastestBlock.Position = [75,25,550,58];
+    lblFastestBlock.FontSize = 40;
+    lblFastestBlock.FontName = 'American Captain';
+    lblFastestBlock.FontWeight = 'bold';
+
+    %%%% Fastest Round %%%%
+    lblFastestRnd = uilabel(tab.MainCC);
+    lblFastestRnd.Text = 'Schnellste Runde:';
+    lblFastestRnd.Position = [950,25,400,58];
+    lblFastestRnd.FontSize = 40;
+    lblFastestRnd.FontName = 'American Captain';
+    lblFastestRnd.FontWeight = 'bold';
+
+    %%%% Fastest Block %%%%
+    lblFastestBlockTeam = uilabel(tab.MainCC,'Tag','lblFastestTeamBlock');
+    lblFastestBlockTeam.Text = '';
+    lblFastestBlockTeam.Position = [425,25,400,58];
+    lblFastestBlockTeam.FontSize = 40;
+    lblFastestBlockTeam.FontName = 'SPEEDKINGS';
+    %lblFastestBlockTime.FontWeight = 'bold';
+
+    lblFastestBlockTime = uilabel(tab.MainCC,'Tag','lblFastestTimeBlock');
+    lblFastestBlockTime.Text = '';
+    lblFastestBlockTime.Position = [725,25,400,58];
+    lblFastestBlockTime.FontSize = 40;
+    lblFastestBlockTime.FontName = 'SPEEDKINGS';
+    %lblFastestBlockTime.FontWeight = 'bold';
+
+    %%%% Fastest Block %%%%
+    lblFastestRndTeam = uilabel(tab.MainCC,'Tag','lblFastestTeamRnd');
+    lblFastestRndTeam.Text = '';
+    lblFastestRndTeam.Position = [1225,25,400,58];
+    lblFastestRndTeam.FontSize = 40;
+    lblFastestRndTeam.FontName = 'SPEEDKINGS';
+    %lblFastestBlockTime.FontWeight = 'bold';
+
+    lblFastestRndTime = uilabel(tab.MainCC,'Tag','lblFastestTimeRnd');
+    lblFastestRndTime.Text = '';
+    lblFastestRndTime.Position = [1525,25,400,58];
+    lblFastestRndTime.FontSize = 40;
+    lblFastestRndTime.FontName = 'SPEEDKINGS';
+
+%%%% TABLE %%%%
+
+
+end
+
