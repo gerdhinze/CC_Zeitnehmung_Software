@@ -1,11 +1,7 @@
-function stop()
-    
-    if isvalid(esp1)
-        fprintf(esp1, 'Q');
-    elseif isvalid(esp2)
-        fprintf(esp2, 'Q');
-    elseif isvalid(esp3)
-        fprintf(esp3, 'Q');
+function stop(esp, parity)
+
+    if parity == 1
+        fprintf(esp, 'Q');
     end
 end
 

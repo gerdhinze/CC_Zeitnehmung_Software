@@ -1,51 +1,26 @@
-function start()
-    
-    save('data_race.mat');
+function start(esp, parity, dataFile)
+    % esp: Serial port object
+    % parity: Parity variable
+    % dataFile: File name for saving race data
 
-    if isvalid(esp1)
-    fprintf(esp1, 'start');
-    pause(0.5);
-    while ESP1.NumBytesAvailable > 0
-        data_esp1 = fscanf(esp1, '%s');
-        % Den String in seine Bestandteile aufteilen
-        splitstring = strsplit(data_esp1, ' ');
+    save(dataFile);
 
-        data.station = str2double(splitstring{1});
-        data.id = str2double(splitstring{2});
-        data.timestamp = str2double(splitstring{3});
-        
-        % .mat-Datei speichern
-        load('data_race.mat');
-        save('data_race.mat', 'data');
-    end
-    elseif isvalid(esp2)
-    fprintf(esp2, 'start');
-    pause(0.5);
-    while ESP2.NumBytesAvailable > 0
-        data_esp2 = fscanf(esp2, '%s');
-        % Den String in seine Bestandteile aufteilen
-        splitstring = strsplit(data_esp2, ' ');
+    if parity == 1
+        fprintf(esp, 'start');
+        pause(0.5);
 
-        data.station = str2double(splitstring{1});
-        data.id = str2double(splitstring{2});
-        data.timestamp = str2double(splitstring{3});
-        
-        % .mat-Datei speichern
-        load('data_race.mat');
-        save('data_race.mat', 'data');
-    while ESP3.NumBytesAvailable > 0
-        data_esp3 = fscanf(esp3, '%s');
-        % Den String in seine Bestandteile aufteilen
-        splitstring = strsplit(data_esp3, ' ');
+        while esp.BytesAvailable > 0
+            data_esp = fscanf(esp, '%s');
+            % Split the string into its components
+            splitstring = strsplit(data_esp, ' ');
 
-        data.station = str2double(splitstring{1});
-        data.id = str2double(splitstring{2});
-        data.timestamp = str2double(splitstring{3});
-        
-        % .mat-Datei speichern
-        load('data_race.mat');
-        save('data_race.mat', 'data');
-    end
+            data.station = str2double(splitstring{1});
+            data.id = str2double(splitstring{2});
+            data.timestamp = str2double(splitstring{3});
+        end
+
+        % Save data to the specified file
+        load(dataFile);
+        save(dataFile, 'data');
     end
 end
-

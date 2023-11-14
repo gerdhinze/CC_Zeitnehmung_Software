@@ -55,7 +55,7 @@ txttime_esp3_Label = uilabel(controll_gui, 'Position', [620,285,130,40], 'Text',
 btnSync = uibutton(controll_gui, 'push', 'Text', 'Sync-Time', 'Position', [160 340 100 40], 'ButtonPushedFcn', @(btnSync, event) syncButtonCallback(txtArea_realtime, txtArea_time_esp1, txtArea_time_esp2, txtArea_time_esp3, txtAreaCommand));
 
 % Button to stop
-btnStop = uibutton(controll_gui, 'push', 'Text', 'Stop', 'Position', [620 50 100 40], 'BackgroundColor', 'red', 'ButtonPushedFcn', @(btnStop, event) stopButtonCallback(txtAreaCommand));
+btnStop = uibutton(controll_gui, 'push', 'Text', 'Stop', 'Position', [620 50 100 40], 'BackgroundColor', 'red', 'ButtonPushedFcn', @(btnStop, event) stopButtonCallback(txtAreaCommand, esp1, parity1, esp2, parity2, esp3, parity3));
 
 % Button to disconnect all
 btnDisconnectAll = uibutton(controll_gui, 'push', 'Text', 'Disconnect All', 'Position', [160 460 100 40], 'ButtonPushedFcn', @(btnDisconnectAll, event) disconnectAllButtonCallback(txtAreaCommand));
@@ -71,13 +71,13 @@ serialPortDropdown = uidropdown(controll_gui, 'Position', [50 230 100 40], 'Item
 btnSetID = uibutton(controll_gui, 'push', 'Text', 'Set ID', 'Position', [160 230 100 40], 'BackgroundColor', [1, 0.5, 0], 'ButtonPushedFcn', @(btnSetID, event) setIDButtonCallback(serialPortDropdown, txtAreaCommand));
 
 %"Ready" button
-btnReady = uibutton(controll_gui, 'push', 'Text', 'Ready', 'Position', [160 170 100 40], 'BackgroundColor', 'yellow','ButtonPushedFcn', @(btnReady, event) readyButtonCallback());
+btnReady = uibutton(controll_gui, 'push', 'Text', 'Ready', 'Position', [160 170 100 40], 'BackgroundColor', 'yellow','ButtonPushedFcn', @(btnReady, event) readyButtonCallback(txtAreaCommand, esp1, parity1, esp2, parity2, esp3, parity3));
 
 %"Start" button
-btnStart = uibutton(controll_gui, 'push', 'Text', 'Start', 'Position', [160 110 100 40], 'BackgroundColor', 'green', 'ButtonPushedFcn', @(btnStart, event) startButtonCallback());
+btnStart = uibutton(controll_gui, 'push', 'Text', 'Start', 'Position', [160 110 100 40], 'BackgroundColor', 'green', 'ButtonPushedFcn', @(btnStart, event) startButtonCallback(txtAreaCommand, esp1, parity1, esp2, parity2, esp3, parity3));
 
 %"read_log" button
-btnRead_log = uibutton(controll_gui, 'push', 'Text', 'read logged data', 'Position', [160 110 100 40], 'ButtonPushedFcn', @(btnRead_log, event) read_logButtonCallback());
+btnRead_log = uibutton(controll_gui, 'push', 'Text', 'read logged data', 'Position', [300 110 100 40], 'ButtonPushedFcn', @(btnRead_log, event) read_logButtonCallback());
 %##########################################################################
 %       CALLBACK - Functions
 %##########################################################################
@@ -191,9 +191,12 @@ function syncButtonCallback(txtArea_realtime, txtArea_time_esp1, txtArea_time_es
 end
 
 %Callback function for the stop button
-function stopButtonCallback(txtAreaCommand)
+function stopButtonCallback(txtAreaCommand, esp1, parity1, esp2, parity2, esp3, parity3)
     try
-        contrButton.stop();
+        contrButton.stop(esp1, parity1);
+        contrButton.stop(esp2, parity2);
+        contrButton.stop(esp3, parity3);
+
         txtAreaCommand.Value = 'Vorgang gestoppt.';
         disp('Vorgang gestoppt.');
     catch
@@ -228,24 +231,28 @@ end
 
 % Callback function for the "Set ID" button
 function setIDButtonCallback(dropdown, txtAreaCommand)
-    try
+    % try
         % Get the selected team from the dropdown menu
         selectedTeam = dropdown.Value;
       
         % Call the function to set the ID (replace with your actual set_ID logic)
         contrButton.set_ID(selectedTeam);
+
         txtAreaCommand.Value = ['ID erfolgreich gesetzt for Team: ' selectedTeam];
-        disp(['ID erfolgreich gesetzt for Team: ' selectedTeam]);
-    catch
-         errordlg('Fehler beim ID-Setting.', 'Error');
-    end
+        disp(['ID erfolgreich gesetzt für Team: ' selectedTeam]);
+    % catch
+    %       errordlg('Fehler beim ID-Setting.', 'Error');
+    % end
 end
 
 % Callback function for the "Ready" button
-function readyButtonCallback()
+function readyButtonCallback(txtAreaCommand, esp1, parity1, esp2, parity2, esp3, parity3)
     try
         % Call the function to perform actions when the system is ready
-        contrButton.isready();
+        contrButton.isready(esp1, parity1);
+        contrButton.isready(esp2, parity2);
+        contrButton.isready(esp3, parity3);
+        txtAreaCommand.Value = 'System ist bereit.';
         disp('System ist bereit.');
     catch
         errordlg('Fehler beim Vorbereiten des Systems.', 'Error');
@@ -253,9 +260,12 @@ function readyButtonCallback()
 end
 
 % Callback function for the "Start" button
-function startButtonCallback()
+function startButtonCallback(txtAreaCommand, esp1, parity1, esp2, parity2, esp3, parity3)
     try
-        contrButton.start();
+        contrButton.start(esp1, parity1, 'data_race.mat');
+        contrButton.start(esp2, parity2, 'data_race.mat');
+        contrButton.start(esp3, parity3, 'data_race.mat');
+        txtAreaCommand.Value = 'Start the Race!';
         disp('Start');
     catch
         errordlg('Fehler beim Starten des Systems.', 'Error');
