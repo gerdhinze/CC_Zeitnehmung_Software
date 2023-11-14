@@ -3,6 +3,8 @@ from tkinter import ttk
 import serial.tools.list_ports
 import serial
 import time
+import csv
+import threading
 from datetime import datetime
 
 class ESPControlGUI:
@@ -37,6 +39,11 @@ class ESPControlGUI:
         self.team_combobox.set("Select Team")
         self.team_label.pack(pady=10)
         self.team_combobox.pack(pady=10)
+        
+        # Lese Teamnamen aus CSV und aktualisiere das Dropdown-Menü
+        team_names = self.read_team_names_from_csv()
+        self.team_combobox['values'] = team_names
+        self.team_combobox.current(0)  # Wähle die erste Option (Select Team) aus
 
         # Get ID Button
         self.get_id_button = ttk.Button(root, text="Get ID", command=self.get_id_from_esp)
@@ -57,9 +64,20 @@ class ESPControlGUI:
             print("No COM Port selected")
 
     def read_team_names_from_csv(self):
-        # Hier implementierst du den Code zum Lesen der Teamnamen aus der teams.csv-Datei
-        # Beispiel: teams.csv enthält pro Zeile einen Teamnamen
-        return ["Team1", "Team2", "Team3"]  # Dummy-Werte, ersetze dies durch den tatsächlichen Code
+        team_names = ["Select Team"]  # Füge eine Standardauswahl hinzu
+        try:
+            with open('teams.csv', newline='', encoding='utf-8') as csvfile:
+                reader = csv.reader(csvfile)
+                for row in reader:
+                    # Die Annahme hier ist, dass der Name in der ersten Spalte ist
+                    if row:  # Überprüfe, ob die Zeile nicht leer ist
+                        team_name = row[0].strip()
+                        if team_name:  # Überprüfe, ob der Teamname nicht leer ist
+                            team_names.append(team_name)
+        except Exception as e:
+            print(f"Error reading team names from CSV: {e}")
+        finally:
+            return team_names
 
     def get_time_from_esp(self):
         if self.serial_port:
@@ -89,15 +107,31 @@ class ESPControlGUI:
                 # Sende "set_ID" an den ESP
                 self.serial_port.write(b"set_ID\n")
                 time.sleep(0.1)  # Warte 100 Millisekunden
+
                 # Warte auf Antwort (einfache Implementierung, keine Fehlerüberprüfung)
                 response = self.serial_port.readline().decode("utf-8").strip()
+
                 if response == "Ready to scan":
+                    print(response)
                     # Hier könntest du eine Statusanzeige für den Scanvorgang aktivieren
                     print(f"Scanning for ID for Team: {team_name}")
-                    # TODO: Implementiere den Empfang der ID vom ESP
-                    # Wenn ID empfangen wurde, deaktiviere die Statusanzeige
+
+                    received_id = ""
+                    while (received_id == ""):  
+                        # Versuche, die ID zu empfangen
+                      
+                        time.sleep(0.1)  # Kurze Pause, um den Prozessor nicht zu überlasten
+                        received_id = self.serial_port.readline().decode("utf-8").strip()
+
+                    print(f"Received ID for Team {team_name}: {received_id}")
+                                # Hier kannst du die ID speichern oder weitere Aktionen durchführen
+                                # Zum Beispiel: self.store_id(team_name, id_value)
+                                # Deaktiviere die Statusanzeige (Beispiel: self.deactivate_status_indicator())
+                        #return
+                        
                 else:
                     print("Unexpected response from ESP")
+
 
 if __name__ == "__main__":
     root = tk.Tk()
