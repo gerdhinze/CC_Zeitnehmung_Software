@@ -1,6 +1,7 @@
+clear;
+
 %Gloabal variables
 global esp1 esp2 esp3;
-
 
 % GUI erstellen
 controll_gui = uifigure('Name', 'Controll-GUI');
@@ -9,7 +10,12 @@ controll_gui.MenuBar = 'none';
 controll_gui.Color = 'white';
 controll_gui.Position = [50,50,750,600];
 
-%ESP Connection
+
+%Command window
+% Create a uitextarea
+txtCommand_Label = uilabel(controll_gui, 'Position', [50,560,130,40], 'Text', 'Controll window:','FontSize',20);
+txtAreaCommand = uitextarea(controll_gui, 'Position', [280 340 330 120], 'Editable', false);
+
 %Available comports
 % Create a uitextarea
 txtAreaPorts = uitextarea(controll_gui, 'Position', [50 400 100 100], 'Editable', false);
@@ -19,6 +25,7 @@ availablePorts = serialportlist("available");
 portsString = sprintf('Available Ports:\n%s\n', strjoin(availablePorts, '\n'));
 txtAreaPorts.Value = portsString;
 
+%%ESP Connection
 txtPort1_Label = uilabel(controll_gui, 'Position', [50,560,130,40], 'Text', 'Station 1:','FontSize',20);
 txtPort1 = uieditfield(controll_gui, 'text', 'Position', [50 520 100 40], 'Value', 'COMX');
 btnConnect1 = uibutton(controll_gui, 'push', 'Text', 'Connect', 'Position', [160 520 100 40], 'ButtonPushedFcn', @(btnConnect, event) connectButton1Callback(txtPort1));
@@ -31,8 +38,18 @@ txtPort3_Label = uilabel(controll_gui, 'Position', [510 560 130 40], 'Text', 'St
 txtPort3 = uieditfield(controll_gui, 'text', 'Position', [510 520 100 40], 'Value', 'COMX');
 btnConnect3 = uibutton(controll_gui, 'push', 'Text', 'Connect', 'Position', [620 520 100 40], 'ButtonPushedFcn', @(btnConnect, event) connectButton3Callback(txtPort3));
 
+%textbox for realtime times
+txtArea_realtime = uitextarea(controll_gui, 'Position', [50 340 100 40], 'Editable', false, 'Value', 'hh:mm:ss', 'FontSize', 15);
+%textboxes for esp times
+txtArea_time_esp1 = uitextarea(controll_gui, 'Position', [50 290 100 30], 'Editable', false, 'Value', 'hh:mm:ss', 'FontSize', 15);
+txttime_esp1_Label = uilabel(controll_gui, 'Position', [160,285,130,40], 'Text', '@ Station 1','FontSize',15);
+txtArea_time_esp2 = uitextarea(controll_gui, 'Position', [280 290 100 30], 'Editable', false, 'Value', 'hh:mm:ss', 'FontSize', 15);
+txttime_esp2_Label = uilabel(controll_gui, 'Position', [390,285,130,40], 'Text', '@ Station 2','FontSize',15);
+txtArea_time_esp3 = uitextarea(controll_gui, 'Position', [510 290 100 30], 'Editable', false, 'Value', 'hh:mm:ss', 'FontSize', 15);
+txttime_esp3_Label = uilabel(controll_gui, 'Position', [620,285,130,40], 'Text', '@ Station 3','FontSize',15);
+
 % Button to synchronize time
-btnSync = uibutton(controll_gui, 'push', 'Text', 'Sync-Time', 'Position', [160 340 100 40], 'ButtonPushedFcn', @(btnSync, event) syncButtonCallback());
+btnSync = uibutton(controll_gui, 'push', 'Text', 'Sync-Time', 'Position', [160 340 100 40], 'ButtonPushedFcn', @(btnSync, event) syncButtonCallback(txtArea_realtime, txtArea_time_esp1, txtArea_time_esp2, txtArea_time_esp3));
 
 % Button to stop
 btnStop = uibutton(controll_gui, 'push', 'Text', 'Stop', 'Position', [620 50 100 40], 'BackgroundColor', 'red', 'ButtonPushedFcn', @(btnStop, event) stopButtonCallback());
@@ -42,14 +59,6 @@ btnDisconnectAll = uibutton(controll_gui, 'push', 'Text', 'Disconnect All', 'Pos
 
 % Button to search for ports
 btnSearchPorts = uibutton(controll_gui, 'push', 'Text', 'Search Ports', 'Position', [160 400 100 40], 'BackgroundColor', 'cyan', 'ButtonPushedFcn', @(btnSearchPorts, event) searchPortsCallback());
-
-%textboxes for esp times
-txtArea_time_esp1 = uitextarea(controll_gui, 'Position', [50 290 100 30], 'Editable', false, 'Value', 'hh:mm:ss', 'FontSize', 15);
-txttime_esp1_Label = uilabel(controll_gui, 'Position', [160,285,130,40], 'Text', '@ Station 1','FontSize',15);
-txtArea_time_esp2 = uitextarea(controll_gui, 'Position', [280 290 100 30], 'Editable', false, 'Value', 'hh:mm:ss', 'FontSize', 15);
-txttime_esp2_Label = uilabel(controll_gui, 'Position', [390,285,130,40], 'Text', '@ Station 2','FontSize',15);
-txtArea_time_esp3 = uitextarea(controll_gui, 'Position', [510 290 100 30], 'Editable', false, 'Value', 'hh:mm:ss', 'FontSize', 15);
-txttime_esp3_Label = uilabel(controll_gui, 'Position', [620,285,130,40], 'Text', '@ Station 3','FontSize',15);
 
 %dropdownmenue for the teamname
 CCTM = readtable('CCTM2023.csv'); %Crazy Car Teilnehmer
@@ -104,12 +113,20 @@ function connectButton3Callback(txtPort3)
 end
 
 % Callback function for the Sync button
-function syncButtonCallback()
-    % Call the function to synchronize time
-    [realtime_esp1, realtime_esp2, realtime_esp3]= contrButton.sync_time();
-    txtArea_time_esp1.Value = realtime_esp1;
-    txtArea_time_esp2.Value = realtime_esp2;
-    txtArea_time_esp3.Value = realtime_esp3;
+function syncButtonCallback(txtArea_realtime, txtArea_time_esp1, txtArea_time_esp2, txtArea_time_esp3)
+    % try
+        % Call the function to synchronize time
+        [realtime, realtime_esp1, realtime_esp2, realtime_esp3]= contrButton.sync_time();
+        txtArea_realtime.Value = realtime;
+        txtArea_time_esp1.Value = realtime_esp1;
+        txtArea_time_esp2.Value = realtime_esp2;
+        txtArea_time_esp3.Value = realtime_esp3;
+
+        disp('Time successfully synchronized.');
+    % catch
+    %     % Handle errors if the synchronization fails
+    %     errordlg('Error synchronizing time.', 'Error');
+    % end
 end
 
 %Callback function for the stop button
