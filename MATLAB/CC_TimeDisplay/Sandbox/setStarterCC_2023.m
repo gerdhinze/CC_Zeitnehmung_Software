@@ -1,0 +1,1 @@
+TNData = readtable('CCTM2023.csv');
