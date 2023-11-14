@@ -1,0 +1,101 @@
+function edit_valChange(src,callbackdata)
+
+    data = guidata(src.Parent); 
+    
+    switch src.Tag
+        case 'rndOneSp1DO'
+            data.TNData.firRndSplit1BO(data.idx) = duration(src.Value,'Format','mm:ss.SSS');
+            set(findall(0,'Tag','lblTimeOneSp1DODuelDisp'),'Text',string(duration(src.Value,'Format','mm:ss.SSS')))
+            set(findall(0,'Tag','lblTimeOneSp1DODuelDisp'),'FontColor', [0,0,0]);
+        case 'rndOneSp2DO'
+            data.TNData.firRndSplit2BO(data.idx) = duration(src.Value,'Format','mm:ss.SSS');
+            set(findall(0,'Tag','lblTimeOneSp2DODuelDisp'),'Text',string(duration(src.Value,'Format','mm:ss.SSS')))
+            set(findall(0,'Tag','lblTimeOneSp2DODuelDisp'),'FontColor', [0,0,0]);
+        case 'rndOneDO'
+            data.TNData.firRndBO(data.idx) = duration(src.Value,'Format','mm:ss.SSS');
+            set(findall(0,'Tag','lblTimeOneDODuelDisp'),'Text',string(duration(src.Value,'Format','mm:ss.SSS')))
+            set(findall(0,'Tag','lblTimeOneDODuelDisp'),'FontColor', [0,0,0]);
+
+        case 'rndTwoSp1DO'
+            data.TNData.secRndSplit1BO(data.idx) = duration(src.Value,'Format','mm:ss.SSS'); 
+            set(findall(0,'Tag','lblTimeTwoSp1DODuelDisp'),'Text',string(duration(src.Value,'Format','mm:ss.SSS')))
+            set(findall(0,'Tag','lblTimeTwoSp1DODuelDisp'),'FontColor', [0,0,0]);
+        case 'rndTwoSp2DO'
+            data.TNData.secRndSplit2BO(data.idx) = duration(src.Value,'Format','mm:ss.SSS'); 
+            set(findall(0,'Tag','lblTimeTwoSp2DODuelDisp'),'Text',string(duration(src.Value,'Format','mm:ss.SSS')))
+            set(findall(0,'Tag','lblTimeTwoSp2DODuelDisp'),'FontColor', [0,0,0]);
+        case 'rndTwoDO'
+            data.TNData.secRndBO(data.idx) = duration(src.Value,'Format','mm:ss.SSS'); 
+            set(findall(0,'Tag','lblTimeTwoDODuelDisp'),'Text',string(duration(src.Value,'Format','mm:ss.SSS')))
+            set(findall(0,'Tag','lblTimeTwoDODuelDisp'),'FontColor', [0,0,0]);
+
+        case 'rndThreeSp1DO'
+            data.TNData.thiRndSplit1BO(data.idx) = duration(src.Value,'Format','mm:ss.SSS'); 
+            set(findall(0,'Tag','lblTimeThreeSp1DODuelDisp'),'Text',string(duration(src.Value,'Format','mm:ss.SSS')))
+            set(findall(0,'Tag','lblTimeThreeSp1DODuelDisp'),'FontColor', [0,0,0]);
+        case 'rndThreeSp2DO'
+            data.TNData.thiRndSplit2BO(data.idx) = duration(src.Value,'Format','mm:ss.SSS'); 
+            set(findall(0,'Tag','lblTimeThreeSp2DODuelDisp'),'Text',string(duration(src.Value,'Format','mm:ss.SSS')))
+            set(findall(0,'Tag','lblTimeThreeSp2DODuelDisp'),'FontColor', [0,0,0]);
+        case 'rndThreeDO'
+            data.TNData.thiRndBO(data.idx) = duration(src.Value,'Format','mm:ss.SSS'); 
+            set(findall(0,'Tag','lblTimeThreeDODuelDisp'),'Text',string(duration(src.Value,'Format','mm:ss.SSS')))
+            set(findall(0,'Tag','lblTimeThreeDODuelDisp'),'FontColor', [0,0,0]);
+
+        case 'rndOneSp1DT'
+            data.TNData.firRndSplit1BO(data.idx+1) = duration(src.Value,'Format','mm:ss.SSS');    
+            set(findall(0,'Tag','lblTimeOneSp1DTDuelDisp'),'Text',string(duration(src.Value,'Format','mm:ss.SSS')))
+            set(findall(0,'Tag','lblTimeOneSp1DTDuelDisp'),'FontColor', [0,0,0]);
+        case 'rndOneSp2DT'
+            data.TNData.firRndSplit2BO(data.idx+1) = duration(src.Value,'Format','mm:ss.SSS');    
+            set(findall(0,'Tag','lblTimeOneSp2DTDuelDisp'),'Text',string(duration(src.Value,'Format','mm:ss.SSS')))
+            set(findall(0,'Tag','lblTimeOneSp2DTDuelDisp'),'FontColor', [0,0,0]);
+        case 'rndOneDT'
+            data.TNData.firRndBO(data.idx+1) = duration(src.Value,'Format','mm:ss.SSS');    
+            set(findall(0,'Tag','lblTimeOneDTDuelDisp'),'Text',string(duration(src.Value,'Format','mm:ss.SSS')))
+            set(findall(0,'Tag','lblTimeOneDTDuelDisp'),'FontColor', [0,0,0]);
+
+        case 'rndTwoSp1DT'
+            data.TNData.secRndSplit1BO(data.idx+1) = duration(src.Value,'Format','mm:ss.SSS');
+            set(findall(0,'Tag','lblTimeTwoSp1DTDuelDisp'),'Text',string(duration(src.Value,'Format','mm:ss.SSS')))
+            set(findall(0,'Tag','lblTimeTwoSp1DTDuelDisp'),'FontColor', [0,0,0]);
+        case 'rndTwoSp2DT'
+            data.TNData.secRndSplit2BO(data.idx+1) = duration(src.Value,'Format','mm:ss.SSS');
+            set(findall(0,'Tag','lblTimeTwoSp2DTDuelDisp'),'Text',string(duration(src.Value,'Format','mm:ss.SSS')))
+            set(findall(0,'Tag','lblTimeTwoSp2DTDuelDisp'),'FontColor', [0,0,0]);
+        case 'rndTwoDT'
+            data.TNData.secRndBO(data.idx+1) = duration(src.Value,'Format','mm:ss.SSS');
+            set(findall(0,'Tag','lblTimeTwoDTDuelDisp'),'Text',string(duration(src.Value,'Format','mm:ss.SSS')))
+            set(findall(0,'Tag','lblTimeTwoDTDuelDisp'),'FontColor', [0,0,0]);
+
+        case 'rndThreeSp1DT'
+            data.TNData.thiRndSplit1BO(data.idx+1) = duration(src.Value,'Format','mm:ss.SSS');
+            set(findall(0,'Tag','lblTimeThreeSp1DTDuelDisp'),'Text',string(duration(src.Value,'Format','mm:ss.SSS')))
+            set(findall(0,'Tag','lblTimeThreeSp1DTDuelDisp'),'FontColor', [0,0,0]);
+        case 'rndThreeSp2DT'
+            data.TNData.thiRndSplit2BO(data.idx+1) = duration(src.Value,'Format','mm:ss.SSS');
+            set(findall(0,'Tag','lblTimeThreeSp2DTDuelDisp'),'Text',string(duration(src.Value,'Format','mm:ss.SSS')))
+            set(findall(0,'Tag','lblTimeThreeSp2DTDuelDisp'),'FontColor', [0,0,0]);
+        case 'rndThreeDT'
+            data.TNData.thiRndBO(data.idx+1) = duration(src.Value,'Format','mm:ss.SSS');
+            set(findall(0,'Tag','lblTimeThreeDTDuelDisp'),'Text',string(duration(src.Value,'Format','mm:ss.SSS')))
+            set(findall(0,'Tag','lblTimeThreeDTDuelDisp'),'FontColor', [0,0,0]);
+
+        case 'MeterOneDO'
+            data.TNData.firRndBOMT(data.idx) = str2double(src.Value);    
+        case 'MeterTwoDO'
+            data.TNData.secRndBOMT(data.idx) = str2double(src.Value);       
+        case 'MeterThreeDO'
+            data.TNData.thiRndBOMT(data.idx) = str2double(src.Value);      
+        case 'MeterOneDT'
+            data.TNData.firRndBOMT(data.idx+1) = str2double(src.Value);       
+        case 'MeterTwoDT'
+            data.TNData.secRndBOMT(data.idx+1) = str2double(src.Value);      
+        case 'MeterThreeDT'
+            data.TNData.thiRndBOMT(data.idx+1) = str2double(src.Value);     
+    end
+
+
+    guidata(src,data);
+    drawnow;  
+end
