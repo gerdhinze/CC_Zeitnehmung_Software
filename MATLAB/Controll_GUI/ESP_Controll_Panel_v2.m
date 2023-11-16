@@ -294,7 +294,7 @@ function startButtonCallback(txtAreaCommand, esp1, parity1, esp2, parity2, esp3,
         contrButton.start(esp2, parity2, 'data_race.mat');
         contrButton.start(esp3, parity3, 'data_race.mat');
         txtAreaCommand.Value = 'Start des Rennens!';
-        disp('Start');
+        disp('Start des Rennens');
     catch
         errordlg('Fehler beim Starten des Systems.', 'Error');
     end
@@ -302,7 +302,7 @@ end
 
 %Callback function for the "read_log" button
 function read_logButtonCallback(txtAreaCommand)
-    try
+    %try
         global esp1 esp2 esp3;
         global parity1 parity2 parity3;
 
@@ -310,15 +310,23 @@ function read_logButtonCallback(txtAreaCommand)
         contrButton.read_log(esp2, parity2);
         contrButton.read_log(esp3, parity3);
         txtAreaCommand.Value = 'Geloggten Daten erfolgreich ausgelesen!';
-    catch
-        errordlg('Fehler beim Lesen der gelog. Daten.', 'Error');
-    end
+    % catch
+    %     errordlg('Fehler beim Lesen der gelog. Daten.', 'Error');
+    % end
 end
 
 %Callback function for the "delete_log" button
 function delete_logButtonCallback(txtAreaCommand)
     try
+        global esp1 esp2 esp3;
+        global parity1 parity2 parity3;
 
+        message1 = delete_log(esp1, parity1);
+        txtAreaCommand.Value = ['ESP1 -->' + message];
+        message2 = delete_log(esp2, parity2);
+        txtAreaCommand.Value = ['ESP2 -->' + message];
+        message3 = delete_log(esp3, parity3);
+        txtAreaCommand.Value = ['ESP3 -->' + message];
     catch
 
     end

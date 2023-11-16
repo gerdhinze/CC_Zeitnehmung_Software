@@ -5,7 +5,7 @@ function read_log(esp, parity)
     if parity == 1
     fprintf(esp, 'read_log');
     pause(0.5);
-    while esp.NumBytesAvailable > 0
+    while esp.BytesAvailable > 0
         data_log = fscanf(esp, '%s');
         % Den String in seine Bestandteile aufteilen
         splitstring = strsplit(data_log, ' ');
