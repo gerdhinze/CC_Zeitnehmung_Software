@@ -1,51 +1,47 @@
-function dOut = direction(ID_Station, ID_Next_Station)
+function [dOut, Last_ID] = directionCW(ID_Station, ID_Next_Station)
 
-Last_ID = 0;
+global Last_ID
 
       if ID_Station == 1 && ID_Next_Station == 2
-                %disp('correct direction')
                 dOut = 'correct direction';
                 if Last_ID == ID_Station
-                 %   disp('Checkpoint reached')
                     Last_ID = 0;
                 end
         
        elseif ID_Station == 2 && ID_Next_Station == 3
-               %disp('correct direction')
                dOut = 'correct direction';
                 if Last_ID == ID_Station
-                %    disp('Checkpoint reached')
                     Last_ID = 0;
                 end
                  
        elseif ID_Station == 3 && ID_Next_Station == 1
-                %disp('correct direction')
                 dOut = 'correct direction';
                 if Last_ID == ID_Station
-                 %  disp('Checkpoint reached')
                     Last_ID = 0;
                 end
 
        elseif ID_Station == 1 && ID_Next_Station == 3
-                %disp('reverse direction')
                 dOut = 'reverse direction';
-                Last_ID = ID_Station;
              
 
        elseif ID_Station == 3 && ID_Next_Station == 2
-                %disp('reverse direction')
                 dOut = 'reverse direction';
-                Last_ID = ID_Station;
             
 
        elseif ID_Station == 2 && ID_Next_Station == 1
-                %disp('reverse direction')
                 dOut = 'reverse direction';
-                Last_ID = ID_Station;
                    
-       else 
-                %disp('Turn') 
-                dOut = 'turn';
-                Last_ID = ID_Station;
+
+       elseif ID_Station == ID_Next_Station
+              if Last_ID == 0
+                 dOut = 'reverse direction';
+                 Last_ID = ID_Station;
+              elseif Last_ID == ID_Next_Station
+                 dOut = 'correct direction';
+                 Last_ID = 0;
+              elseif Last_ID ~= ID_Next_Station
+                 dOut = 'correct direction';
+              end
+
       end
 end
