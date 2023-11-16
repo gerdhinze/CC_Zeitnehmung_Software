@@ -1,4 +1,4 @@
-function[parity1, parity2, parity3] = disconnect_ESP_all(esp1, parity1, esp2, parity2, esp3, parity3)
+function[parity1, parity2, parity3] = disconnect_esp_all(esp1, parity1, esp2, parity2, esp3, parity3)
 
     if parity1 == 1
         fclose(esp1);

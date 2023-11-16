@@ -133,7 +133,7 @@ function disconnectAllButtonCallback(txtAreaCommand)
     try
         global esp1 esp2 esp3;
         global parity1 parity2 parity3;
-        [parity1, parity2, parity3] = contrButton.disconnect_ESP_all(esp1, parity1, esp2, parity2, esp3, parity3);
+        [parity1, parity2, parity3] = contrButton.disconnect_esp_all(esp1, parity1, esp2, parity2, esp3, parity3);
         disp('Alle Verbindungen getrennt.');
         txtAreaCommand.Value = 'Alle Verbindungen getrennt.';
     catch
