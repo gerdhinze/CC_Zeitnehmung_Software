@@ -9,7 +9,7 @@ function set_ID(selectedTeam)
 
     % Wait for and process the response from esp1
     while esp1.BytesAvailable > 0
-        data_esp = fscanf(esp1, '%s');
+        data_esp = fgets(esp1);
         % Split the string into its components
         splitstring = strsplit(data_esp, ' ');
 

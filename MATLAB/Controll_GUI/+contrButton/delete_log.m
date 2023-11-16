@@ -1,7 +1,7 @@
 function[message] = delete_log(esp, parity)
     
     if parity == 1
-        data = fscanf(esp, '%s');
+        data = fgets(esp);
         if isempty(data)
             message = 'Data log ist leer';
         elseif ~isempty(data)

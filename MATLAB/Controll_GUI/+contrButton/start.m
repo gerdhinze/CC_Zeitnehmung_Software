@@ -7,7 +7,7 @@ function start(esp, parity, dataFile)
         pause(0.5);
 
         while esp.BytesAvailable > 0
-            data_esp = fscanf(esp, '%s');
+            data_esp = fgets(esp);
             % Split the string into its components
             splitstring = strsplit(data_esp, ' ');
 
