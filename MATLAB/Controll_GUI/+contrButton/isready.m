@@ -1,4 +1,5 @@
 function isready(esp, parity)
+
     if parity == 1
         fprintf(esp, 'ready');
         pause(0.5);

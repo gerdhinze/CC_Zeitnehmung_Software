@@ -16,9 +16,7 @@ function [realtime, realtime_esp1, realtime_esp2, realtime_esp3] = sync_time(esp
     
         if parity1 == 1
             fprintf(esp1, 'sync_time\n');
-            pause(1);
             fprintf(esp1, realtime);
-            pause(1);
             fprintf(esp1, 'get_time\n');
             realtime_esp1 = fscanf(esp1, '%s');
             disp(['Realtime from esp1: ', realtime_esp1]);
@@ -26,9 +24,7 @@ function [realtime, realtime_esp1, realtime_esp2, realtime_esp3] = sync_time(esp
         
         if parity2 == 1
             fprintf(esp2, 'sync_time\n');
-            pause(1);
             fprintf(esp2, realtime);
-            pause(1);
             fprintf(esp2, 'get_time\n');
             realtime_esp2 = fscanf(esp2, '%s');
             disp(['Realtime from esp2: ', realtime_esp2]);
@@ -36,9 +32,7 @@ function [realtime, realtime_esp1, realtime_esp2, realtime_esp3] = sync_time(esp
 
         if parity3 == 1
             fprintf(esp3, 'sync_time\n');
-            pause(1);
             fprintf(esp3, realtime);
-            pause(1);
             fprintf(esp3, 'get_time\n');
             realtime_esp3 = fscanf(esp3, '%s');
             disp(['Realtime from esp3: ', realtime_esp3]);
