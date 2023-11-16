@@ -9,10 +9,16 @@ function read_log(esp, parity)
         data_log = fgets(esp);
         % Den String in seine Bestandteile aufteilen
         splitstring = strsplit(data_log, ' ');
-
-        data.station = str2double(splitstring{1});
-        data.id = str2double(splitstring{2});
-        data.timestamp = str2double(splitstring{3});
+        
+        if numel(splitstring) >= 3
+            data.station = str2double(splitstring{1});
+            data.id = str2double(splitstring{2});
+            data.timestamp = str2double(splitstring{3});
+            % Rest of your code
+        else
+            % Handle the case when the expected number of elements is not present
+            fprintf('Error: Unexpected data format.\n');
+        end
         
         % .mat-Datei speichern
         load('datalog.mat');

@@ -1,23 +1,16 @@
-function get_time()
+function time_esp = get_time(esp, parity)
+    % Initialize output variable
+    time_esp = [];
 
-    if isvalid(esp1)
-    fprintf(esp1, 'get_time');
-    pause(0.5);
-    while ESP1.BytesAvailable > 0
-        time_esp1 = fscanf(esp1, '%s');
-    end
-    elseif isvalid(esp2)
-    fprintf(esp2, 'get_time');
-    pause(0.5);
-    while ESP2.BytesAvailable > 0
-        time_esp2 = fscanf(esp2, '%s');
-    end
-    elseif isvalid(esp3)
-    fprintf(esp3, 'get_time');
-    pause(0.5);
-    while ESP3.BytesAvailable > 0
-        time_esp3 = fscanf(esp3, '%s');
-    end
+    if parity == 1
+        fprintf(esp, 'get_time');
+        pause(0.5);
+        while esp.BytesAvailable > 0
+            time_esp = fgets(esp);
+        end
+    else
+        % Handle the case where parity is not equal to 1
+        time_esp = '00:00:00';
     end
 end
 

@@ -57,11 +57,14 @@ txtrealtime_esp3_label = uilabel(controll_gui, 'Position', [510 310 130 40], 'Te
 txtArea_time_esp3 = uitextarea(controll_gui, 'Position', [510 290 100 30], 'Editable', false, 'Value', 'hh:mm:ss', 'FontSize', 15);
 txttime_esp3_Label = uilabel(controll_gui, 'Position', [620,285,130,40], 'Text', '@ Station 3','FontSize',15);
 
+% Define a timer object
+t = timer('TimerFcn', @(~, ~) executeCycle(txtArea_time_esp1, txtArea_time_esp2, txtArea_time_esp3), 'Period', 1, 'ExecutionMode', 'fixedRate', 'TasksToExecute', Inf);
+
 % Button to synchronize time
-btnSync = uibutton(controll_gui, 'push', 'Text', 'Sync-Time', 'Position', [160 340 100 40], 'ButtonPushedFcn', @(btnSync, event) syncButtonCallback(txtArea_realtime, txtArea_time_esp1, txtArea_time_esp2, txtArea_time_esp3, txtAreaCommand));
+btnSync = uibutton(controll_gui, 'push', 'Text', 'Sync-Time', 'Position', [160 340 100 40], 'ButtonPushedFcn', @(btnSync, event) syncButtonCallback(txtArea_realtime, txtArea_time_esp1, txtArea_time_esp2, txtArea_time_esp3, txtAreaCommand, t));
 
 % Button to stop
-btnStop = uibutton(controll_gui, 'push', 'Text', 'Stop', 'Position', [620 50 100 40], 'BackgroundColor', 'red', 'ButtonPushedFcn', @(btnStop, event) stopButtonCallback(txtAreaCommand, esp1, parity1, esp2, parity2, esp3, parity3));
+btnStop = uibutton(controll_gui, 'push', 'Text', 'Stop', 'Position', [620 50 100 40], 'BackgroundColor', 'red', 'ButtonPushedFcn', @(btnStop, event) stopButtonCallback(txtAreaCommand, esp1, parity1, esp2, parity2, esp3, parity3, t));
 
 % Button to disconnect all
 btnDisconnectAll = uibutton(controll_gui, 'push', 'Text', 'Disconnect All', 'Position', [160 460 100 40], 'ButtonPushedFcn', @(btnDisconnectAll, event) disconnectAllButtonCallback(txtAreaCommand, txtPort1, txtPort2, txtPort3));
@@ -88,6 +91,9 @@ btnRead_log = uibutton(controll_gui, 'push', 'Text', 'Read logged data', 'Positi
 
 %"delete_log" button
 btnDelete_log = uibutton(controll_gui, 'push', 'Text', 'Delete logged data', 'Position', [300 110 150 40], 'ButtonPushedFcn', @(btnDelete_log, event) delete_logButtonCallback(txtAreaCommand));
+
+
+
 %% 
 %##########################################################################
 %       CALLBACK - Functions
@@ -199,19 +205,35 @@ function disconnectButton3Callback(txtPort3, txtAreaCommand)
 end
 
 % Callback function for the Sync button
-function syncButtonCallback(txtArea_realtime, txtArea_time_esp1, txtArea_time_esp2, txtArea_time_esp3, txtAreaCommand)
+function syncButtonCallback(txtArea_realtime, txtArea_time_esp1, txtArea_time_esp2, txtArea_time_esp3, txtAreaCommand, t)
     try
         global esp1 esp2 esp3;
         global parity1 parity2 parity3;
+
         % Call the function to synchronize time
-        [realtime, realtime_esp1, realtime_esp2, realtime_esp3]= contrButton.sync_time(esp1, parity1, esp2, parity2, esp3, parity3);
+        [realtime] = contrButton.sync_time(esp1, parity1);
+        [~] = contrButton.sync_time(esp2, parity2);
+        [~] = contrButton.sync_time(esp3, parity3);
+        
+        realtime_esp1 = contrButton.get_time(esp1, parity1);
+        realtime_esp2 = contrButton.get_time(esp2, parity2);
+        realtime_esp3 = contrButton.get_time(esp3, parity3);
+        
         txtArea_realtime.Value = realtime;
         txtArea_time_esp1.Value = realtime_esp1;
         txtArea_time_esp2.Value = realtime_esp2;
         txtArea_time_esp3.Value = realtime_esp3;
-        
+
         txtAreaCommand.Value = 'Zeit erfolgreich aktualisiert.';
         disp('Zeit erfolgreich aktualisiert');
+
+        % Start the timer
+        start(t);
+
+        % Wait for the desired duration (e.g., 60 seconds)
+        pause(inf);
+
+       
     catch
          % Handle errors if the synchronization fails
          errordlg('Fehler beim Synchronisieren der Zeit.', 'Error');
@@ -219,11 +241,15 @@ function syncButtonCallback(txtArea_realtime, txtArea_time_esp1, txtArea_time_es
 end
 
 %Callback function for the stop button
-function stopButtonCallback(txtAreaCommand, esp1, parity1, esp2, parity2, esp3, parity3)
+function stopButtonCallback(txtAreaCommand, esp1, parity1, esp2, parity2, esp3, parity3, t)
     try
         contrButton.stop(esp1, parity1);
         contrButton.stop(esp2, parity2);
         contrButton.stop(esp3, parity3);
+
+        % Stop the timer when done
+        stop(t);
+        delete(t);
 
         txtAreaCommand.Value = 'Vorgang gestoppt.';
         disp('Vorgang gestoppt.');
@@ -259,7 +285,7 @@ end
 
 % Callback function for the "Set ID" button
 function setIDButtonCallback(dropdown, txtAreaCommand)
-    % try
+    try
         % Get the selected team from the dropdown menu
         selectedTeam = dropdown.Value;
       
@@ -268,9 +294,9 @@ function setIDButtonCallback(dropdown, txtAreaCommand)
 
         txtAreaCommand.Value = ['ID erfolgreich gesetzt for Team: ' selectedTeam];
         disp(['ID erfolgreich gesetzt für Team: ' selectedTeam]);
-    % catch
-    %       errordlg('Fehler beim ID-Setting.', 'Error');
-    % end
+    catch
+          errordlg('Fehler beim ID-Setting.', 'Error');
+    end
 end
 
 % Callback function for the "Ready" button
@@ -302,7 +328,7 @@ end
 
 %Callback function for the "read_log" button
 function read_logButtonCallback(txtAreaCommand)
-    %try
+    try
         global esp1 esp2 esp3;
         global parity1 parity2 parity3;
 
@@ -310,14 +336,14 @@ function read_logButtonCallback(txtAreaCommand)
         contrButton.read_log(esp2, parity2);
         contrButton.read_log(esp3, parity3);
         txtAreaCommand.Value = 'Geloggten Daten erfolgreich ausgelesen!';
-    % catch
-    %     errordlg('Fehler beim Lesen der gelog. Daten.', 'Error');
-    % end
+    catch
+        errordlg('Fehler beim Lesen der gelog. Daten.', 'Error');
+    end
 end
 
 %Callback function for the "delete_log" button
 function delete_logButtonCallback(txtAreaCommand)
-    try
+    % try
         global esp1 esp2 esp3;
         global parity1 parity2 parity3;
 
@@ -327,8 +353,28 @@ function delete_logButtonCallback(txtAreaCommand)
         txtAreaCommand.Value = ['ESP2 -->' + message];
         message3 = delete_log(esp3, parity3);
         txtAreaCommand.Value = ['ESP3 -->' + message];
-    catch
-
-    end
+    % catch
+    % 
+    % end
 end
+
+% Function to execute in each cycle
+function executeCycle(txtArea_time_esp1, txtArea_time_esp2, txtArea_time_esp3)
+    global esp1 esp2 esp3;
+    global parity1 parity2 parity3;
+
+    % Get real-time information from esp1
+    realtime_esp1 = contrButton.get_time(esp1, parity1);
+
+    % Get real-time information from esp2
+    realtime_esp2 = contrButton.get_time(esp2, parity2);
+
+    % Get real-time information from esp3
+    realtime_esp3 = contrButton.get_time(esp3, parity3);
+
+    txtArea_time_esp1.Value = realtime_esp1;
+    txtArea_time_esp2.Value = realtime_esp2;
+    txtArea_time_esp3.Value = realtime_esp3;
+end
+
 
