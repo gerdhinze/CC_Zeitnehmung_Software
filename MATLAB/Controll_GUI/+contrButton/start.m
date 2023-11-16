@@ -1,7 +1,4 @@
 function start(esp, parity, dataFile)
-    % esp: Serial port object
-    % parity: Parity variable
-    % dataFile: File name for saving race data
 
     save(dataFile);
 

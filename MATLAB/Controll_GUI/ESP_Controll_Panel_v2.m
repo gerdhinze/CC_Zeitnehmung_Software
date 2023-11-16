@@ -14,7 +14,7 @@ controll_gui.Position = [50,50,750,600];
 %Command window
 % Create a uitextarea
 txtCommand_Label = uilabel(controll_gui, 'Position', [280,450,200,40], 'Text', 'Commandline:','FontSize',20);
-txtAreaCommand = uitextarea(controll_gui, 'Position', [280 340 330 120], 'Editable', false);
+txtAreaCommand = uitextarea(controll_gui, 'Position', [280 340 440 120], 'Editable', false, 'FontSize', 15);
 
 %Available comports
 % Create a uitextarea
@@ -27,27 +27,33 @@ txtAreaPorts.Value = portsString;
 
 %%ESP Connection
 txtPort1_Label = uilabel(controll_gui, 'Position', [50,560,130,40], 'Text', 'Station 1:','FontSize',20);
-txtPort1 = uieditfield(controll_gui, 'text', 'Position', [50 510 100 50], 'Value', 'COMX');
+txtPort1 = uieditfield(controll_gui, 'text', 'Position', [50 510 100 50], 'Value', 'COMX', 'BackgroundColor', [1, 0.8, 0.8]);
 btnConnect1 = uibutton(controll_gui, 'push', 'Text', 'Connect', 'Position', [160 535 100 25], 'ButtonPushedFcn', @(btnConnect, event) connectButton1Callback(txtPort1, txtAreaCommand));
 btnDisConnect1 = uibutton(controll_gui, 'push', 'Text', 'Disconnect', 'Position', [160 510 100 25], 'ButtonPushedFcn', @(btnDisConnect, event) disconnectButton1Callback(txtPort1, txtAreaCommand));
 
 txtPort2_Label = uilabel(controll_gui, 'Position', [280 560 130 40], 'Text', 'Station 2:', 'FontSize',20);
-txtPort2 = uieditfield(controll_gui, 'text', 'Position', [280 510 100 50], 'Value', 'COMX');
+txtPort2 = uieditfield(controll_gui, 'text', 'Position', [280 510 100 50], 'Value', 'COMX', 'BackgroundColor', [1, 0.8, 0.8]);
 btnConnect2 = uibutton(controll_gui, 'push', 'Text', 'Connect', 'Position', [390 535 100 25], 'ButtonPushedFcn', @(btnConnect, event) connectButton2Callback(txtPort2, txtAreaCommand));
 btnDisConnect2 = uibutton(controll_gui, 'push', 'Text', 'Disconnect', 'Position', [390 510 100 25], 'ButtonPushedFcn', @(btnDisConnect, event) disconnectButton2Callback(txtPort2, txtAreaCommand));
 
 txtPort3_Label = uilabel(controll_gui, 'Position', [510 560 130 40], 'Text', 'Station 3:', 'FontSize',20);
-txtPort3 = uieditfield(controll_gui, 'text', 'Position', [510 510 100 50], 'Value', 'COMX');
+txtPort3 = uieditfield(controll_gui, 'text', 'Position', [510 510 100 50], 'Value', 'COMX', 'BackgroundColor', [1, 0.8, 0.8]);
 btnConnect3 = uibutton(controll_gui, 'push', 'Text', 'Connect', 'Position', [620 535 100 25], 'ButtonPushedFcn', @(btnConnect, event) connectButton3Callback(txtPort3, txtAreaCommand));
 btnDisConnect3 = uibutton(controll_gui, 'push', 'Text', 'Disconnect', 'Position', [620 510 100 25], 'ButtonPushedFcn', @(btnDisConnect, event) disconnectButton3Callback(txtPort3, txtAreaCommand));
 
 %textbox for realtime times
-txtArea_realtime = uitextarea(controll_gui, 'Position', [50 340 100 40], 'Editable', false, 'Value', 'hh:mm:ss', 'FontSize', 15);
+txtrealtime_label = uilabel(controll_gui, 'Position', [50 370 200 40], 'Text', 'Synchronisierte Systemzeit:', 'FontSize',15);
+txtArea_realtime = uitextarea(controll_gui, 'Position', [50 340 100 40], 'Editable', false, 'Value', 'hh:mm:ss', 'FontSize', 17);
 %textboxes for esp times
+txtrealtime_esp1_label = uilabel(controll_gui, 'Position', [50 310 130 40], 'Text', 'Synchron. Zeit:', 'FontSize',15);
 txtArea_time_esp1 = uitextarea(controll_gui, 'Position', [50 290 100 30], 'Editable', false, 'Value', 'hh:mm:ss', 'FontSize', 15);
 txttime_esp1_Label = uilabel(controll_gui, 'Position', [160,285,130,40], 'Text', '@ Station 1','FontSize',15);
+
+txtrealtime_esp2_label = uilabel(controll_gui, 'Position', [280 310 130 40], 'Text', 'Synchron. Zeit:', 'FontSize',15);
 txtArea_time_esp2 = uitextarea(controll_gui, 'Position', [280 290 100 30], 'Editable', false, 'Value', 'hh:mm:ss', 'FontSize', 15);
 txttime_esp2_Label = uilabel(controll_gui, 'Position', [390,285,130,40], 'Text', '@ Station 2','FontSize',15);
+
+txtrealtime_esp3_label = uilabel(controll_gui, 'Position', [510 310 130 40], 'Text', 'Synchron. Zeit:', 'FontSize',15);
 txtArea_time_esp3 = uitextarea(controll_gui, 'Position', [510 290 100 30], 'Editable', false, 'Value', 'hh:mm:ss', 'FontSize', 15);
 txttime_esp3_Label = uilabel(controll_gui, 'Position', [620,285,130,40], 'Text', '@ Station 3','FontSize',15);
 
@@ -58,17 +64,17 @@ btnSync = uibutton(controll_gui, 'push', 'Text', 'Sync-Time', 'Position', [160 3
 btnStop = uibutton(controll_gui, 'push', 'Text', 'Stop', 'Position', [620 50 100 40], 'BackgroundColor', 'red', 'ButtonPushedFcn', @(btnStop, event) stopButtonCallback(txtAreaCommand, esp1, parity1, esp2, parity2, esp3, parity3));
 
 % Button to disconnect all
-btnDisconnectAll = uibutton(controll_gui, 'push', 'Text', 'Disconnect All', 'Position', [160 460 100 40], 'ButtonPushedFcn', @(btnDisconnectAll, event) disconnectAllButtonCallback(txtAreaCommand));
+btnDisconnectAll = uibutton(controll_gui, 'push', 'Text', 'Disconnect All', 'Position', [160 460 100 40], 'ButtonPushedFcn', @(btnDisconnectAll, event) disconnectAllButtonCallback(txtAreaCommand, txtPort1, txtPort2, txtPort3));
 
 % Button to search for ports
-btnSearchPorts = uibutton(controll_gui, 'push', 'Text', 'Search Ports', 'Position', [160 400 100 40], 'BackgroundColor', 'cyan', 'ButtonPushedFcn', @(btnSearchPorts, event) searchPortsCallback(txtAreaPorts, txtAreaCommand));
+btnSearchPorts = uibutton(controll_gui, 'push', 'Text', 'Search Ports', 'Position', [160 400 100 40], 'BackgroundColor', [0.8, 0.8, 1], 'ButtonPushedFcn', @(btnSearchPorts, event) searchPortsCallback(txtAreaPorts, txtAreaCommand));
 
 %dropdownmenue for the teamname
 CCTM = readtable('CCTM2023.csv'); %Crazy Car Teilnehmer
-serialPortDropdown = uidropdown(controll_gui, 'Position', [50 230 100 40], 'Items', CCTM.Teamname, 'ValueChangedFcn', @(dropdown, event) selectedTeamCallback(dropdown, txtAreaCommand)); %Änderung Philipp
+serialPortDropdown = uidropdown(controll_gui, 'Position', [50 230 100 40], 'Items', CCTM.Teamname, 'ValueChangedFcn', @(dropdown, event) selectedTeamCallback(dropdown, txtAreaCommand));
 
 % Button for setting the IDs
-btnSetID = uibutton(controll_gui, 'push', 'Text', 'Set ID', 'Position', [160 230 100 40], 'BackgroundColor', [1, 0.5, 0], 'ButtonPushedFcn', @(btnSetID, event) setIDButtonCallback(serialPortDropdown, txtAreaCommand));
+btnSetID = uibutton(controll_gui, 'push', 'Text', 'Set ID', 'Position', [160 230 100 40], 'BackgroundColor', [1, 0.647, 0], 'ButtonPushedFcn', @(btnSetID, event) setIDButtonCallback(serialPortDropdown, txtAreaCommand));
 
 %"Ready" button
 btnReady = uibutton(controll_gui, 'push', 'Text', 'Ready', 'Position', [160 170 100 40], 'BackgroundColor', 'yellow','ButtonPushedFcn', @(btnReady, event) readyButtonCallback(txtAreaCommand, esp1, parity1, esp2, parity2, esp3, parity3));
@@ -77,7 +83,12 @@ btnReady = uibutton(controll_gui, 'push', 'Text', 'Ready', 'Position', [160 170 
 btnStart = uibutton(controll_gui, 'push', 'Text', 'Start', 'Position', [160 110 100 40], 'BackgroundColor', 'green', 'ButtonPushedFcn', @(btnStart, event) startButtonCallback(txtAreaCommand, esp1, parity1, esp2, parity2, esp3, parity3));
 
 %"read_log" button
-btnRead_log = uibutton(controll_gui, 'push', 'Text', 'read logged data', 'Position', [300 110 100 40], 'ButtonPushedFcn', @(btnRead_log, event) read_logButtonCallback());
+txtRead_log_Label = uilabel(controll_gui, 'Position', [300,210,130,40], 'Text', 'Logged Data','FontSize',20);
+btnRead_log = uibutton(controll_gui, 'push', 'Text', 'Read logged data', 'Position', [300 170 150 40], 'ButtonPushedFcn', @(btnRead_log, event) read_logButtonCallback(txtAreaCommand));
+
+%"delete_log" button
+btnDelete_log = uibutton(controll_gui, 'push', 'Text', 'Delete logged data', 'Position', [300 110 150 40], 'ButtonPushedFcn', @(btnDelete_log, event) delete_logButtonCallback(txtAreaCommand));
+%% 
 %##########################################################################
 %       CALLBACK - Functions
 %##########################################################################
@@ -85,9 +96,12 @@ btnRead_log = uibutton(controll_gui, 'push', 'Text', 'read logged data', 'Positi
 % Callback-functions for the connect buttons
 function connectButton1Callback(txtPort1, txtAreaCommand)
     try
+        global parity1 esp1;
         % Port-Nummer aus dem Textfeld abrufen und die Verbindung herstellen
         port1Number = txtPort1.Value;
-        contrButton.connect2ESP1(port1Number);
+        [parity1, esp1] = contrButton.connect2ESP(port1Number);
+        % Ändern Sie die Hintergrundfarbe der Textbox auf Hellgrün
+        txtPort1.BackgroundColor = [0.8, 1, 0.8];
         disp(['Verbindung zum COM-Port ' port1Number ' hergestellt.']);
         txtAreaCommand.Value = ['Verbindung zum COM-Port ' port1Number ' hergestellt.'];
         
@@ -99,9 +113,11 @@ end
 
 function connectButton2Callback(txtPort2, txtAreaCommand)
     try
+        global parity2 esp2;
         % Port-Nummer aus dem Textfeld abrufen und die Verbindung herstellen
         port2Number = txtPort2.Value;
-        contrButton.connect2ESP2(port2Number);
+        [parity2, esp2] = contrButton.connect2ESP(port2Number);
+        txtPort2.BackgroundColor = [0.8, 1, 0.8];
         disp(['Verbindung zum COM-Port ' port2Number ' hergestellt.']);
         txtAreaCommand.Value = ['Verbindung zum COM-Port ' port2Number ' hergestellt.'];
         
@@ -113,9 +129,11 @@ end
 
 function connectButton3Callback(txtPort3, txtAreaCommand)
     try
+        global parity3 esp3;
         % Port-Nummer aus dem Textfeld abrufen und die Verbindung herstellen
         port3Number = txtPort3.Value;
-        contrButton.connect2ESP3(port3Number);
+        [parity3, esp3] = contrButton.connect2ESP(port3Number);
+        txtPort3.BackgroundColor = [0.8, 1, 0.8];
         disp(['Verbindung zum COM-Port ' port3Number ' hergestellt.']);
         txtAreaCommand.Value = ['Verbindung zum COM-Port ' port3Number ' hergestellt.'];
         
@@ -126,10 +144,15 @@ function connectButton3Callback(txtPort3, txtAreaCommand)
 end
 
 %Callback function for the disconnect button(s)
-function disconnectAllButtonCallback(txtAreaCommand)
+function disconnectAllButtonCallback(txtAreaCommand, txtPort1, txtPort2, txtPort3)
     try
-        contrButton.disconnect_esp_all();
+        global esp1 esp2 esp3;
+        global parity1 parity2 parity3;
+        [parity1, parity2, parity3] = contrButton.disconnect_esp_all(esp1, parity1, esp2, parity2, esp3, parity3);
         disp('Alle Verbindungen getrennt.');
+        txtPort1.BackgroundColor = [1, 0.8, 0.8];
+        txtPort2.BackgroundColor = [1, 0.8, 0.8];
+        txtPort3.BackgroundColor = [1, 0.8, 0.8];
         txtAreaCommand.Value = 'Alle Verbindungen getrennt.';
     catch
     errordlg('Fehler beim Trennen aller Verbindungen.', 'Fehler');
@@ -138,10 +161,11 @@ end
 
 function disconnectButton1Callback(txtPort1, txtAreaCommand)
     try
+        global parity1 esp1;
         port1Number = txtPort1.Value;
-        contrButton.disconnect2ESP1(port1Number);
+        parity1 = contrButton.disconnect_ESP(port1Number, parity1, esp1);
+        txtPort1.BackgroundColor = [1, 0.8, 0.8];
         txtAreaCommand.Value = ['Verbindung zum COM-Port ' port1Number ' abgebrochen.'];
-       
     catch
         % Fehlerbehandlung, falls die Verbindung nicht hergestellt werden kann
         errordlg('Fehler beim Herstellen der Verbindung.', 'Fehler');
@@ -150,10 +174,11 @@ end
 
 function disconnectButton2Callback(txtPort2, txtAreaCommand)
     try
+        global parity2 esp2;
         port2Number = txtPort2.Value;
-        contrButton.disconnect2ESP2(port2Number);
-        txtAreaCommand.Value = ['Verbindung zum COM-Port ' port2Number ' abgebrochen.'];
-        
+        parity2 = contrButton.disconnect_ESP(port2Number, parity2, esp2);
+        txtPort2.BackgroundColor = [1, 0.8, 0.8];
+        txtAreaCommand.Value = ['Verbindung zum COM-Port ' port2Number ' abgebrochen.'];     
     catch
         % Fehlerbehandlung, falls die Verbindung nicht hergestellt werden kann
         errordlg('Fehler beim Herstellen der Verbindung.', 'Fehler');
@@ -162,10 +187,11 @@ end
 
 function disconnectButton3Callback(txtPort3, txtAreaCommand)
     try
+        global parity3 esp3;
         port3Number = txtPort3.Value;
-        contrButton.disconnect2ESP3(port3Number);
+        parity3 = contrButton.disconnect_ESP(port3Number, parity3, esp3);
+        txtPort3.BackgroundColor = [1, 0.8, 0.8];
         txtAreaCommand.Value = ['Verbindung zum COM-Port ' port3Number ' abgebrochen.'];
-        
     catch
         % Fehlerbehandlung, falls die Verbindung nicht hergestellt werden kann
         errordlg('Fehler beim Herstellen der Verbindung.', 'Fehler');
@@ -175,8 +201,10 @@ end
 % Callback function for the Sync button
 function syncButtonCallback(txtArea_realtime, txtArea_time_esp1, txtArea_time_esp2, txtArea_time_esp3, txtAreaCommand)
     try
+        global esp1 esp2 esp3;
+        global parity1 parity2 parity3;
         % Call the function to synchronize time
-        [realtime, realtime_esp1, realtime_esp2, realtime_esp3]= contrButton.sync_time();
+        [realtime, realtime_esp1, realtime_esp2, realtime_esp3]= contrButton.sync_time(esp1, parity1, esp2, parity2, esp3, parity3);
         txtArea_realtime.Value = realtime;
         txtArea_time_esp1.Value = realtime_esp1;
         txtArea_time_esp2.Value = realtime_esp2;
@@ -265,18 +293,42 @@ function startButtonCallback(txtAreaCommand, esp1, parity1, esp2, parity2, esp3,
         contrButton.start(esp1, parity1, 'data_race.mat');
         contrButton.start(esp2, parity2, 'data_race.mat');
         contrButton.start(esp3, parity3, 'data_race.mat');
-        txtAreaCommand.Value = 'Start the Race!';
-        disp('Start');
+        txtAreaCommand.Value = 'Start des Rennens!';
+        disp('Start des Rennens');
     catch
         errordlg('Fehler beim Starten des Systems.', 'Error');
     end
 end
 
 %Callback function for the "read_log" button
-function read_logButtonCallback()
-    try
+function read_logButtonCallback(txtAreaCommand)
+    %try
+        global esp1 esp2 esp3;
+        global parity1 parity2 parity3;
 
+        contrButton.read_log(esp1, parity1);
+        contrButton.read_log(esp2, parity2);
+        contrButton.read_log(esp3, parity3);
+        txtAreaCommand.Value = 'Geloggten Daten erfolgreich ausgelesen!';
+    % catch
+    %     errordlg('Fehler beim Lesen der gelog. Daten.', 'Error');
+    % end
+end
+
+%Callback function for the "delete_log" button
+function delete_logButtonCallback(txtAreaCommand)
+    try
+        global esp1 esp2 esp3;
+        global parity1 parity2 parity3;
+
+        message1 = delete_log(esp1, parity1);
+        txtAreaCommand.Value = ['ESP1 -->' + message];
+        message2 = delete_log(esp2, parity2);
+        txtAreaCommand.Value = ['ESP2 -->' + message];
+        message3 = delete_log(esp3, parity3);
+        txtAreaCommand.Value = ['ESP3 -->' + message];
     catch
 
     end
 end
+
