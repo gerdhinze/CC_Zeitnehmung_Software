@@ -1,7 +1,5 @@
-function [realtime, realtime_esp1, realtime_esp2, realtime_esp3] = sync_time(esp1, esp2, esp3)
-    global esp1 esp2 esp3;
-    global parity1 parity2 parity3;
-
+function [realtime, realtime_esp1, realtime_esp2, realtime_esp3] = sync_time(esp1, parity1, esp2, parity2, esp3, parity3)
+    
     % Initialize output variables
     realtime_esp1 = '';
     realtime_esp2 = '';

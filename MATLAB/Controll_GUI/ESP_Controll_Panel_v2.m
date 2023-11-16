@@ -85,9 +85,10 @@ btnRead_log = uibutton(controll_gui, 'push', 'Text', 'read logged data', 'Positi
 % Callback-functions for the connect buttons
 function connectButton1Callback(txtPort1, txtAreaCommand)
     try
+        global parity1 esp1;
         % Port-Nummer aus dem Textfeld abrufen und die Verbindung herstellen
         port1Number = txtPort1.Value;
-        contrButton.connect2ESP1(port1Number);
+        [parity1, esp1] = contrButton.connect2ESP(port1Number);
         disp(['Verbindung zum COM-Port ' port1Number ' hergestellt.']);
         txtAreaCommand.Value = ['Verbindung zum COM-Port ' port1Number ' hergestellt.'];
         
@@ -99,9 +100,10 @@ end
 
 function connectButton2Callback(txtPort2, txtAreaCommand)
     try
+        global parity2 esp2;
         % Port-Nummer aus dem Textfeld abrufen und die Verbindung herstellen
         port2Number = txtPort2.Value;
-        contrButton.connect2ESP2(port2Number);
+        [parity2, esp2] = contrButton.connect2ESP(port2Number);
         disp(['Verbindung zum COM-Port ' port2Number ' hergestellt.']);
         txtAreaCommand.Value = ['Verbindung zum COM-Port ' port2Number ' hergestellt.'];
         
@@ -113,9 +115,10 @@ end
 
 function connectButton3Callback(txtPort3, txtAreaCommand)
     try
+        global parity3 esp3;
         % Port-Nummer aus dem Textfeld abrufen und die Verbindung herstellen
         port3Number = txtPort3.Value;
-        contrButton.connect2ESP3(port3Number);
+        [parity3, esp3] = contrButton.connect2ESP(port3Number);
         disp(['Verbindung zum COM-Port ' port3Number ' hergestellt.']);
         txtAreaCommand.Value = ['Verbindung zum COM-Port ' port3Number ' hergestellt.'];
         
@@ -128,7 +131,9 @@ end
 %Callback function for the disconnect button(s)
 function disconnectAllButtonCallback(txtAreaCommand)
     try
-        contrButton.disconnect_esp_all();
+        global esp1 esp2 esp3;
+        global parity1 parity2 parity3;
+        [parity1, parity2, parity3] = contrButton.disconnect_ESP_all(esp1, parity1, esp2, parity2, esp3, parity3);
         disp('Alle Verbindungen getrennt.');
         txtAreaCommand.Value = 'Alle Verbindungen getrennt.';
     catch
@@ -138,8 +143,9 @@ end
 
 function disconnectButton1Callback(txtPort1, txtAreaCommand)
     try
+        global parity1 esp1;
         port1Number = txtPort1.Value;
-        contrButton.disconnect2ESP1(port1Number);
+        parity1 = contrButton.disconnect_ESP(port1Number, parity1, esp1);
         txtAreaCommand.Value = ['Verbindung zum COM-Port ' port1Number ' abgebrochen.'];
        
     catch
@@ -150,8 +156,9 @@ end
 
 function disconnectButton2Callback(txtPort2, txtAreaCommand)
     try
+        global parity2 esp2;
         port2Number = txtPort2.Value;
-        contrButton.disconnect2ESP2(port2Number);
+        parity2 = contrButton.disconnect_ESP(port2Number, parity2, esp2);
         txtAreaCommand.Value = ['Verbindung zum COM-Port ' port2Number ' abgebrochen.'];
         
     catch
@@ -162,8 +169,9 @@ end
 
 function disconnectButton3Callback(txtPort3, txtAreaCommand)
     try
+        global parity3 esp3;
         port3Number = txtPort3.Value;
-        contrButton.disconnect2ESP3(port3Number);
+        parity3 = contrButton.disconnect_ESP(port3Number, parity3, esp3);
         txtAreaCommand.Value = ['Verbindung zum COM-Port ' port3Number ' abgebrochen.'];
         
     catch
@@ -175,8 +183,10 @@ end
 % Callback function for the Sync button
 function syncButtonCallback(txtArea_realtime, txtArea_time_esp1, txtArea_time_esp2, txtArea_time_esp3, txtAreaCommand)
     try
+        global esp1 esp2 esp3;
+        global parity1 parity2 parity3;
         % Call the function to synchronize time
-        [realtime, realtime_esp1, realtime_esp2, realtime_esp3]= contrButton.sync_time();
+        [realtime, realtime_esp1, realtime_esp2, realtime_esp3]= contrButton.sync_time(esp1, parity1, esp2, parity2, esp3, parity3);
         txtArea_realtime.Value = realtime;
         txtArea_time_esp1.Value = realtime_esp1;
         txtArea_time_esp2.Value = realtime_esp2;
