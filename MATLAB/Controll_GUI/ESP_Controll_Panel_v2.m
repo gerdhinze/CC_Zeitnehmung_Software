@@ -232,8 +232,6 @@ function syncButtonCallback(txtArea_realtime, txtArea_time_esp1, txtArea_time_es
 
         % Wait for the desired duration (e.g., 60 seconds)
         pause(inf);
-
-       
     catch
          % Handle errors if the synchronization fails
          errordlg('Fehler beim Synchronisieren der Zeit.', 'Error');
@@ -336,6 +334,7 @@ function read_logButtonCallback(txtAreaCommand)
         contrButton.read_log(esp2, parity2);
         contrButton.read_log(esp3, parity3);
         txtAreaCommand.Value = 'Geloggten Daten erfolgreich ausgelesen!';
+        disp(datalog);
     catch
         errordlg('Fehler beim Lesen der gelog. Daten.', 'Error');
     end
@@ -343,19 +342,19 @@ end
 
 %Callback function for the "delete_log" button
 function delete_logButtonCallback(txtAreaCommand)
-    % try
+    try
         global esp1 esp2 esp3;
         global parity1 parity2 parity3;
 
         message1 = delete_log(esp1, parity1);
-        txtAreaCommand.Value = ['ESP1 -->' + message];
+        txtAreaCommand.Value = ['ESP1 -->' + message1];
         message2 = delete_log(esp2, parity2);
-        txtAreaCommand.Value = ['ESP2 -->' + message];
+        txtAreaCommand.Value = ['ESP2 -->' + message2];
         message3 = delete_log(esp3, parity3);
-        txtAreaCommand.Value = ['ESP3 -->' + message];
-    % catch
-    % 
-    % end
+        txtAreaCommand.Value = ['ESP3 -->' + message3];
+    catch
+
+    end
 end
 
 % Function to execute in each cycle
@@ -376,5 +375,3 @@ function executeCycle(txtArea_time_esp1, txtArea_time_esp2, txtArea_time_esp3)
     txtArea_time_esp2.Value = realtime_esp2;
     txtArea_time_esp3.Value = realtime_esp3;
 end
-
-
