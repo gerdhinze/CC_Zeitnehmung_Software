@@ -3,6 +3,7 @@ clear;
 %Gloabal variables
 global esp1 esp2 esp3;
 global parity1 parity2 parity3;
+global timer_bit;
 
 % GUI erstellen
 controll_gui = uifigure('Name', 'Controll-GUI');
@@ -206,9 +207,21 @@ end
 
 % Callback function for the Sync button
 function syncButtonCallback(txtArea_realtime, txtArea_time_esp1, txtArea_time_esp2, txtArea_time_esp3, txtAreaCommand, t)
-    try
+    %try
         global esp1 esp2 esp3;
         global parity1 parity2 parity3;
+        global timer_bit;
+
+        if timer_bit == 1
+        % Stop the timer when done
+        stop(t);
+
+        timer_bit = 0;
+
+        %Restart timer
+        t = timer('TimerFcn', @(~, ~) executeCycle(txtArea_time_esp1, txtArea_time_esp2, txtArea_time_esp3), 'Period', 1, 'ExecutionMode', 'fixedRate', 'TasksToExecute', Inf);
+        start(t);
+        elseif timer_bit ==0
 
         % Call the function to synchronize time
         [realtime] = contrButton.sync_time(esp1, parity1);
@@ -226,31 +239,35 @@ function syncButtonCallback(txtArea_realtime, txtArea_time_esp1, txtArea_time_es
 
         txtAreaCommand.Value = 'Zeit erfolgreich aktualisiert.';
         disp('Zeit erfolgreich aktualisiert');
-
+        
         % Start the timer
         start(t);
 
         % Wait for the desired duration (e.g., 60 seconds)
         pause(inf);
-    catch
+        end
+    %catch
          % Handle errors if the synchronization fails
          errordlg('Fehler beim Synchronisieren der Zeit.', 'Error');
-    end
+    %end
 end
 
 %Callback function for the stop button
 function stopButtonCallback(txtAreaCommand, esp1, parity1, esp2, parity2, esp3, parity3, t)
     try
+        global timer_bit;
         contrButton.stop(esp1, parity1);
         contrButton.stop(esp2, parity2);
         contrButton.stop(esp3, parity3);
 
         % Stop the timer when done
         stop(t);
-        delete(t);
+        clear t;
+        timer_bit = 0;
 
         txtAreaCommand.Value = 'Vorgang gestoppt.';
         disp('Vorgang gestoppt.');
+        
     catch
         errordlg('Fehler beim Stoppen.', 'Fehler');
     end
@@ -359,9 +376,10 @@ end
 
 % Function to execute in each cycle
 function executeCycle(txtArea_time_esp1, txtArea_time_esp2, txtArea_time_esp3)
-    global esp1 esp2 esp3;
+    global esp1 esp2 esp3 timer_bit;
     global parity1 parity2 parity3;
-
+    
+    timer_bit = 1;
     % Get real-time information from esp1
     realtime_esp1 = contrButton.get_time(esp1, parity1);
 
