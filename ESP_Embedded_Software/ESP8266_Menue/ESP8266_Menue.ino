@@ -36,8 +36,11 @@ private:
 
 #define SS_PIN 4
 #define RST_PIN 0
-#define LS1 5
-#define LS2 16
+#define LS 16   //D0
+#define LED1 15 //D8
+#define LED2 2  //D4
+#define LED3 5  //D2
+
 
 //Globals
 File myfile;                       // erstelle ein SPIFFS Handling Variable
@@ -55,9 +58,13 @@ void setup() {
   SPI.begin();
   mfrc522.PCD_Init();
   InitalizeFileSystem();
+  pinMode(LED1, OUTPUT);
+  pinMode(LED2, OUTPUT);
+  pinMode(LED3, OUTPUT);
 }
 
 void loop() {
+  led_status(3);
   while (Serial.available()) {
     String menue_c = Serial.readStringUntil('\n');
     if (menue_c == "sync_time") { //fertig
@@ -89,6 +96,7 @@ void loop() {
 void sync_time() {
   String usertime = "0";
   while(usertime == "0"){
+    led_status(5);
     while (Serial.available()) {
       usertime = Serial.readStringUntil('\n');
     }                                                  //convertiert string hh:mm:ss
@@ -103,6 +111,7 @@ void get_time() {
 void set_ID() { //gibt die ID in HEX am Serial aus; "q" zum abrechen 
   Serial.println("Ready to scan");
   bool set_ID_l = true;
+  led_status(7);
   while (set_ID_l) {
     if (mfrc522.PICC_IsNewCardPresent()) {
       if (mfrc522.PICC_ReadCardSerial()) {
@@ -137,17 +146,7 @@ void read_log() {  //fügt endlog hinzu und gibt den inhalt zeile für zeie aus,
   else{
     Serial.printf("%d nolog %lu\n", station, get_time_in_ms());
   }
-  //wartet auf bestätigungs wort und löscht den log
- // bool wait_for_delete =true;
- // while(wait_for_delete){
- //   while (Serial.available()) {        //ToDO schaun ob ma des löschen kann 
- //     if(Serial.readStringUntil('\n') == "delete"){
- //       SPIFFS.remove(logpath);
- //       Serial.println("deleted");
- //       wait_for_delete = false;
- //     }
- //   }
- // }
+
 }
 
 void delete_log(){
@@ -169,6 +168,7 @@ void ready() {
   bool ready_l = true;
   // ready init stop
   while (ready_l) {
+    led_status(2);
     while (Serial.available()) {        //ToDO schaun ob ma des löschen kann 
       String ready_c = Serial.readStringUntil('\n');
       if (ready_c == "start") {
@@ -193,11 +193,12 @@ void start(){
   myfile.print(" start ");
   myfile.println(time);
   bool start_l = true;
+  led_status(1);
   while(start_l){
     
     // Renn aufzeichnung
     //Lichtschranke
-    if (digitalRead(LS2)) {
+    if (digitalRead(LS)) {
       time = get_time_in_ms();
       if (!tracker.is_duplicate_event(1, time, 1000)) {
         Serial.print(station);
@@ -263,7 +264,7 @@ void start(){
 
 //vvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvv 
 unsigned long get_time_in_ms() {  //gibt die Uhrzeit in ms aus
-  return time(&now) * 1000 + (millis() % 1000) - last_reset + time_by_user;
+  return millis() - last_reset + time_by_user;
 }
 
 unsigned long timeStringToMilliseconds(String timeStr) {
@@ -278,7 +279,7 @@ unsigned long timeStringToMilliseconds(String timeStr) {
 }
 
 void sync_time_ms(unsigned long current_time_by_user) {  //Uhrzeit in ms einstellen
-  last_reset = time(&now) * 1000 + (millis() % 1000);
+  last_reset =  millis();
   time_by_user = current_time_by_user;
 }
 
@@ -322,7 +323,40 @@ boolean InitalizeFileSystem() {  //vom SPIFFS Demoprogramm kopiert, Wird in der 
   return initok;
 }
 
+void led_status(int status){
+  digitalWrite(LED1, LOW);
+  digitalWrite(LED2, LOW);
+  digitalWrite(LED3, LOW);
 
+  switch(status){
+    case 1:
+      digitalWrite(LED1, HIGH);
+      break;
+    case 2:
+      digitalWrite(LED2, HIGH);
+      break;
+    case 3:
+      digitalWrite(LED3, HIGH);
+      break;
+    case 4:
+      digitalWrite(LED1, HIGH);
+      digitalWrite(LED2, HIGH);
+      break;
+    case 5:
+      digitalWrite(LED1, HIGH);
+      digitalWrite(LED3, HIGH);
+      break;
+    case 6:
+      digitalWrite(LED2, HIGH);
+      digitalWrite(LED3, HIGH);
+      break;
+    case 7:
+      digitalWrite(LED1, HIGH);
+      digitalWrite(LED2, HIGH);
+      digitalWrite(LED3, HIGH);
+      break;
+  }
+}
 
 
 
