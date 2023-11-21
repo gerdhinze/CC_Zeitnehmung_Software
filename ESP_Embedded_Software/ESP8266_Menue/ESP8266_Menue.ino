@@ -49,7 +49,7 @@ time_t now;                        // this are the seconds since Epoch (1970) - 
 tm tm;                             // the structure tm holds time information in a more convenient way
 unsigned long last_reset = 0;
 unsigned long time_by_user = 0;
-int station = 3;
+int station = 1;
 String logpath = "log.csv";
 bool logiswritten;
 
@@ -119,7 +119,8 @@ void set_ID() { //gibt die ID in HEX am Serial aus; "q" zum abrechen
         for (byte i = 0; i < mfrc522.uid.size; i++) {
           rfidID = (rfidID << 8) | mfrc522.uid.uidByte[i];
         }
-        Serial.println(rfidID,HEX);
+        String id_string = String("id") + String(rfidID, HEX);
+        Serial.println(id_string);
         set_ID_l = false;   //geht nach erkannter ID aus der funktion
       }
     }
@@ -164,12 +165,12 @@ void ready() {
   // ready init start
   myfile = SPIFFS.open(logpath,"a");  //öffnet file in dem die logs geschrieben werden im anhang modus
   logiswritten = true;  
-  Serial.println("ready"); //Todo funktionen mist
+  Serial.println("ready"); 
   bool ready_l = true;
   // ready init stop
   while (ready_l) {
     led_status(2);
-    while (Serial.available()) {        //ToDO schaun ob ma des löschen kann 
+    while (Serial.available()) {       
       String ready_c = Serial.readStringUntil('\n');
       if (ready_c == "start") {
         start();
@@ -186,27 +187,20 @@ void ready() {
 void start(){
   NFCEventTracker tracker; //map erstellen 
   unsigned long time = get_time_in_ms();
-  Serial.print(station);
-  Serial.print(" start ");
-  Serial.println(time);
-  myfile.print(station);
-  myfile.print(" start ");
-  myfile.println(time);
+  String event = String("ld")+String(station)+" "+String("start")+" "+String(time);
+  Serial.println(event);
+  myfile.println(event);
   bool start_l = true;
   led_status(1);
   while(start_l){
-    
-    // Renn aufzeichnung
+  // Renn aufzeichnung
     //Lichtschranke
     if (digitalRead(LS)) {
       time = get_time_in_ms();
       if (!tracker.is_duplicate_event(1, time, 1000)) {
-        Serial.print(station);
-        Serial.print(" 1 ");
-        Serial.println(time);
-        myfile.print(station);
-        myfile.print(" 1 ");
-        myfile.println(time);
+        String event = String("ld") + String(station)+" "+String(1)+" "+String(time);
+        Serial.println(event);
+        myfile.println(event);
       }
     }
     //Card scan
@@ -218,25 +212,15 @@ void start(){
           rfidID = (rfidID << 8) | mfrc522.uid.uidByte[i];
         }
         if (!tracker.is_duplicate_event(rfidID, time, 1000)) {
-          Serial.print(station);
-          Serial.print(" ");
-          Serial.print(rfidID,HEX);
-          Serial.print(" ");
-          Serial.println(time);
-          myfile.print(station);
-          myfile.print(" ");
-          myfile.print(rfidID,HEX);
-          myfile.print(" ");
-          myfile.println(time);
+          String event = String("ld")+String(station)+" "+String(rfidID,HEX)+" "+String(time);
+          Serial.println(event);
+          myfile.println(event);
         }
       }else{ //keine  ID gelesen
         if (!tracker.is_duplicate_event(0, time, 1000)) {
-          Serial.print(station);
-          Serial.print(" 0 ");
-          Serial.println(time);
-          myfile.print(station);
-          myfile.print(" 0 ");
-          myfile.println(time);
+          String event = String("ld")+String(station)+" "+String(0)+" "+String(time);
+          Serial.println(event);
+          myfile.println(event);
         }
       }
     }
@@ -245,14 +229,9 @@ void start(){
       String start_c = Serial.readStringUntil('\n');
       if (start_c == "q"){
         time = get_time_in_ms();
-        Serial.print(station);
-          Serial.print(" stop ");
-          Serial.println(time);
-          myfile.print(station);
-          myfile.print(" stop ");
-          myfile.println(time);;
-        //ToDO schaun ob ma des file schliesen muss
-       // tracker.clear(); //map löschen
+          String event = String("ld") + String(station)+" "+String("stop")+" "+String(time);
+          Serial.println(event);
+          myfile.println(event);
         start_l = false;
       }
     }
@@ -260,9 +239,6 @@ void start(){
 }
 
 
-
-
-//vvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvv 
 unsigned long get_time_in_ms() {  //gibt die Uhrzeit in ms aus
   return millis() - last_reset + time_by_user;
 }
@@ -290,10 +266,10 @@ void print_time(unsigned long ms) {  //Ausgabe format hh:mm:ss:msmsms
   unsigned long minutes = ms / 60000;
   ms = ms % 60000;
   unsigned long seconds = ms / 1000;
-  unsigned long milliseconds = ms % 1000;
+  //unsigned long milliseconds = ms % 1000;
   // Gib das formatierte Ergebnis aus
    // Erstelle einen String für die formatierte Ausgabe
-  String formatted_time = (hours < 10 ? "0" : "") + String(hours) + ":" +
+  String formatted_time = String("t") + (hours < 10 ? "0" : "") + String(hours) + ":" +
                           (minutes < 10 ? "0" : "") + String(minutes) + ":" +
                           (seconds < 10 ? "0" : "") + String(seconds);
 
@@ -306,7 +282,7 @@ boolean InitalizeFileSystem() {  //vom SPIFFS Demoprogramm kopiert, Wird in der 
   initok = SPIFFS.begin();
   if (!(initok))  // Format SPIFS, of not formatted. - Try 1
   {
-    Serial.println("Format SPIFFS");
+  //  Serial.println("Format SPIFFS");
     SPIFFS.format();
     initok = SPIFFS.begin();
   }
@@ -316,9 +292,9 @@ boolean InitalizeFileSystem() {  //vom SPIFFS Demoprogramm kopiert, Wird in der 
     initok = SPIFFS.begin();
   }
   if (initok) {
-    Serial.println("SPIFFS ist OK");
+  //  Serial.println("SPIFFS ist OK");
   } else {
-    Serial.println("SPIFFS ist nicht OK");
+  //  Serial.println("SPIFFS ist nicht OK");
   }
   return initok;
 }
