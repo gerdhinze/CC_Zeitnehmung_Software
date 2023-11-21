@@ -88,7 +88,6 @@ void loop() {
     if (menue_c == "test") {
       test();
     }
-
   }
 }
 
@@ -175,9 +174,9 @@ void ready() {
         start();
       }
       if (ready_c == "q") {
-        myfile.close(); //schliest wieder das file für logs
-        Serial.println("qVorgang gestoppt");
+        Serial.println("q");
         ready_l = false;
+        myfile.close(); //schliest wieder das file für logs
       }
     }
   }
@@ -229,10 +228,9 @@ void start(){
       String start_c = Serial.readStringUntil('\n');
       if (start_c == "q"){
         time = get_time_in_ms();
-        String event = String("ld") + String(station)+" "+String("stop")+" "+String(time);
-        Serial.println(event);
-        myfile.println(event);
-        Serial.println("qVorgang gestoppt");
+          String event = String("ld") + String(station)+" "+String("stop")+" "+String(time);
+          Serial.println(event);
+          myfile.println(event);
         start_l = false;
       }
     }
@@ -335,7 +333,7 @@ void led_status(int status){
 }
 
 
-
+//vvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvv
 
 
 
@@ -343,14 +341,42 @@ void test(){
   unsigned long jetzt=0;
   bool test = true;
   while (test){
-    while (Serial.available()) {        
-      if(Serial.readStringUntil('\n') == "q"){
+    led_status(3);
+    while (Serial.available()) {
+      String test_c = Serial.readStringUntil('\n');
+      if (test_c == "sync_time") { //fertig
+        sync_time_test();
+      }
+      if (test_c == "get_time") { //fertig
+        get_time();
+      }
+      if (test_c == "set_ID") { //fertig
+        set_ID(); //gibt nur die ID zurück
+      }
+      if (test_c == "read_log") {
+        read_log(); 
+      }
+      if (test_c == "delete_log"){
+        delete_log();
+      }
+      if (test_c == "ready") {
+        ready();
+      }
+      if (test_c == "q") {
         test = false;
       }
     }
-    if ((get_time_in_ms()-jetzt) >= 1000){
-      Serial.println(get_time_in_ms());
-      jetzt = get_time_in_ms();
-    }
   }
+}
+
+sync_time_test();
+
+int random(int min, int max) {
+    // Initialisiere den Zufallszahlengenerator mit der aktuellen Zeit
+    srand(time(0));
+
+    // Generiere eine zufällige Zahl zwischen 1 und 1000
+    int random_number = rand() % max + min;
+
+    return random_number;
 }
