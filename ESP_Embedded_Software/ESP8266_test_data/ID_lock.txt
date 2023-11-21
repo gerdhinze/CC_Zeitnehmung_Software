@@ -1,0 +1,22 @@
+#include <map>
+
+class NFCEventTracker
+{
+public:
+    bool is_duplicate_event(unsigned long nfc_id, unsigned long timestamp)
+    {
+        std::map<unsigned long/*nfc id*/, unsigned long/*timestamp*/>::const_iterator last = _last_events.find(nfc_id);
+        if (last != _last_events.end()) {
+            unsigned long last_timestamp = last->second;
+            if (timestamp - last_timestamp < 1000)
+                return true;
+        }
+        _last_events[nfc_id] = timestamp;
+        return false;
+    }
+
+    void clear() { _last_events.clear(); }
+
+private:
+    std::map<unsigned long/*nfc id*/, unsigned long/*timestamp*/> _last_events;
+};
