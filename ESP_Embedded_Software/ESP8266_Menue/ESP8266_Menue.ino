@@ -49,7 +49,7 @@ time_t now;                        // this are the seconds since Epoch (1970) - 
 tm tm;                             // the structure tm holds time information in a more convenient way
 unsigned long last_reset = 0;
 unsigned long time_by_user = 0;
-int station = 3;
+int station = 1;
 String logpath = "log.csv";
 bool logiswritten;
 
@@ -119,7 +119,8 @@ void set_ID() { //gibt die ID in HEX am Serial aus; "q" zum abrechen
         for (byte i = 0; i < mfrc522.uid.size; i++) {
           rfidID = (rfidID << 8) | mfrc522.uid.uidByte[i];
         }
-        Serial.println(rfidID,HEX);
+        String id_string ="id"+ (rfidID,HEX);
+        Serial.println(id_string);
         set_ID_l = false;   //geht nach erkannter ID aus der funktion
       }
     }
@@ -290,10 +291,10 @@ void print_time(unsigned long ms) {  //Ausgabe format hh:mm:ss:msmsms
   unsigned long minutes = ms / 60000;
   ms = ms % 60000;
   unsigned long seconds = ms / 1000;
-  unsigned long milliseconds = ms % 1000;
+  //unsigned long milliseconds = ms % 1000;
   // Gib das formatierte Ergebnis aus
    // Erstelle einen String für die formatierte Ausgabe
-  String formatted_time = (hours < 10 ? "0" : "") + String(hours) + ":" +
+  String formatted_time = String("t") + (hours < 10 ? "0" : "") + String(hours) + ":" +
                           (minutes < 10 ? "0" : "") + String(minutes) + ":" +
                           (seconds < 10 ? "0" : "") + String(seconds);
 
@@ -306,7 +307,7 @@ boolean InitalizeFileSystem() {  //vom SPIFFS Demoprogramm kopiert, Wird in der 
   initok = SPIFFS.begin();
   if (!(initok))  // Format SPIFS, of not formatted. - Try 1
   {
-    Serial.println("Format SPIFFS");
+  //  Serial.println("Format SPIFFS");
     SPIFFS.format();
     initok = SPIFFS.begin();
   }
@@ -316,9 +317,9 @@ boolean InitalizeFileSystem() {  //vom SPIFFS Demoprogramm kopiert, Wird in der 
     initok = SPIFFS.begin();
   }
   if (initok) {
-    Serial.println("SPIFFS ist OK");
+  //  Serial.println("SPIFFS ist OK");
   } else {
-    Serial.println("SPIFFS ist nicht OK");
+  //  Serial.println("SPIFFS ist nicht OK");
   }
   return initok;
 }
