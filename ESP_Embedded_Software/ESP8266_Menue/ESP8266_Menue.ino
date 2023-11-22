@@ -164,14 +164,14 @@ void ready() {
   // ready init start
   myfile = SPIFFS.open(logpath,"a");  //öffnet file in dem die logs geschrieben werden im anhang modus
   logiswritten = true;  
-  Serial.println("ready"); 
+  Serial.println("iris ready"); 
   bool ready_l = true;
   // ready init stop
   while (ready_l) {
     led_status(2);
     while (Serial.available()) {       
       String ready_c = Serial.readStringUntil('\n');
-      if (ready_c == "start") {
+      if (ready_c == "ready") {
         start();
       }
       if (ready_c == "q") {

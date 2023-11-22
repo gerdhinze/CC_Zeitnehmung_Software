@@ -1,4 +1,4 @@
-function [time_esp, command] = get_time(esp, parity)
+function [time_esp, command, receive] = get_time(esp, parity)
     % Initialize output variable
     time_esp = [];
     
@@ -12,12 +12,15 @@ function [time_esp, command] = get_time(esp, parity)
             if startsWith(string, 't')
                 % Eliminate first charakter
                 time_esp = extractAfter(string, 1);
+                receive = 'Realtime gesendet';
             else
-            time_esp = 'Keine Antwort';
+            time_esp = '00:00:00';
+            receive = 'Keine Antwort';
             end
         end
     else
         command = 'Keine Verbindung';
+        receive = 'Keine Verbindung';
         % Handle the case where parity is not equal to 1
         time_esp = '00:00:00';
     end

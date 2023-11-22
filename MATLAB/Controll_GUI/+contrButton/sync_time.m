@@ -14,7 +14,7 @@ function[realtime, command, receive] = sync_time(esp, parity)
             command = 'sync_time';
             fprintf(esp, command);
             fprintf(esp, realtime);
-            receive = 'Realtime gesendet';
+            receive = 'Realtime erhalten';
         else
             command = 'Keine Verbindung';
             receive = 'Keine Verbindung';

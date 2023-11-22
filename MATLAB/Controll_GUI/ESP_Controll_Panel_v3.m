@@ -25,27 +25,27 @@ txtLabelCommand= uilabel(controll_gui, 'Position', [50 310 200 40], 'Text', 'Com
 txtAreaCommand = uitextarea(controll_gui, 'Position', [50 240 210 80], 'Editable', false, 'FontSize', 15);
 
 % Create a uitextareas for commands - ESP1
-txtLabelESP1_tx = uilabel(controll_gui, 'Position', [300 410 200 40], 'Text', 'Command:', 'FontSize',15);
+txtLabelESP1_tx = uilabel(controll_gui, 'Position', [300 410 200 40], 'Text', 'Command to Station:', 'FontSize',15);
 txtAreaESP1_tx = uitextarea(controll_gui, 'Position', [300 340 210 80], 'Editable', false, 'FontSize', 13);
 
 % Create a uitextareas for response - ESP1
-txtLabelESP1_rx = uilabel(controll_gui, 'Position', [300 310 200 40], 'Text', 'Response:', 'FontSize',15);
+txtLabelESP1_rx = uilabel(controll_gui, 'Position', [300 310 200 40], 'Text', 'Response from Station:', 'FontSize',15);
 txtAreaESP1_rx = uitextarea(controll_gui, 'Position', [300 240 210 80], 'Editable', false, 'FontSize', 13);
 
 % Create a uitextareas for commands - ESP2
-txtLabelESP2_tx = uilabel(controll_gui, 'Position', [530 410 200 40], 'Text', 'Command:', 'FontSize',15);
+txtLabelESP2_tx = uilabel(controll_gui, 'Position', [530 410 200 40], 'Text', 'Command to Station:', 'FontSize',15);
 txtAreaESP2_tx = uitextarea(controll_gui, 'Position', [530 340 210 80], 'Editable', false, 'FontSize', 13);
 
 % Create a uitextareas for response - ESP2
-txtLabelESP2_rx = uilabel(controll_gui, 'Position', [530 310 200 40], 'Text', 'Response:', 'FontSize',15);
+txtLabelESP2_rx = uilabel(controll_gui, 'Position', [530 310 200 40], 'Text', 'Response from Station:', 'FontSize',15);
 txtAreaESP2_rx = uitextarea(controll_gui, 'Position', [530 240 210 80], 'Editable', false, 'FontSize', 13);
 
 % Create a uitextareas for commands - ESP3
-txtLabelESP3_tx = uilabel(controll_gui, 'Position', [760 410 200 40], 'Text', 'Command:', 'FontSize',15);
+txtLabelESP3_tx = uilabel(controll_gui, 'Position', [760 410 200 40], 'Text', 'Command to Station:', 'FontSize',15);
 txtAreaESP3_tx = uitextarea(controll_gui, 'Position', [760 340 210 80], 'Editable', false, 'FontSize', 13);
 
 % Create a uitextareas for response - ESP3
-txtLabelESP3_rx = uilabel(controll_gui, 'Position', [760 310 200 40], 'Text', 'Response:', 'FontSize',15);
+txtLabelESP3_rx = uilabel(controll_gui, 'Position', [760 310 200 40], 'Text', 'Response from Station:', 'FontSize',15);
 txtAreaESP3_rx = uitextarea(controll_gui, 'Position', [760 240 210 80], 'Editable', false, 'FontSize', 13);
 %---------------------------------------------------------------------------------------------------------------
 %FINDING AVALABLE PORTS
@@ -146,20 +146,22 @@ btnSetID = uibutton(controll_gui, 'push', 'Text', 'Set ID', 'Position', [300 140
 %---------------------------------------------------------------------------------------------------------------
 %"Ready" button
 btnReady = uibutton(controll_gui, 'push', 'Text', 'Ready', 'Position', [300 80 100 40], 'BackgroundColor', 'yellow','ButtonPushedFcn', ...
-    @(btnReady, event) readyButtonCallback(txtAreaCommand, esp1, parity1, esp2, parity2, esp3, parity3));
+    @(btnReady, event) readyButtonCallback(txtAreaCommand, esp1, parity1, esp2, parity2, esp3, parity3, ...
+    txtAreaESP1_tx, txtAreaESP2_tx, txtAreaESP3_tx, txtAreaESP1_rx, txtAreaESP2_rx, txtAreaESP3_rx));
 %---------------------------------------------------------------------------------------------------------------
 %"Start" button
 btnStart = uibutton(controll_gui, 'push', 'Text', 'Start', 'Position', [300 20 100 40], 'BackgroundColor', 'green', 'ButtonPushedFcn', ...
-    @(btnStart, event) startButtonCallback(txtAreaCommand, esp1, parity1, esp2, parity2, esp3, parity3));
+    @(btnStart, event) startButtonCallback(txtAreaCommand, esp1, parity1, esp2, parity2, esp3, parity3, ...
+    txtAreaESP1_tx, txtAreaESP2_tx, txtAreaESP3_tx, txtAreaESP1_rx, txtAreaESP2_rx, txtAreaESP3_rx));
 %---------------------------------------------------------------------------------------------------------------
 %"read_log" button
 txtRead_log_Label = uilabel(controll_gui, 'Position', [530,200,130,40], 'Text', 'Daten-Controll','FontSize',20);
 btnRead_log = uibutton(controll_gui, 'push', 'Text', 'Read logged data', 'Position', [530 140 150 40], 'ButtonPushedFcn', ...
-    @(btnRead_log, event) read_logButtonCallback(txtAreaCommand));
+    @(btnRead_log, event) read_logButtonCallback(txtAreaCommand, txtAreaESP1_tx, txtAreaESP2_tx, txtAreaESP3_tx, txtAreaESP1_rx, txtAreaESP2_rx, txtAreaESP3_rx));
 %---------------------------------------------------------------------------------------------------------------
 %"delete_log" button
 btnDelete_log = uibutton(controll_gui, 'push', 'Text', 'Delete logged data', 'Position', [530 80 150 40], 'ButtonPushedFcn', ...
-    @(btnDelete_log, event) delete_logButtonCallback(txtAreaCommand));
+    @(btnDelete_log, event) delete_logButtonCallback(txtAreaCommand, txtAreaESP1_tx, txtAreaESP2_tx, txtAreaESP3_tx, txtAreaESP1_rx, txtAreaESP2_rx, txtAreaESP3_rx));
 %---------------------------------------------------------------------------------------------------------------
 %% 
 %##########################################################################
@@ -307,15 +309,15 @@ function syncButtonCallback(txtArea_realtime, txtArea_time_esp1, txtArea_time_es
         txtAreaESP2_tx.Value = command_esp2;
         txtAreaESP3_tx.Value = command_esp3;
 
-        %Write receive in txtArea
+        %Write respond in txtArea
         txtAreaESP1_rx.Value = respond_esp1;
         txtAreaESP2_rx.Value = respond_esp2;
         txtAreaESP3_rx.Value = respond_esp3;
 
         %Calling function get_time
-        [realtime_esp1, command_esp1] = contrButton.get_time(esp1, parity1);
-        [realtime_esp2, command_esp2] = contrButton.get_time(esp2, parity2);
-        [realtime_esp3, command_esp3] = contrButton.get_time(esp3, parity3);
+        [realtime_esp1, command_esp1, respond_esp1] = contrButton.get_time(esp1, parity1);
+        [realtime_esp2, command_esp2, respond_esp2] = contrButton.get_time(esp2, parity2);
+        [realtime_esp3, command_esp3, respond_esp3] = contrButton.get_time(esp3, parity3);
         
         %Write realtime in txtArea
         txtArea_realtime.Value = realtime;
@@ -327,6 +329,11 @@ function syncButtonCallback(txtArea_realtime, txtArea_time_esp1, txtArea_time_es
         txtAreaESP1_tx.Value = command_esp1;
         txtAreaESP2_tx.Value = command_esp2;
         txtAreaESP3_tx.Value = command_esp3;
+
+        %Write respond in txtArea
+        txtAreaESP1_rx.Value = respond_esp1;
+        txtAreaESP2_rx.Value = respond_esp2;
+        txtAreaESP3_rx.Value = respond_esp3;
 
         txtAreaCommand.Value = 'Zeit erfolgreich aktualisiert.';
         disp('Zeit erfolgreich aktualisiert');
@@ -403,7 +410,7 @@ end
 
 % Callback function for the "Set ID" button
 function setIDButtonCallback(dropdown, txtAreaCommand, txtAreaESP1_tx, txtAreaESP1_rx)
-    try
+    % try
         global esp1 parity1;
         % Get the selected team from the dropdown menu
         selectedTeam = dropdown.Value;
@@ -419,31 +426,61 @@ function setIDButtonCallback(dropdown, txtAreaCommand, txtAreaESP1_tx, txtAreaES
 
         txtAreaCommand.Value = ['ID erfolgreich gesetzt for Team: ' selectedTeam];
         disp(['ID erfolgreich gesetzt für Team: ' selectedTeam]);
-    catch
-          errordlg('Fehler beim ID-Setting.', 'Error');
-    end
+    % catch
+    %       errordlg('Fehler beim ID-Setting.', 'Error');
+    % end
 end
 %---------------------------------------------------------------------------------------------------------------
 % Callback function for the "Ready" button
-function readyButtonCallback(txtAreaCommand, esp1, parity1, esp2, parity2, esp3, parity3)
-    try
+function readyButtonCallback(txtAreaCommand, esp1, parity1, esp2, parity2, esp3, parity3, ...
+    txtAreaESP1_tx, txtAreaESP2_tx, txtAreaESP3_tx, txtAreaESP1_rx, txtAreaESP2_rx, txtAreaESP3_rx)
+    % try
+        global esp1 esp2 esp3;
+        global parity1 parity2 parity3;
+        
         % Call the function to perform actions when the system is ready
-        contrButton.isready(esp1, parity1);
-        contrButton.isready(esp2, parity2);
-        contrButton.isready(esp3, parity3);
+        [command_esp1, respond_esp1] = contrButton.isready(esp1, parity1);
+        [command_esp2, respond_esp2] = contrButton.isready(esp2, parity2);
+        [command_esp3, respond_esp3] = contrButton.isready(esp3, parity3);
+
+        %Write sent command in txtArea
+        txtAreaESP1_tx.Value = command_esp1;
+        txtAreaESP2_tx.Value = command_esp2;
+        txtAreaESP3_tx.Value = command_esp3;
+
+        %Write receive in txtArea
+        txtAreaESP1_rx.Value = respond_esp1;
+        txtAreaESP2_rx.Value = respond_esp2;
+        txtAreaESP3_rx.Value = respond_esp3;
+
         txtAreaCommand.Value = 'System ist bereit.';
         disp('System ist bereit.');
-    catch
-        errordlg('Fehler beim Vorbereiten des Systems.', 'Error');
-    end
+    % catch
+    %     errordlg('Fehler beim Vorbereiten des Systems.', 'Error');
+    % end
 end
 %---------------------------------------------------------------------------------------------------------------
 % Callback function for the "Start" button
-function startButtonCallback(txtAreaCommand, esp1, parity1, esp2, parity2, esp3, parity3)
+function startButtonCallback(txtAreaCommand, esp1, parity1, esp2, parity2, esp3, parity3,...
+    txtAreaESP1_tx, txtAreaESP2_tx, txtAreaESP3_tx, txtAreaESP1_rx, txtAreaESP2_rx, txtAreaESP3_rx)
     try
-        contrButton.start(esp1, parity1, 'data_race.mat');
-        contrButton.start(esp2, parity2, 'data_race.mat');
-        contrButton.start(esp3, parity3, 'data_race.mat');
+        global esp1 esp2 esp3;
+        global parity1 parity2 parity3;
+
+        [command_esp1, respond_esp1] = contrButton.start(esp1, parity1, 'data_race.mat');
+        [command_esp2, respond_esp2] = contrButton.start(esp2, parity2, 'data_race.mat');
+        [command_esp3, respond_esp3] = contrButton.start(esp3, parity3, 'data_race.mat');
+
+        %Write sent command in txtArea
+        txtAreaESP1_tx.Value = command_esp1;
+        txtAreaESP2_tx.Value = command_esp2;
+        txtAreaESP3_tx.Value = command_esp3;
+
+        %Write receive in txtArea
+        txtAreaESP1_rx.Value = respond_esp1;
+        txtAreaESP2_rx.Value = respond_esp2;
+        txtAreaESP3_rx.Value = respond_esp3;
+
         txtAreaCommand.Value = 'Start des Rennens!';
         disp('Start des Rennens');
     catch
@@ -452,35 +489,56 @@ function startButtonCallback(txtAreaCommand, esp1, parity1, esp2, parity2, esp3,
 end
 %---------------------------------------------------------------------------------------------------------------
 %Callback function for the "read_log" button
-function read_logButtonCallback(txtAreaCommand)
+function read_logButtonCallback(txtAreaCommand, txtAreaESP1_tx, ...
+    txtAreaESP2_tx, txtAreaESP3_tx, txtAreaESP1_rx, txtAreaESP2_rx, txtAreaESP3_rx)
     try
         global esp1 esp2 esp3;
         global parity1 parity2 parity3;
 
-        contrButton.read_log(esp1, parity1);
-        contrButton.read_log(esp2, parity2);
-        contrButton.read_log(esp3, parity3);
+        [command_esp1, respond_esp1] = contrButton.read_log(esp1, parity1);
+        [command_esp2, respond_esp2] = contrButton.read_log(esp2, parity2);
+        [command_esp3, respond_esp3] = contrButton.read_log(esp3, parity3);
+
+        %Write sent command in txtArea
+        txtAreaESP1_tx.Value = command_esp1;
+        txtAreaESP2_tx.Value = command_esp2;
+        txtAreaESP3_tx.Value = command_esp3;
+
+        %Write receive in txtArea
+        txtAreaESP1_rx.Value = respond_esp1;
+        txtAreaESP2_rx.Value = respond_esp2;
+        txtAreaESP3_rx.Value = respond_esp3;
+
         txtAreaCommand.Value = 'Geloggten Daten erfolgreich ausgelesen!';
-        disp(datalog);
     catch
         errordlg('Fehler beim Lesen der gelog. Daten.', 'Error');
     end
 end
 %---------------------------------------------------------------------------------------------------------------
 %Callback function for the "delete_log" button
-function delete_logButtonCallback(txtAreaCommand)
+function delete_logButtonCallback(txtAreaCommand, txtAreaESP1_tx, ...
+    txtAreaESP2_tx, txtAreaESP3_tx, txtAreaESP1_rx, txtAreaESP2_rx, txtAreaESP3_rx)
     try
         global esp1 esp2 esp3;
         global parity1 parity2 parity3;
 
-        message1 = delete_log(esp1, parity1);
-        txtAreaCommand.Value = ['ESP1 -->' + message1];
-        message2 = delete_log(esp2, parity2);
-        txtAreaCommand.Value = ['ESP2 -->' + message2];
-        message3 = delete_log(esp3, parity3);
-        txtAreaCommand.Value = ['ESP3 -->' + message3];
-    catch
+        [command_esp1, respond_esp1] = contrButton.delete_log(esp1, parity1);
+        [command_esp2, respond_esp2] = contrButton.delete_log(esp2, parity2);
+        [command_esp3, respond_esp3] = contrButton.delete_log(esp3, parity3);
+        
+        %Write sent command in txtArea
+        txtAreaESP1_tx.Value = command_esp1;
+        txtAreaESP2_tx.Value = command_esp2;
+        txtAreaESP3_tx.Value = command_esp3;
 
+        %Write receive in txtArea
+        txtAreaESP1_rx.Value = respond_esp1;
+        txtAreaESP2_rx.Value = respond_esp2;
+        txtAreaESP3_rx.Value = respond_esp3;
+
+        txtAreaCommand.Value = 'Geloggten Daten erfolgreich gelöscht!';
+    catch
+        errordlg('Fehler beim Löschen der gelog. Daten.', 'Error');
     end
 end
 %---------------------------------------------------------------------------------------------------------------

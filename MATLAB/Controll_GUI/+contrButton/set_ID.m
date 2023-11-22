@@ -23,9 +23,9 @@ function [command, receive] = set_ID(selectedTeam, esp, parity)
 
             % Split the string into its components
             data_esp = strsplit(string, ' ');
-    
+            display(data_esp);
+            
             % % Ensure that there are enough elements in splitstring
-            % if numel(data_esp) >= 3
             data.teamname = data_esp{1};  % Assuming teamname is a string
             data.id = str2double(data_esp{2});
             data.pos = str2double(data_esp{3});
@@ -36,7 +36,6 @@ function [command, receive] = set_ID(selectedTeam, esp, parity)
             % Load the existing data and update it
             load('id_file.mat');
             save('id_file.mat', 'data');
-            % end
         else
             receive = 'Bitte Wiederholen!';
         end
