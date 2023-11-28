@@ -14,7 +14,7 @@ function [command, receive] = set_ID(selectedTeam, esp, parity)
             string = fgets(esp);
 
             % Uncomment the following line if checking for a response starting with 'id'
-            % if startsWith(string, 'id')
+            if startsWith(string, 'id')
                 % Eliminate the first character
                 string = extractAfter(string, 1);
                 receive = string(2:14);
@@ -30,9 +30,9 @@ function [command, receive] = set_ID(selectedTeam, esp, parity)
                 
                 % Write data in .csv file
                 writecell(data_csv, 'ID-file.csv');
-            % else
-            %     receive = 'Bitte Wiederholen!';
-            % end
+            else
+                receive = 'Bitte Wiederholen!';
+            end
         end
     elseif parity == 0
         command = 'Keine Verbindung';

@@ -5,7 +5,9 @@ warning('off');
 %Gloabal variables
 global esp1 esp2 esp3;
 global parity1 parity2 parity3;
-global t;
+global t stop_value;
+
+stop_value = 0;
 
 %##########################################################################
 %       GUI - Objects
@@ -235,7 +237,7 @@ function disconnectAllButtonCallback(txtAreaCommand, txtPort1, txtPort2, txtPort
     try
         global esp1 esp2 esp3;
         global parity1 parity2 parity3;
-        
+
         [parity1, parity2, parity3] = contrButton.disconnect_esp_all(esp1, parity1, esp2, parity2, esp3, parity3);
         disp('Alle Verbindungen getrennt.');
 
@@ -355,14 +357,15 @@ end
 %Callback function for the stop button
 function stopButtonCallback(txtAreaCommand, ...
     txtAreaESP1_tx, txtAreaESP2_tx, txtAreaESP3_tx, txtAreaESP1_rx, txtAreaESP2_rx, txtAreaESP3_rx)
-    try
+    % try
         global esp1 esp2 esp3;
         global parity1 parity2 parity3;
-        global t;
+        global t stop_value;
 
         % Stop the timer when done
         stop(t);
         clear t;
+        stop_value = 1;
 
         [command_esp1, respond_esp1] = contrButton.stop(esp1, parity1);
         [command_esp2, respond_esp2] = contrButton.stop(esp2, parity2);
@@ -381,9 +384,9 @@ function stopButtonCallback(txtAreaCommand, ...
         txtAreaCommand.Value = 'Vorgang gestoppt.';
         disp('Vorgang gestoppt.');
         
-    catch
-       errordlg('Fehler beim Stoppen.', 'Fehler');
-    end
+    % catch
+    %    errordlg('Fehler beim Stoppen.', 'Fehler');
+    % end
 end
 %---------------------------------------------------------------------------------------------------------------
 % Callback function for the "Search Ports" button
@@ -437,7 +440,7 @@ end
 % Callback function for the "Ready" button
 function readyButtonCallback(txtAreaCommand, esp1, parity1, esp2, parity2, esp3, parity3, ...
     txtAreaESP1_tx, txtAreaESP2_tx, txtAreaESP3_tx, txtAreaESP1_rx, txtAreaESP2_rx, txtAreaESP3_rx)
-    % try
+    try
         global esp1 esp2 esp3;
         global parity1 parity2 parity3;
         
@@ -458,9 +461,9 @@ function readyButtonCallback(txtAreaCommand, esp1, parity1, esp2, parity2, esp3,
 
         txtAreaCommand.Value = 'System ist bereit.';
         disp('System ist bereit.');
-    % catch
-    %     errordlg('Fehler beim Vorbereiten des Systems.', 'Error');
-    % end
+    catch
+        errordlg('Fehler beim Vorbereiten des Systems.', 'Error');
+    end
 end
 %---------------------------------------------------------------------------------------------------------------
 % Callback function for the "Start" button
@@ -469,10 +472,11 @@ function startButtonCallback(txtAreaCommand, esp1, parity1, esp2, parity2, esp3,
     try
         global esp1 esp2 esp3;
         global parity1 parity2 parity3;
+        global stop_value;
 
-        [command_esp1, respond_esp1] = contrButton.start(esp1, parity1, 'data_race.mat');
-        [command_esp2, respond_esp2] = contrButton.start(esp2, parity2, 'data_race.mat');
-        [command_esp3, respond_esp3] = contrButton.start(esp3, parity3, 'data_race.mat');
+        [command_esp1, respond_esp1] = contrButton.start(esp1, parity1, 'data_race.csv', stop_value);
+        [command_esp2, respond_esp2] = contrButton.start(esp2, parity2, 'data_race.csv', stop_value);
+        [command_esp3, respond_esp3] = contrButton.start(esp3, parity3, 'data_race.csv', stop_value);
 
         %Write sent command in txtArea
         txtAreaESP1_tx.Value = command_esp1;
