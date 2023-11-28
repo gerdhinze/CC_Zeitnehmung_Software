@@ -1,5 +1,6 @@
 clear;
 clear commandwindow;
+warning('off');
 
 %Gloabal variables
 global esp1 esp2 esp3;
@@ -234,6 +235,7 @@ function disconnectAllButtonCallback(txtAreaCommand, txtPort1, txtPort2, txtPort
     try
         global esp1 esp2 esp3;
         global parity1 parity2 parity3;
+        
         [parity1, parity2, parity3] = contrButton.disconnect_esp_all(esp1, parity1, esp2, parity2, esp3, parity3);
         disp('Alle Verbindungen getrennt.');
 
@@ -250,6 +252,7 @@ end
 function disconnectButton1Callback(txtPort1, txtAreaCommand)
     try
         global parity1 esp1;
+
         % call Port-number from the textarea to disconnect
         port1Number = txtPort1.Value;
         parity1 = contrButton.disconnect_ESP(port1Number, parity1, esp1);
@@ -410,7 +413,7 @@ end
 
 % Callback function for the "Set ID" button
 function setIDButtonCallback(dropdown, txtAreaCommand, txtAreaESP1_tx, txtAreaESP1_rx)
-    % try
+    try
         global esp1 parity1;
         % Get the selected team from the dropdown menu
         selectedTeam = dropdown.Value;
@@ -426,9 +429,9 @@ function setIDButtonCallback(dropdown, txtAreaCommand, txtAreaESP1_tx, txtAreaES
 
         txtAreaCommand.Value = ['ID erfolgreich gesetzt for Team: ' selectedTeam];
         disp(['ID erfolgreich gesetzt für Team: ' selectedTeam]);
-    % catch
-    %       errordlg('Fehler beim ID-Setting.', 'Error');
-    % end
+    catch
+          errordlg('Fehler beim ID-Setting.', 'Error');
+    end
 end
 %---------------------------------------------------------------------------------------------------------------
 % Callback function for the "Ready" button

@@ -12,7 +12,7 @@ void setup() // Beginn des Setups:
 
 {
 
-Serial.begin(9600); // Serielle Verbindung starten (Monitor)
+Serial.begin(115200); // Serielle Verbindung starten (Monitor)
 SPI.begin(); // SPI-Verbindung aufbauen
 
 mfrc522.PCD_Init(); // Initialisierung des RFID-Empfängers

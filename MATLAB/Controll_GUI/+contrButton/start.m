@@ -20,13 +20,14 @@ function[command, receive] = start(esp, parity, dataFile)
                 % Split the string into its components
                 splitstring = strsplit(data_esp, ' ');
 
-                data.station = str2double(splitstring{1});
+                data.pos = str2double(splitstring{1});
                 data.id = str2double(splitstring{2});
                 data.timestamp = str2double(splitstring{3});
 
-                % Save data to the specified file
-                load(dataFile);
-                save(dataFile, 'data');
+                data_csv = {'Station Nr.', 'ID', 'Time'; data.pos, data.id, data.timestamp};
+                
+                % Write data in .csv file
+                writecell(data_csv, 'Data-Log.csv');
             else
                 receive = 'Keine Antwort';
             end
