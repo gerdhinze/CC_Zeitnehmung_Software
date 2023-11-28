@@ -10,9 +10,13 @@ MFRC522 mfrc522(SS_PIN, RST_PIN);  // RFID-Empfänger benennen
 void setup()  // Beginn des Setups:
 
 {
-  Serial.begin(115200);  // Serielle Verbindung starten (Monitor)
-  SPI.begin();           // SPI-Verbindung aufbauen
-  mfrc522.PCD_Init();  // Initialisierung des RFID-Empfängers
+
+Serial.begin(115200); // Serielle Verbindung starten (Monitor)
+SPI.begin(); // SPI-Verbindung aufbauen
+
+mfrc522.PCD_Init(); // Initialisierung des RFID-Empfängers
+pinMode(LS1, INPUT);
+pinMode(LS2, INPUT);
 }
 
 void loop()  // Hier beginnt der Loop-Teil

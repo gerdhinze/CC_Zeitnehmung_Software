@@ -1,0 +1,45 @@
+function [command, receive] = set_ID(selectedTeam, esp, parity)
+
+    receive = '';
+    command = '';
+
+    if parity == 1
+    command = 'set_ID';
+    % Save the team name to a file
+    save('id_file.mat', 'selectedTeam');
+
+     % Send the set_ID command to esp1
+    fprintf(esp, command);
+    
+    % Wait for and process the response from esp1
+    while esp.BytesAvailable > 0
+        string = fgets(esp);
+
+        if startsWith(string, 'id')
+            % Eliminate first charakter
+            string = extractAfter(string, 2);
+            receive = string(2:14);
+            id = extractAfter(string, 14);
+
+            display(id);
+            
+            % % Ensure that there are enough elements in splitstring
+            data.teamname = selectedTeam;  
+            data.id = str2double(id);
+            data.pos = 'Station 1';
+           
+            % Display the data
+            disp([data.teamname, num2str(data.id), num2str(data.pos)]);
+    
+            % Load the existing data and update it
+            load('id_file.mat');
+            save('id_file.mat', 'data');
+        else
+            receive = 'Bitte Wiederholen!';
+        end
+    end
+    elseif parity == 0
+        command = 'Keine Verbindung';
+        receive = 'Keine Verbindung';
+    end
+end
