@@ -116,13 +116,13 @@ if __name__ == "__main__":
     root1 = tk.Tk()
     app1 = SerialMonitorApp(root1)
 
-    root2 = tk.Tk()
-    app2 = SerialMonitorApp(root2)
+#    root2 = tk.Tk()
+#    app2 = SerialMonitorApp(root2)
 
-    root3 = tk.Tk()
-    app3 = SerialMonitorApp(root3)
+#    root3 = tk.Tk()
+#    app3 = SerialMonitorApp(root3)
 
     # Starte die GUIs
     root1.mainloop()
-    root2.mainloop()
-    root3.mainloop()
+   # root2.mainloop()
+   # root3.mainloop()

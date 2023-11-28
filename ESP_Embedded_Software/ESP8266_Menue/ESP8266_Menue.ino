@@ -49,7 +49,7 @@ time_t now;                        // this are the seconds since Epoch (1970) - 
 tm tm;                             // the structure tm holds time information in a more convenient way
 unsigned long last_reset = 0;
 unsigned long time_by_user = 0;
-int station = 2;
+int station = 3;
 String logpath = "log.csv";
 bool logiswritten;
 
@@ -61,6 +61,7 @@ void setup() {
   pinMode(LED1, OUTPUT);
   pinMode(LED2, OUTPUT);
   pinMode(LED3, OUTPUT);
+  mfrc522.PCD_SetAntennaGain(mfrc522.RxGain_max);
 }
 
 void loop() {
@@ -109,9 +110,9 @@ void get_time() {
 }
 
 void set_ID() { //gibt die ID in HEX am Serial aus; "q" zum abrechen 
-  Serial.println("Ready to scan");
-  bool set_ID_l = true;
   led_status(7);
+  Serial.println("idReady to scan");
+  bool set_ID_l = true;
   while (set_ID_l) {
     if (mfrc522.PICC_IsNewCardPresent()) {
       if (mfrc522.PICC_ReadCardSerial()) {
@@ -171,7 +172,7 @@ void ready() {
     led_status(2);
     while (Serial.available()) {       
       String ready_c = Serial.readStringUntil('\n');
-      if (ready_c == "ready") {
+      if (ready_c == "start") {
         start();
       }
       if (ready_c == "q") {
