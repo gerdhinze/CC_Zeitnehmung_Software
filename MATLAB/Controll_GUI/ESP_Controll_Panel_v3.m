@@ -416,7 +416,7 @@ end
 
 % Callback function for the "Set ID" button
 function setIDButtonCallback(dropdown, txtAreaCommand, txtAreaESP1_tx, txtAreaESP1_rx)
-    try
+    % try
         global esp1 parity1;
         % Get the selected team from the dropdown menu
         selectedTeam = dropdown.Value;
@@ -432,9 +432,9 @@ function setIDButtonCallback(dropdown, txtAreaCommand, txtAreaESP1_tx, txtAreaES
 
         txtAreaCommand.Value = ['ID erfolgreich gesetzt for Team: ' selectedTeam];
         disp(['ID erfolgreich gesetzt für Team: ' selectedTeam]);
-    catch
-          errordlg('Fehler beim ID-Setting.', 'Error');
-    end
+    % catch
+    %       errordlg('Fehler beim ID-Setting.', 'Error');
+    % end
 end
 %---------------------------------------------------------------------------------------------------------------
 % Callback function for the "Ready" button

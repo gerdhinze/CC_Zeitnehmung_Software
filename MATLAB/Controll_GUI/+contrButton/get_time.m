@@ -11,8 +11,9 @@ function [time_esp, command, receive] = get_time(esp, parity)
 
             if startsWith(string, 't')
                 % Eliminate first charakter
-                time_esp = extractAfter(string, 1);
                 receive = 'Realtime gesendet';
+                time_esp = extractAfter(string, 1);
+                
             else
             time_esp = '00:00:00';
             receive = 'Keine Antwort';
