@@ -7,16 +7,15 @@ function [time_esp, command, receive] = get_time(esp, parity)
         fprintf(esp, command);
         pause(0.5);
         while esp.BytesAvailable > 0
-            string = fgets(esp);
+            string_time = fgets(esp);
 
-            if startsWith(string, 't')
+            if startsWith(string_time, 't')
                 % Eliminate first charakter
                 receive = 'Realtime gesendet';
-                time_esp = extractAfter(string, 1);
+                time_esp = extractAfter(string_time, 1);
                 
             else
             time_esp = '00:00:00';
-            receive = 'Keine Antwort';
             end
         end
     else

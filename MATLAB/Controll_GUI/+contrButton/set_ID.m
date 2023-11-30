@@ -1,13 +1,13 @@
-function [command, receive] = set_ID(selectedTeam, esp, parity)
+function set_ID(selectedTeam, esp, parity, txtAreaESP1_tx, txtAreaESP1_rx)
 
-    receive = '';
-    command = '';
     id = '';
     scan = 0;
+    file = 'ID_file.csv';
 
     if parity == 1
         command = 'set_ID';
-
+        txtAreaESP1_tx.Value = command;
+        
         % Send the set_ID command to esp
         fprintf(esp, command);
 
@@ -17,10 +17,10 @@ function [command, receive] = set_ID(selectedTeam, esp, parity)
             display(string);
             
             if contains(string, 'id')
-                receive = 'Ready to scan';
+                txtAreaESP1_rx.Value = 'Ready to scan';
                 scan = 1;
             else
-                receive = 'Bitte Wiederholen';
+                txtAreaESP1_rx.Value = 'Bitte Wiederholen';
                 continue;
             end
         end
@@ -32,7 +32,7 @@ function [command, receive] = set_ID(selectedTeam, esp, parity)
                 if  ~isempty(string_id)
                     if startsWith(string_id, 'id')
                         id = extractAfter(string_id, 2);
-                        receive = id;
+                        txtAreaESP1_rx.Value = id;
                         display(id);
                     end
                     scan = 0;
@@ -42,18 +42,21 @@ function [command, receive] = set_ID(selectedTeam, esp, parity)
             end
         end
 
-        % Ensure that there are enough elements in splitstring
-        % data.teamname = selectedTeam;  
-        % data.id = id;
-        % data.pos = 'Station 1';           
-        % 
-        % data_csv = {'Station Nr.', 'Teamname', 'ID'; data.pos, data.teamname, data.id};
+        data.teamname = selectedTeam;  
+        data.id = id;
+        data.pos = 'Station 1';           
 
-        % Write data in .csv file
-        % writecell(data_csv, 'ID-file.csv');
+        data_csv = {'Station Nr.', 'Teamname', 'ID'; data.pos, data.teamname, data.id};
+
+        save(file);
+
+        
+        % Write the combined data back to the file
+        writecell(data_csv, file);
+        
 
     elseif parity == 0
-        command = 'Keine Verbindung';
-        receive = 'Keine Verbindung';
+        txtAreaESP1_tx.Value = 'Keine Verbindung';
+        txtAreaESP1_rx.Value = 'Keine Verbindung';
     end
 end

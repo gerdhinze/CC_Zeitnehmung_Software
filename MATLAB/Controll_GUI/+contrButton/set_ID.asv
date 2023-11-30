@@ -1,13 +1,13 @@
-function [command, receive] = set_ID(selectedTeam, esp, parity)
+function set_ID(selectedTeam, esp, parity, txtAreaESP1_tx, txtAreaESP1_rx)
 
-    receive = '';
-    command = '';
     id = '';
     scan = 0;
+    file = 'ID_file.csv';
 
     if parity == 1
         command = 'set_ID';
-
+        txtAreaESP1_tx.Value = command;
+        
         % Send the set_ID command to esp
         fprintf(esp, command);
 
@@ -17,44 +17,63 @@ function [command, receive] = set_ID(selectedTeam, esp, parity)
             display(string);
             
             if contains(string, 'id')
-                receive = 'Ready to scan';
+                txtAreaESP1_rx.Value = 'Ready to scan';
                 scan = 1;
             else
-                receive = 'Bitte Wiederholen';
+                txtAreaESP1_rx.Value = 'Bitte Wiederholen';
                 continue;
             end
         end
 
         while scan
             while esp.BytesAvailable > 0
-                id = fgets(esp);
+                string_id = fgets(esp);
 
-                if  ~isempty(id)
-                    display(id);
+                if  ~isempty(string_id)
+                    if startsWith(string_id, 'id')
+                        id = extractAfter(string_id, 2);
+                        txtAreaESP1_rx.Value = id;
+                        display(id);
+                    end
                     scan = 0;
                 else
-                    scan = 1;
-                    
-                splitStrings = strsplit(string, 'id');
-
-                    id = splitStrings{2};
-                    disp(['Extrahierter Teil nach "id": ' id]);
+                    scan = 1; 
                 end
             end
         end
 
-        % Ensure that there are enough elements in splitstring
-        % data.teamname = selectedTeam;  
-        % data.id = id;
-        % data.pos = 'Station 1';           
-        % 
-        % data_csv = {'Station Nr.', 'Teamname', 'ID'; data.pos, data.teamname, data.id};
+        data.teamname = selectedTeam;  
+        data.id = id;
+        data.pos = 'Station 1';           
 
-        % Write data in .csv file
-        % writecell(data_csv, 'ID-file.csv');
+        data_csv = {'Station Nr.', 'Teamname', 'ID'; data.pos, data.teamname, data.id};
+
+        save(file);
+
+        % Read the existing data from the file
+        if exist(file, 'file') == 2
+            existingData = readcell(file, 'ReadVariableNames', true);
+        else
+            existingData = {};  % If the file doesn't exist, create an empty cell array
+        end
+        
+        % Create a new row of data
+        newRow = {newPos, selectedTeam, id};
+        
+        % Ensure newRow has the same number of columns as existingData
+        if size(newRow, 2) ~= size(existingData, 2)
+            error('Number of columns in newRow does not match existingData.');
+        end
+        
+        % Append the new row to the existing data
+        combinedData = [existingData; newRow];
+        
+        % Write the combined data back to the file
+        writecell(combinedData, file, 'WriteMode', 'append');
+        
 
     elseif parity == 0
-        command = 'Keine Verbindung';
-        receive = 'Keine Verbindung';
+        txtAreaESP1_tx.Value = 'Keine Verbindung';
+        txtAreaESP1_rx.Value = 'Keine Verbindung';
     end
 end

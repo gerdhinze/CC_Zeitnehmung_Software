@@ -422,14 +422,8 @@ function setIDButtonCallback(dropdown, txtAreaCommand, txtAreaESP1_tx, txtAreaES
         selectedTeam = dropdown.Value;
       
         % Call the function to set the ID (replace with your actual set_ID logic)
-        [command_esp1, respond_esp1] = contrButton.set_ID(selectedTeam, esp1, parity1);
+        contrButton.set_ID(selectedTeam, esp1, parity1, txtAreaESP1_tx, txtAreaESP1_rx);
         
-        %Write sent command in txtArea
-        txtAreaESP1_tx.Value = command_esp1;
-
-        %Write receive in txtArea
-        txtAreaESP1_rx.Value = respond_esp1;
-
         txtAreaCommand.Value = ['ID erfolgreich gesetzt for Team: ' selectedTeam];
         disp(['ID erfolgreich gesetzt für Team: ' selectedTeam]);
     % catch
