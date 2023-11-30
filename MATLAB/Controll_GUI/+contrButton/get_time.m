@@ -1,6 +1,7 @@
 function [time_esp, command, receive] = get_time(esp, parity)
     % Initialize output variable
     time_esp = [];
+    receive = '';
     
     if parity == 1
         command = 'get_time';

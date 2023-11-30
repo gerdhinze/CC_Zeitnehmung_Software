@@ -1,5 +1,6 @@
 function set_ID(selectedTeam, esp, parity, txtAreaESP1_tx, txtAreaESP1_rx)
 
+    string_id = '';
     id = '';
     scan = 0;
     file = 'ID_file.csv';
@@ -28,7 +29,6 @@ function set_ID(selectedTeam, esp, parity, txtAreaESP1_tx, txtAreaESP1_rx)
         while scan
             while esp.BytesAvailable > 0
                 string_id = fgets(esp);
-
                 if  ~isempty(string_id)
                     if startsWith(string_id, 'id')
                         id = extractAfter(string_id, 2);
@@ -41,20 +41,14 @@ function set_ID(selectedTeam, esp, parity, txtAreaESP1_tx, txtAreaESP1_rx)
                 end
             end
         end
-
-        data.teamname = selectedTeam;  
-        data.id = id;
-        data.pos = 'Station 1';           
-
-        data_csv = {'Station Nr.', 'Teamname', 'ID'; data.pos, data.teamname, data.id};
-
+             
         save(file);
 
-        
+        data_csv = {'Station Nr.', 'Teamname', 'ID'; 'Station 1', selectedTeam, id};
+
         % Write the combined data back to the file
         writecell(data_csv, file);
-        
-
+      
     elseif parity == 0
         txtAreaESP1_tx.Value = 'Keine Verbindung';
         txtAreaESP1_rx.Value = 'Keine Verbindung';

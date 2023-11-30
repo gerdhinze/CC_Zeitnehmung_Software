@@ -11,10 +11,9 @@ function [command, receive] = isready(esp, parity)
         while esp.BytesAvailable > 0
             string = fgets(esp);
     
-            if startsWith(string, 'ir')
+            if contains(string, 'ir')
                 % Eliminate first character
-                string = extractAfter(string, 1);
-                receive = string(2:10);
+                receive = 'is ready';
             else
                 receive = 'Bitte Wiederholen!';
             end

@@ -9,7 +9,7 @@ function [command, receive] = stop(esp, parity)
 
         while esp.BytesAvailable > 0
             string = fgets(esp);
-            if startsWith(string, 'q')
+            if contains(string, 'q')
                 % Eliminate the first character
                 receive = extractAfter(string, 1);
             else

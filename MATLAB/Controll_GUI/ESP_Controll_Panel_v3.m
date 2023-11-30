@@ -19,7 +19,7 @@ controll_gui = uifigure('Name', 'Controll-GUI');
 controll_gui.ToolBar = 'none';
 controll_gui.MenuBar = 'none';
 controll_gui.Color = 'white';
-controll_gui.Position = [50,50,1000,600];
+controll_gui.Position = [100,100,1000,600];
 %---------------------------------------------------------------------------------------------------------------
 %TEXTAREAS FOR OUTPUTS
 %---------------------------------------------------------------------------------------------------------------
@@ -361,12 +361,12 @@ function stopButtonCallback(txtAreaCommand, ...
         global esp1 esp2 esp3;
         global parity1 parity2 parity3;
         global t stop_value;
+        stop_value = 1;
 
         % Stop the timer when done
         stop(t);
         clear t;
-        stop_value = 1;
-
+        
         [command_esp1, respond_esp1] = contrButton.stop(esp1, parity1);
         [command_esp2, respond_esp2] = contrButton.stop(esp2, parity2);
         [command_esp3, respond_esp3] = contrButton.stop(esp3, parity3);
@@ -463,14 +463,12 @@ end
 % Callback function for the "Start" button
 function startButtonCallback(txtAreaCommand, esp1, parity1, esp2, parity2, esp3, parity3,...
     txtAreaESP1_tx, txtAreaESP2_tx, txtAreaESP3_tx, txtAreaESP1_rx, txtAreaESP2_rx, txtAreaESP3_rx)
-    try
+    % try
         global esp1 esp2 esp3;
         global parity1 parity2 parity3;
         global stop_value;
 
-        [command_esp1, respond_esp1] = contrButton.start(esp1, parity1, 'data_race.csv', stop_value);
-        [command_esp2, respond_esp2] = contrButton.start(esp2, parity2, 'data_race.csv', stop_value);
-        [command_esp3, respond_esp3] = contrButton.start(esp3, parity3, 'data_race.csv', stop_value);
+        [command_esp1, respond_esp1, command_esp2, respond_esp2, command_esp3, respond_esp3] = contrButton.start('data_race.csv');
 
         %Write sent command in txtArea
         txtAreaESP1_tx.Value = command_esp1;
@@ -484,9 +482,9 @@ function startButtonCallback(txtAreaCommand, esp1, parity1, esp2, parity2, esp3,
 
         txtAreaCommand.Value = 'Start des Rennens!';
         disp('Start des Rennens');
-    catch
-        errordlg('Fehler beim Starten des Systems.', 'Error');
-    end
+    % catch
+    %     errordlg('Fehler beim Starten des Systems.', 'Error');
+    % end
 end
 %---------------------------------------------------------------------------------------------------------------
 %Callback function for the "read_log" button
