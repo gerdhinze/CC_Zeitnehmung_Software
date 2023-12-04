@@ -3,7 +3,8 @@ function set_ID(selectedTeam, esp, parity, txtAreaESP1_tx, txtAreaESP1_rx)
     string_id = '';
     id = '';
     scan = 0;
-    file = 'ID_file.csv';
+    station = 'Station 1';
+    file = './ID_file.csv';
 
     if parity == 1
         command = 'set_ID';
@@ -42,12 +43,27 @@ function set_ID(selectedTeam, esp, parity, txtAreaESP1_tx, txtAreaESP1_rx)
             end
         end
              
-        save(file);
+        % save(file);
 
-        data_csv = {'Station Nr.', 'Teamname', 'ID'; 'Station 1', selectedTeam, id};
+        % data_csv = {'Station Nr.', 'Teamname', 'ID'; 'Station 1', selectedTeam, id};
+        % 
+        % % Write the combined data back to the file
+        % writecell(data_csv, file);
 
-        % Write the combined data back to the file
-        writecell(data_csv, file);
+       headers = {'Station', 'ID', 'Teamname'};
+     
+        newData = table({station}, {id}, {selectedTeam}, 'VariableNames', headers);
+        
+        if exist(file, 'file') == 0
+            % File doesn't exist, create it with headers
+            writetable(newData, file, 'WriteMode', 'overwrite');
+        else
+            % File exists, append data
+            writetable(newData, file, 'WriteMode', 'append', 'WriteVariableNames', false);
+        end
+        
+        disp('Neue Daten wurden zur CSV-Datei hinzugefügt.');
+
       
     elseif parity == 0
         txtAreaESP1_tx.Value = 'Keine Verbindung';

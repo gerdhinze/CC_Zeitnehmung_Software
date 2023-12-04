@@ -154,7 +154,7 @@ btnReady = uibutton(controll_gui, 'push', 'Text', 'Ready', 'Position', [300 80 1
 %---------------------------------------------------------------------------------------------------------------
 %"Start" button
 btnStart = uibutton(controll_gui, 'push', 'Text', 'Start', 'Position', [300 20 100 40], 'BackgroundColor', 'green', 'ButtonPushedFcn', ...
-    @(btnStart, event) startButtonCallback(txtAreaCommand, esp1, parity1, esp2, parity2, esp3, parity3, ...
+    @(btnStart, event) startButtonCallback(txtAreaCommand, ...
     txtAreaESP1_tx, txtAreaESP2_tx, txtAreaESP3_tx, txtAreaESP1_rx, txtAreaESP2_rx, txtAreaESP3_rx));
 %---------------------------------------------------------------------------------------------------------------
 %"read_log" button
@@ -461,57 +461,36 @@ function readyButtonCallback(txtAreaCommand, esp1, parity1, esp2, parity2, esp3,
 end
 %---------------------------------------------------------------------------------------------------------------
 % Callback function for the "Start" button
-function startButtonCallback(txtAreaCommand, esp1, parity1, esp2, parity2, esp3, parity3,...
+function startButtonCallback(txtAreaCommand,...
     txtAreaESP1_tx, txtAreaESP2_tx, txtAreaESP3_tx, txtAreaESP1_rx, txtAreaESP2_rx, txtAreaESP3_rx)
-    % try
+    try
         global esp1 esp2 esp3;
         global parity1 parity2 parity3;
         global stop_value;
-
-        [command_esp1, respond_esp1, command_esp2, respond_esp2, command_esp3, respond_esp3] = contrButton.start('data_race.csv');
-
-        %Write sent command in txtArea
-        txtAreaESP1_tx.Value = command_esp1;
-        txtAreaESP2_tx.Value = command_esp2;
-        txtAreaESP3_tx.Value = command_esp3;
-
-        %Write receive in txtArea
-        txtAreaESP1_rx.Value = respond_esp1;
-        txtAreaESP2_rx.Value = respond_esp2;
-        txtAreaESP3_rx.Value = respond_esp3;
-
+        
         txtAreaCommand.Value = 'Start des Rennens!';
         disp('Start des Rennens');
-    % catch
-    %     errordlg('Fehler beim Starten des Systems.', 'Error');
-    % end
+
+        contrButton.start(txtAreaESP1_tx, txtAreaESP2_tx, txtAreaESP3_tx, txtAreaESP1_rx, txtAreaESP2_rx, txtAreaESP3_rx, 'data_race.csv');
+       
+    catch
+        errordlg('Fehler beim Starten des Systems.', 'Error');
+    end
 end
 %---------------------------------------------------------------------------------------------------------------
 %Callback function for the "read_log" button
 function read_logButtonCallback(txtAreaCommand, txtAreaESP1_tx, ...
     txtAreaESP2_tx, txtAreaESP3_tx, txtAreaESP1_rx, txtAreaESP2_rx, txtAreaESP3_rx)
-    try
+    % try
         global esp1 esp2 esp3;
         global parity1 parity2 parity3;
 
-        [command_esp1, respond_esp1] = contrButton.read_log(esp1, parity1);
-        [command_esp2, respond_esp2] = contrButton.read_log(esp2, parity2);
-        [command_esp3, respond_esp3] = contrButton.read_log(esp3, parity3);
-
-        %Write sent command in txtArea
-        txtAreaESP1_tx.Value = command_esp1;
-        txtAreaESP2_tx.Value = command_esp2;
-        txtAreaESP3_tx.Value = command_esp3;
-
-        %Write receive in txtArea
-        txtAreaESP1_rx.Value = respond_esp1;
-        txtAreaESP2_rx.Value = respond_esp2;
-        txtAreaESP3_rx.Value = respond_esp3;
+        contrButton.read_log(txtAreaESP1_tx, txtAreaESP2_tx, txtAreaESP3_tx, txtAreaESP1_rx, txtAreaESP2_rx, txtAreaESP3_rx);
 
         txtAreaCommand.Value = 'Geloggten Daten erfolgreich ausgelesen!';
-    catch
-        errordlg('Fehler beim Lesen der gelog. Daten.', 'Error');
-    end
+    % catch
+    %     errordlg('Fehler beim Lesen der gelog. Daten.', 'Error');
+    % end
 end
 %---------------------------------------------------------------------------------------------------------------
 %Callback function for the "delete_log" button
