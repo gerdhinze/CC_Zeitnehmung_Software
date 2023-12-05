@@ -463,21 +463,21 @@ end
 % Callback function for the "Start" button
 function startButtonCallback(txtAreaCommand,...
     txtAreaESP1_tx, txtAreaESP2_tx, txtAreaESP3_tx, txtAreaESP1_rx, txtAreaESP2_rx, txtAreaESP3_rx)
-    try
+    % try
         global esp1 esp2 esp3;
         global parity1 parity2 parity3;
         global stop_value;
 
         stop_value = 0;
-        
+
         txtAreaCommand.Value = 'Start des Rennens!';
         disp('Start des Rennens');
 
         contrButton.start(txtAreaESP1_tx, txtAreaESP2_tx, txtAreaESP3_tx, txtAreaESP1_rx, txtAreaESP2_rx, txtAreaESP3_rx, './Output_Files/data_race.csv');
        
-    catch
-        errordlg('Fehler beim Starten des Systems.', 'Error');
-    end
+    % catch
+    %     errordlg('Fehler beim Starten des Systems.', 'Error');
+    % end
 end
 %---------------------------------------------------------------------------------------------------------------
 %Callback function for the "read_log" button

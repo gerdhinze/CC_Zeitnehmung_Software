@@ -40,7 +40,7 @@ function readLogData(esp, dataFile)
 
 while esp.BytesAvailable > 0
         data_esp = fgets(esp);
-        disp('Befinde mich im LOG');
+        disp('Geloggte Daten werden gelesen...');
 
         if contains(data_esp, 'ld')
             "Geloggte Daten werden gelesen";
@@ -52,6 +52,12 @@ while esp.BytesAvailable > 0
                 pos = dataArray{1}(3);
                 id = dataArray{2};
                 timestamp = dataArray{3};
+
+                if contains(id, '1') && length(id)<3
+                    id = 'Lichtschranke';
+                elseif contains(id, '0') && length(id)<3
+                    id = 'ID nicht erkannt';
+                end
                
                 headers = {'Station', 'ID', 'Timestamp'};
      

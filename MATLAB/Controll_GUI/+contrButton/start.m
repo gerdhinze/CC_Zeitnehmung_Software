@@ -59,6 +59,8 @@ function [receive] = processEspData(esp, dataFile)
 
                 if contains(id, '1') && length(id)<3
                     id = 'Lichtschranke';
+                elseif contains(id, '0') && length(id)<3
+                    id = 'ID nicht erkannt';
                 end
 
                disp(['Pos: ' pos ', ID: ' id ', Timestamp: ' timestamp]);
