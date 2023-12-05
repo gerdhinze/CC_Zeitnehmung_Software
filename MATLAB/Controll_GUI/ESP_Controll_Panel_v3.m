@@ -19,7 +19,7 @@ controll_gui = uifigure('Name', 'Controll-GUI');
 controll_gui.ToolBar = 'none';
 controll_gui.MenuBar = 'none';
 controll_gui.Color = 'white';
-controll_gui.Position = [100,100,1000,600];
+controll_gui.Position = [250,250,1000,600];
 %---------------------------------------------------------------------------------------------------------------
 %TEXTAREAS FOR OUTPUTS
 %---------------------------------------------------------------------------------------------------------------
@@ -467,11 +467,13 @@ function startButtonCallback(txtAreaCommand,...
         global esp1 esp2 esp3;
         global parity1 parity2 parity3;
         global stop_value;
+
+        stop_value = 0;
         
         txtAreaCommand.Value = 'Start des Rennens!';
         disp('Start des Rennens');
 
-        contrButton.start(txtAreaESP1_tx, txtAreaESP2_tx, txtAreaESP3_tx, txtAreaESP1_rx, txtAreaESP2_rx, txtAreaESP3_rx, 'data_race.csv');
+        contrButton.start(txtAreaESP1_tx, txtAreaESP2_tx, txtAreaESP3_tx, txtAreaESP1_rx, txtAreaESP2_rx, txtAreaESP3_rx, './Output_Files/data_race.csv');
        
     catch
         errordlg('Fehler beim Starten des Systems.', 'Error');
@@ -481,22 +483,22 @@ end
 %Callback function for the "read_log" button
 function read_logButtonCallback(txtAreaCommand, txtAreaESP1_tx, ...
     txtAreaESP2_tx, txtAreaESP3_tx, txtAreaESP1_rx, txtAreaESP2_rx, txtAreaESP3_rx)
-    % try
+    try
         global esp1 esp2 esp3;
         global parity1 parity2 parity3;
 
         contrButton.read_log(txtAreaESP1_tx, txtAreaESP2_tx, txtAreaESP3_tx, txtAreaESP1_rx, txtAreaESP2_rx, txtAreaESP3_rx);
 
         txtAreaCommand.Value = 'Geloggten Daten erfolgreich ausgelesen!';
-    % catch
-    %     errordlg('Fehler beim Lesen der gelog. Daten.', 'Error');
-    % end
+    catch
+        errordlg('Fehler beim Lesen der gelog. Daten.', 'Error');
+    end
 end
 %---------------------------------------------------------------------------------------------------------------
 %Callback function for the "delete_log" button
 function delete_logButtonCallback(txtAreaCommand, txtAreaESP1_tx, ...
     txtAreaESP2_tx, txtAreaESP3_tx, txtAreaESP1_rx, txtAreaESP2_rx, txtAreaESP3_rx)
-    try
+    % try
         global esp1 esp2 esp3;
         global parity1 parity2 parity3;
 
@@ -515,9 +517,9 @@ function delete_logButtonCallback(txtAreaCommand, txtAreaESP1_tx, ...
         txtAreaESP3_rx.Value = respond_esp3;
 
         txtAreaCommand.Value = 'Geloggten Daten erfolgreich gelöscht!';
-    catch
-        errordlg('Fehler beim Löschen der gelog. Daten.', 'Error');
-    end
+    % catch
+    %     errordlg('Fehler beim Löschen der gelog. Daten.', 'Error');
+    % end
 end
 %---------------------------------------------------------------------------------------------------------------
 % Function to execute in each cycle

@@ -4,6 +4,7 @@ function  start(txtAreaESP1_tx, txtAreaESP2_tx, txtAreaESP3_tx, txtAreaESP1_rx, 
     global parity1 parity2 parity3;
     global stop_value;
 
+
     if parity1 && parity2 && parity3
         command_esp1 = 'start';
         command_esp2 = 'start';
@@ -42,7 +43,7 @@ end
 
 %##############################################################################
 function [receive] = processEspData(esp, dataFile)
-    receive = (['Pos: '  ', ID: '  ', Timestamp: ' ]);
+    receive = '';
     while esp.BytesAvailable > 0
         data_esp = fgets(esp);
         disp(data_esp);
@@ -56,8 +57,13 @@ function [receive] = processEspData(esp, dataFile)
                 id = dataArray{2};
                 timestamp = dataArray{3};
 
+                if contains(id, '1') && length(id)<3
+                    id = 'Lichtschranke';
+                end
+
                disp(['Pos: ' pos ', ID: ' id ', Timestamp: ' timestamp]);
-               receive = (['Pos: ' pos ', ID: ' id ', Timestamp: ' timestamp]);
+
+               receive = ('Aktualisiert...');
 
                 headers = {'Station', 'ID', 'Timestamp'};
      

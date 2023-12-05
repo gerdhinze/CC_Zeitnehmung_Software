@@ -4,7 +4,7 @@ function set_ID(selectedTeam, esp, parity, txtAreaESP1_tx, txtAreaESP1_rx)
     id = '';
     scan = 0;
     station = 'Station 1';
-    file = './ID_file.csv';
+    file = './Output_Files/ID_file.csv';
 
     if parity == 1
         command = 'set_ID';

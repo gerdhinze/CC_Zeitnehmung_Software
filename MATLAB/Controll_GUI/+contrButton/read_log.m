@@ -3,9 +3,9 @@ function read_log(txtAreaESP1_tx, txtAreaESP2_tx, txtAreaESP3_tx, txtAreaESP1_rx
     global esp1 esp2 esp3;
     global parity1 parity2 parity3;
 
-    save('datalog.csv');
+    dataFile = './Output_Files/data_log.csv';
     
-    if parity1 == 1 && parity2 == 1 && parity3 == 1
+    if parity1  && parity2  && parity3 
         command = 'read_log';
 
         txtAreaESP1_tx.Value = command;
@@ -16,9 +16,13 @@ function read_log(txtAreaESP1_tx, txtAreaESP2_tx, txtAreaESP3_tx, txtAreaESP1_rx
         fprintf(esp2, command);
         fprintf(esp3, command);
 
-        txtAreaESP1_rx.Value = readLogData(esp3);
-        txtAreaESP2_rx.Value = readLogData(esp3);
-        txtAreaESP3_rx.Value = readLogData(esp3);
+        txtAreaESP1_rx.Value = "Geloggte Daten werden gelesen";
+        txtAreaESP2_rx.Value = "Geloggte Daten werden gelesen";
+        txtAreaESP3_rx.Value = "Geloggte Daten werden gelesen";
+
+        readLogData(esp1, dataFile);
+        readLogData(esp2, dataFile);
+        readLogData(esp3, dataFile);
 
     elseif parity == 0
         txtAreaESP1_tx.Value = 'Keine Verbindung';
@@ -32,14 +36,15 @@ function read_log(txtAreaESP1_tx, txtAreaESP2_tx, txtAreaESP3_tx, txtAreaESP1_rx
 end
 
 %##############################################################################
-function [receive] = readLogData(esp)
+function readLogData(esp, dataFile)
 
-receive = '';
 while esp.BytesAvailable > 0
         data_esp = fgets(esp);
-        disp(data_esp);
+        disp('Befinde mich im LOG');
 
-        if contains(data_esp, 'rld')
+        if contains(data_esp, 'ld')
+            "Geloggte Daten werden gelesen";
+
             % Assuming the format is 'ld [pos] [id] [timestamp]'
             dataArray = strsplit(data_esp, ' ');
             
@@ -47,10 +52,7 @@ while esp.BytesAvailable > 0
                 pos = dataArray{1}(3);
                 id = dataArray{2};
                 timestamp = dataArray{3};
-
-               disp(['Pos: ' pos ', ID: ' id ', Timestamp: ' timestamp]);
-               receive = "read log";
-
+               
                 headers = {'Station', 'ID', 'Timestamp'};
      
                 newData = table({pos}, {id}, {timestamp}, 'VariableNames', headers);
@@ -63,10 +65,11 @@ while esp.BytesAvailable > 0
                         writetable(newData, dataFile, 'WriteMode', 'append', 'WriteVariableNames', false);
                     end
             else
-                receive = ('Nicht genügend Elemente in gesendet');
+                disp('Nicht genügend Elemente in gesendet');
             end
         else
-            receive = ('Keine Antwort');
+            disp('Keine Antwort');
         end
+        drawnow;
 end
 end
