@@ -1,0 +1,24 @@
+function [fileTable] = findFile(srcTag)
+
+    switch srcTag
+        case 'BlockOne'
+            strFileName = 'TNDataBOne.mat';
+        case 'BlockTwo'
+            strFileName = 'TNDataBTwo.mat';
+        case 'QuarterFinal'
+            strFileName = 'TNDataQF.mat';
+        case 'SemiFinal'
+            strFileName = 'TNDataSF.mat';
+        case 'SmallFinal'
+            strFileName = 'TNDatakF.mat';
+        case 'Final'
+            strFileName = 'TNDatakF.mat';
+    end
+%     try 
+%         load('TNDataBOne.mat');
+%     catch
+%         warndlg('')
+
+
+end
+
