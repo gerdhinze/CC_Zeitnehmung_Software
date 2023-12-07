@@ -70,6 +70,7 @@ while esp.BytesAvailable > 0
                         % File exists, append data
                         writetable(newData, dataFile, 'WriteMode', 'append', 'WriteVariableNames', false);
                     end
+                    drawnow;
             else
                 disp('Nicht genügend Elemente in gesendet');
             end

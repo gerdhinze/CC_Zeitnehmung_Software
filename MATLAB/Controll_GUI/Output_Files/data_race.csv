@@ -1127,3 +1127,359 @@ Station,ID,Timestamp
 "
 1,83eb710e,"145359
 "
+1,start,"14976
+"
+1,Lichtschranke,"14977
+"
+2,start,"14605
+"
+3,start,"14076
+"
+3,Lichtschranke,"14076
+"
+1,Lichtschranke,"15990
+"
+3,Lichtschranke,"15089
+"
+1,Lichtschranke,"17002
+"
+3,Lichtschranke,"16102
+"
+1,Lichtschranke,"18015
+"
+3,Lichtschranke,"17114
+"
+1,Lichtschranke,"19028
+"
+3,Lichtschranke,"18127
+"
+1,Lichtschranke,"20040
+"
+3,Lichtschranke,"19140
+"
+1,Lichtschranke,"21053
+"
+3,Lichtschranke,"20153
+"
+1,Lichtschranke,"22066
+"
+3,Lichtschranke,"21165
+"
+1,Lichtschranke,"23078
+"
+3,Lichtschranke,"22178
+"
+1,Lichtschranke,"24091
+"
+3,Lichtschranke,"23191
+"
+1,Lichtschranke,"25104
+"
+3,Lichtschranke,"24203
+"
+1,Lichtschranke,"26116
+"
+3,Lichtschranke,"25216
+"
+1,Lichtschranke,"27129
+"
+3,Lichtschranke,"26229
+"
+1,Lichtschranke,"28142
+"
+3,Lichtschranke,"27241
+"
+1,Lichtschranke,"29154
+"
+3,Lichtschranke,"28254
+"
+1,Lichtschranke,"30167
+"
+3,Lichtschranke,"29267
+"
+1,Lichtschranke,"31180
+"
+3,Lichtschranke,"30279
+"
+1,Lichtschranke,"32192
+"
+3,Lichtschranke,"31292
+"
+1,Lichtschranke,"33205
+"
+3,Lichtschranke,"32305
+"
+1,Lichtschranke,"34221
+"
+3,Lichtschranke,"33321
+"
+1,Lichtschranke,"35234
+"
+3,Lichtschranke,"34334
+"
+1,Lichtschranke,"36247
+"
+3,Lichtschranke,"35346
+"
+1,Lichtschranke,"37259
+"
+3,Lichtschranke,"36359
+"
+1,Lichtschranke,"38272
+"
+3,Lichtschranke,"37372
+"
+1,Lichtschranke,"39285
+"
+3,Lichtschranke,"38384
+"
+1,Lichtschranke,"40297
+"
+3,Lichtschranke,"39397
+"
+1,Lichtschranke,"41310
+"
+3,Lichtschranke,"40410
+"
+1,Lichtschranke,"42323
+"
+3,Lichtschranke,"41422
+"
+3,Lichtschranke,"42435
+"
+1,Lichtschranke,"43563
+"
+3,Lichtschranke,"43448
+"
+1,Lichtschranke,"44576
+"
+3,Lichtschranke,"44461
+"
+1,Lichtschranke,"45588
+"
+3,Lichtschranke,"45473
+"
+1,Lichtschranke,"46601
+"
+3,Lichtschranke,"46486
+"
+1,Lichtschranke,"48044
+"
+3,Lichtschranke,"47499
+"
+3,Lichtschranke,"48511
+"
+1,Lichtschranke,"49588
+"
+3,Lichtschranke,"49524
+"
+3,Lichtschranke,"50537
+"
+3,Lichtschranke,"51549
+"
+3,Lichtschranke,"52566
+"
+3,83eb710e,"66666
+"
+3,ID nicht erkannt,"66835
+"
+3,83eb710e,"67692
+"
+3,ID nicht erkannt,"67981
+"
+3,83eb710e,"68711
+"
+3,ID nicht erkannt,"69306
+"
+1,83eb710e,"73507
+"
+3,Lichtschranke,"73443
+"
+3,Lichtschranke,"76505
+"
+2,Lichtschranke,"78765
+"
+3,Lichtschranke,"85896
+"
+3,Lichtschranke,"88275
+"
+3,Lichtschranke,"89288
+"
+2,start,"8527
+"
+3,start,"8060
+"
+3,Lichtschranke,"8063
+"
+1,start,"9001
+"
+2,ID nicht erkannt,"8551
+"
+3,Lichtschranke,"9085
+"
+2,ID nicht erkannt,"9695
+"
+3,Lichtschranke,"10094
+"
+2,ID nicht erkannt,"10705
+"
+3,Lichtschranke,"11096
+"
+2,ID nicht erkannt,"12033
+"
+3,Lichtschranke,"12112
+"
+2,ID nicht erkannt,"13142
+"
+3,Lichtschranke,"13112
+"
+2,ID nicht erkannt,"14215
+"
+3,Lichtschranke,"14118
+"
+2,ID nicht erkannt,"15350
+"
+3,Lichtschranke,"15122
+"
+3,Lichtschranke,"16123
+"
+2,ID nicht erkannt,"16859
+"
+3,Lichtschranke,"17130
+"
+3,Lichtschranke,"18143
+"
+2,ID nicht erkannt,"18665
+"
+3,Lichtschranke,"19156
+"
+2,ID nicht erkannt,"19812
+"
+3,Lichtschranke,"20160
+"
+2,ID nicht erkannt,"21338
+"
+3,Lichtschranke,"21160
+"
+2,ID nicht erkannt,"22347
+"
+3,Lichtschranke,"22160
+"
+2,ID nicht erkannt,"23451
+"
+3,Lichtschranke,"23164
+"
+2,ID nicht erkannt,"24516
+"
+3,Lichtschranke,"24177
+"
+2,ID nicht erkannt,"25576
+"
+2,ID nicht erkannt,"26783
+"
+2,ID nicht erkannt,"27817
+"
+2,ID nicht erkannt,"28867
+"
+2,ID nicht erkannt,"30124
+"
+2,ID nicht erkannt,"31301
+"
+2,ID nicht erkannt,"32470
+"
+2,start,"10762
+"
+3,start,"10515
+"
+1,start,"11119
+"
+1,83eb710e,"16638
+"
+2,83eb710e,"19141
+"
+3,83eb710e,"21857
+"
+3,83eb710e,"23754
+"
+2,ID nicht erkannt,"25597
+"
+2,83eb710e,"25625
+"
+1,83eb710e,"27570
+"
+1,ID nicht erkannt,"27656
+"
+2,83eb710e,"28906
+"
+3,83eb710e,"29977
+"
+1,start,"13002
+"
+2,start,"19108
+"
+3,start,"18202
+"
+1,83eb710e,"16041
+"
+2,83eb710e,"22831
+"
+3,ID nicht erkannt,"23276
+"
+3,83eb710e,"23304
+"
+2,83eb710e,"25153
+"
+2,ID nicht erkannt,"25374
+"
+1,83eb710e,"20182
+"
+2,83eb710e,"27041
+"
+2,ID nicht erkannt,"27242
+"
+3,83eb710e,"26987
+"
+1,83eb710e,"22714
+"
+1,ID nicht erkannt,"23015
+"
+2,83eb710e,"29780
+"
+3,83eb710e,"30619
+"
+3,ID nicht erkannt,"31164
+"
+1,ID nicht erkannt,"26501
+"
+1,83eb710e,"26529
+"
+2,83eb710e,"33726
+"
+1,13ecb9ab,"32690
+"
+2,ID nicht erkannt,"39830
+"
+2,13ecb9ab,"39857
+"
+3,13ecb9ab,"40202
+"
+3,ID nicht erkannt,"40959
+"
+1,13ecb9ab,"37210
+"
+2,13ecb9ab,"44705
+"
+3,13ecb9ab,"45392
+"
+3,13ecb9ab,"46393
+"
+1,13ecb9ab,"42031
+"
+2,13ecb9ab,"49659
+"
+3,13ecb9ab,"49557
+"
+3,ID nicht erkannt,"49609
+"
+2,13ecb9ab,"53706
+"
