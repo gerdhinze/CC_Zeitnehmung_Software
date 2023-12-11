@@ -246,6 +246,8 @@ function disconnectAllButtonCallback(txtAreaCommand, txtPort1, txtPort2, txtPort
         txtPort2.BackgroundColor = [1, 0.8, 0.8];
         txtPort3.BackgroundColor = [1, 0.8, 0.8];
         txtAreaCommand.Value = 'Alle Verbindungen getrennt.';
+
+        contrButton.processCSV('./Output_Files/ID_file.csv', './Output_Files/ID_file_cleared.csv');
     catch
     errordlg('Fehler beim Trennen aller Verbindungen.', 'Fehler');
     end

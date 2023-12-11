@@ -30,16 +30,16 @@ function set_ID(selectedTeam, esp, parity, txtAreaESP1_tx, txtAreaESP1_rx)
         while scan
             while esp.BytesAvailable > 0
                 string_id = fgets(esp);
-                if  ~isempty(string_id)
-                    if startsWith(string_id, 'id')
+                %if  ~isempty(string_id)
+                    if startsWith(string_id, 'id') && ~contains(string_id, 'Ready')
                         id = extractAfter(string_id, 2);
                         txtAreaESP1_rx.Value = id;
                         display(id);
                     end
                     scan = 0;
-                else
-                    scan = 1; 
-                end
+                % else
+                %     scan = 1; 
+                % end
             end
         end
              
@@ -61,9 +61,6 @@ function set_ID(selectedTeam, esp, parity, txtAreaESP1_tx, txtAreaESP1_rx)
             % File exists, append data
             writetable(newData, file, 'WriteMode', 'append', 'WriteVariableNames', false);
         end
-        
-        disp('Neue Daten wurden zur CSV-Datei hinzugefügt.');
-
       
     elseif parity == 0
         txtAreaESP1_tx.Value = 'Keine Verbindung';
