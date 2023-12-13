@@ -4,7 +4,6 @@ function  start(txtAreaESP1_tx, txtAreaESP2_tx, txtAreaESP3_tx, txtAreaESP1_rx, 
     global parity1 parity2 parity3;
     global stop_value;
 
-
     if parity1 && parity2 && parity3
         command_esp1 = 'start';
         command_esp2 = 'start';
@@ -32,6 +31,13 @@ function  start(txtAreaESP1_tx, txtAreaESP2_tx, txtAreaESP3_tx, txtAreaESP1_rx, 
             % Process data from esp3
             txtAreaESP3_rx.Value = processEspData(esp3, dataFile);
             drawnow;
+           
+            % Initialize an array to store the first two IDs
+            id_A = '13ecb9ab';
+            id_B = '83eb710e';
+           
+            %Algorithmus function
+            algorithmus.newEntry(id_A, id_B, 1, dataFile);
         end
 
     else
