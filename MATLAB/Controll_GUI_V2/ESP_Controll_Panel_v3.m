@@ -159,12 +159,27 @@ btnStart = uibutton(controll_gui, 'push', 'Text', 'Start', 'Position', [300 20 1
 %---------------------------------------------------------------------------------------------------------------
 %"read_log" button
 txtRead_log_Label = uilabel(controll_gui, 'Position', [530,200,130,40], 'Text', 'Daten-Controll','FontSize',20);
-btnRead_log = uibutton(controll_gui, 'push', 'Text', 'Read logged data', 'Position', [530 140 150 40], 'ButtonPushedFcn', ...
-    @(btnRead_log, event) read_logButtonCallback(txtAreaCommand, txtAreaESP1_tx, txtAreaESP2_tx, txtAreaESP3_tx, txtAreaESP1_rx, txtAreaESP2_rx, txtAreaESP3_rx));
+txtLog_Label = uilabel(controll_gui, 'Position', [530 180 180 30], 'Text', 'Dateninteraktion:', 'FontSize', 15);
+
+btnRead_log = uibutton(controll_gui, 'push', 'Text', 'Read Logged-Data', 'Position', [530 140 150 40], 'ButtonPushedFcn', ...
+    @(btnRead_log, event) read_logButtonCallback(txtAreaCommand, txtAreaESP1_tx, txtAreaESP2_tx, txtAreaESP3_tx, txtAreaESP1_rx, ...
+    txtAreaESP2_rx, txtAreaESP3_rx, txtAreaLog));
+
+txtStatus_Label = uilabel(controll_gui, 'Position', [760 180 180 30], 'Text', 'Datentransfer-Status:', 'FontSize', 15);
+txtAreaLog = uitextarea(controll_gui, 'Position', [760 140 150 40], 'Editable', false);
+%---------------------------------------------------------------------------------------------------------------
+%"Compare-log" button
+btnCompare_log = uibutton(controll_gui, 'push', 'Text', 'Logged-Data vs. Live-Data', 'Position', [530 80 150 40], 'ButtonPushedFcn', ...
+    @(btnCompare_log, event) compare_logButtonCallback(txtAreaCommand, txtAreaLog));
 %---------------------------------------------------------------------------------------------------------------
 %"delete_log" button
-btnDelete_log = uibutton(controll_gui, 'push', 'Text', 'Delete logged data', 'Position', [530 80 150 40], 'ButtonPushedFcn', ...
-    @(btnDelete_log, event) delete_logButtonCallback(txtAreaCommand, txtAreaESP1_tx, txtAreaESP2_tx, txtAreaESP3_tx, txtAreaESP1_rx, txtAreaESP2_rx, txtAreaESP3_rx));
+btnDelete_log = uibutton(controll_gui, 'push', 'Text', 'Delete Logged-Data', 'Position', [530 20 150 40], 'ButtonPushedFcn', ...
+    @(btnDelete_log, event) delete_logButtonCallback(txtAreaCommand, txtAreaESP1_tx, txtAreaESP2_tx, txtAreaESP3_tx,...
+    txtAreaESP1_rx, txtAreaESP2_rx, txtAreaESP3_rx));
+%---------------------------------------------------------------------------------------------------------------
+%"Algorithmus mit log data" button
+btnAlg_log = uibutton(controll_gui, 'push', 'Text', 'Algorithmus Logged-Data', 'Position', [760 80 150 40], 'ButtonPushedFcn', ...
+    @(btnAlg_log, event) Alg_logButtonCallback(txtAreaCommand));
 %---------------------------------------------------------------------------------------------------------------
 %% 
 %##########################################################################
@@ -246,8 +261,6 @@ function disconnectAllButtonCallback(txtAreaCommand, txtPort1, txtPort2, txtPort
         txtPort2.BackgroundColor = [1, 0.8, 0.8];
         txtPort3.BackgroundColor = [1, 0.8, 0.8];
         txtAreaCommand.Value = 'Alle Verbindungen getrennt.';
-
-        contrButton.processCSV('./Output_Files/ID_file.csv', './Output_Files/ID_file_cleared.csv');
     catch
     errordlg('Fehler beim Trennen aller Verbindungen.', 'Fehler');
     end
@@ -359,7 +372,7 @@ end
 %Callback function for the stop button
 function stopButtonCallback(txtAreaCommand, ...
     txtAreaESP1_tx, txtAreaESP2_tx, txtAreaESP3_tx, txtAreaESP1_rx, txtAreaESP2_rx, txtAreaESP3_rx)
-    % try
+    try
         global esp1 esp2 esp3;
         global parity1 parity2 parity3;
         global t stop_value;
@@ -386,9 +399,9 @@ function stopButtonCallback(txtAreaCommand, ...
         txtAreaCommand.Value = 'Vorgang gestoppt.';
         disp('Vorgang gestoppt.');
         
-    % catch
-    %    errordlg('Fehler beim Stoppen.', 'Fehler');
-    % end
+    catch
+       errordlg('Fehler beim Stoppen.', 'Fehler');
+    end
 end
 %---------------------------------------------------------------------------------------------------------------
 % Callback function for the "Search Ports" button
@@ -418,7 +431,7 @@ end
 
 % Callback function for the "Set ID" button
 function setIDButtonCallback(dropdown, txtAreaCommand, txtAreaESP1_tx, txtAreaESP1_rx)
-    % try
+    try
         global esp1 parity1;
         % Get the selected team from the dropdown menu
         selectedTeam = dropdown.Value;
@@ -428,9 +441,9 @@ function setIDButtonCallback(dropdown, txtAreaCommand, txtAreaESP1_tx, txtAreaES
         
         txtAreaCommand.Value = ['ID erfolgreich gesetzt for Team: ' selectedTeam];
         disp(['ID erfolgreich gesetzt für Team: ' selectedTeam]);
-    % catch
-    %       errordlg('Fehler beim ID-Setting.', 'Error');
-    % end
+    catch
+          errordlg('Fehler beim ID-Setting.', 'Error');
+    end
 end
 %---------------------------------------------------------------------------------------------------------------
 % Callback function for the "Ready" button
@@ -465,31 +478,33 @@ end
 % Callback function for the "Start" button
 function startButtonCallback(txtAreaCommand,...
     txtAreaESP1_tx, txtAreaESP2_tx, txtAreaESP3_tx, txtAreaESP1_rx, txtAreaESP2_rx, txtAreaESP3_rx)
-    % try
+    try
         global esp1 esp2 esp3;
         global parity1 parity2 parity3;
         global stop_value;
 
         stop_value = 0;
 
+        contrButton.processCSV('./Output_Files/ID_file.csv', './Output_Files/ID_file_cleared.csv');
+
         txtAreaCommand.Value = 'Start des Rennens!';
         disp('Start des Rennens');
 
         contrButton.start(txtAreaESP1_tx, txtAreaESP2_tx, txtAreaESP3_tx, txtAreaESP1_rx, txtAreaESP2_rx, txtAreaESP3_rx, './Output_Files/data_race.csv');
        
-    % catch
-    %     errordlg('Fehler beim Starten des Systems.', 'Error');
-    % end
+    catch
+        errordlg('Fehler beim Starten des Systems.', 'Error');
+    end
 end
 %---------------------------------------------------------------------------------------------------------------
 %Callback function for the "read_log" button
 function read_logButtonCallback(txtAreaCommand, txtAreaESP1_tx, ...
-    txtAreaESP2_tx, txtAreaESP3_tx, txtAreaESP1_rx, txtAreaESP2_rx, txtAreaESP3_rx)
+    txtAreaESP2_tx, txtAreaESP3_tx, txtAreaESP1_rx, txtAreaESP2_rx, txtAreaESP3_rx, txtAreaLog)
     try
         global esp1 esp2 esp3;
         global parity1 parity2 parity3;
 
-        contrButton.read_log(txtAreaESP1_tx, txtAreaESP2_tx, txtAreaESP3_tx, txtAreaESP1_rx, txtAreaESP2_rx, txtAreaESP3_rx);
+        contrButton.read_log(txtAreaESP1_tx, txtAreaESP2_tx, txtAreaESP3_tx, txtAreaESP1_rx, txtAreaESP2_rx, txtAreaESP3_rx, txtAreaLog);
 
         txtAreaCommand.Value = 'Geloggten Daten erfolgreich ausgelesen!';
     catch
@@ -500,7 +515,7 @@ end
 %Callback function for the "delete_log" button
 function delete_logButtonCallback(txtAreaCommand, txtAreaESP1_tx, ...
     txtAreaESP2_tx, txtAreaESP3_tx, txtAreaESP1_rx, txtAreaESP2_rx, txtAreaESP3_rx)
-    % try
+    try
         global esp1 esp2 esp3;
         global parity1 parity2 parity3;
 
@@ -519,9 +534,21 @@ function delete_logButtonCallback(txtAreaCommand, txtAreaESP1_tx, ...
         txtAreaESP3_rx.Value = respond_esp3;
 
         txtAreaCommand.Value = 'Geloggten Daten erfolgreich gelöscht!';
-    % catch
-    %     errordlg('Fehler beim Löschen der gelog. Daten.', 'Error');
-    % end
+    catch
+        errordlg('Fehler beim Löschen der gelog. Daten.', 'Error');
+    end
+end
+%---------------------------------------------------------------------------------------------------------------
+%Callback function for the "Algorithmus log data" button
+function Alg_logButtonCallback(txtAreaCommand)
+
+
+end
+%---------------------------------------------------------------------------------------------------------------
+%Callback function for the "Compare log data" button
+function compare_logButtonCallback(txtAreaCommand, txtAreaLog)
+
+
 end
 %---------------------------------------------------------------------------------------------------------------
 % Function to execute in each cycle
