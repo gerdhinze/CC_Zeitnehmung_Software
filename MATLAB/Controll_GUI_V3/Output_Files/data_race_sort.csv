@@ -1,25 +1,21 @@
 Station,ID,Timestamp
-1,start,"58901
+3,start,"57287
 "
 2,start,"57872
 "
-3,start,"57287
-"
-1,13ecb9ab,"63460
-"
-1,ID nicht erkannt,"63575
+1,start,"58901
 "
 3,ID nicht erkannt,"62907
 "
 3,13ecb9ab,"62934
 "
+1,13ecb9ab,"63460
+"
+1,ID nicht erkannt,"63575
+"
 2,13ecb9ab,"64277
 "
 2,ID nicht erkannt,"64679
-"
-1,ID nicht erkannt,"66080
-"
-1,13ecb9ab,"66107
 "
 3,Lichtschranke,"65241
 "
@@ -27,15 +23,19 @@ Station,ID,Timestamp
 "
 3,ID nicht erkannt,"65321
 "
+1,ID nicht erkannt,"66080
+"
+1,13ecb9ab,"66107
+"
 2,13ecb9ab,"66606
 "
 2,ID nicht erkannt,"66980
 "
-1,13ecb9ab,"68351
-"
 3,13ecb9ab,"67939
 "
 3,ID nicht erkannt,"68193
+"
+1,13ecb9ab,"68351
 "
 2,13ecb9ab,"69107
 "

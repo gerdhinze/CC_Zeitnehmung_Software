@@ -623,7 +623,13 @@ end
 %Callback function for the "Algorithmus log data" button
 function Alg_logButtonCallback(txtAreaCommand)
 
+    % Initialize an array to store the first two IDs
+    id_A = '13ecb9ab';
+    id_B = '83eb710e';
 
+    dataFile_2_sort = './Output_Files/data_log_2_sort.csv';
+
+    algorithmus.newEntryLog(id_A, id_B, 1, dataFile_2_sort);
 end
 %---------------------------------------------------------------------------------------------------------------
 %Callback function for the "Compare log data" button
