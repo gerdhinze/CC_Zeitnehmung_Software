@@ -1,4 +1,4 @@
-function [Stored_Entry] = newEntry(ID_A,ID_B,dir, dataFile)
+function [Stored_Entry] = newEntryLog(ID_A,ID_B,dir, dataFile)
 
 global Last_ID
 Last_ID = 0;
@@ -389,4 +389,3 @@ global Last_ID
 
       end
 end
-
