@@ -21,6 +21,20 @@ function  start(txtAreaESP1_tx, txtAreaESP2_tx, txtAreaESP3_tx, txtAreaESP1_rx, 
         fprintf(esp2, command_esp2);
         fprintf(esp3, command_esp3);
 
+        % Daten aus der CSV-Datei lesen
+        data = readtable('./Output_Files/ID_file_cleared.csv');
+        
+        % Die vorletzte und letzte Zeile auswählen
+        prelast_row = data(end-1, :);
+        last_row = data(end, :);
+        
+        % Die ID aus der zweiten Spalte der vorletzten und letzten Zeile extrahieren
+        id_A = (prelast_row.ID);
+        id_B = (last_row.ID);
+
+        disp(id_A);
+        disp(id_B);
+
         while stop_value == 0
             % Process data from esp1
             txtAreaESP1_rx.Value = processEspData(esp1, dataFile);
@@ -31,13 +45,12 @@ function  start(txtAreaESP1_tx, txtAreaESP2_tx, txtAreaESP3_tx, txtAreaESP1_rx, 
             % Process data from esp3
             txtAreaESP3_rx.Value = processEspData(esp3, dataFile);
             drawnow;
-           
-            % Initialize an array to store the first two IDs
-            id_A = '13ecb9ab';
-            id_B = '83eb710e';
-           
+              
             %Algorithmus function
-            algorithmus.newEntry(id_A, id_B, 1, dataFile);
+            isfinish = algorithmus.newEntry(id_A, id_B, 1, dataFile);
+            
+            %Send to GUI
+            algorithmus.sendGUI(isfinish);
         end
 
     else

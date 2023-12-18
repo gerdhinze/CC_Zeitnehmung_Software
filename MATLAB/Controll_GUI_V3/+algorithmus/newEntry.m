@@ -1,12 +1,9 @@
-function [Stored_Entry] = newEntry(ID_A,ID_B,dir, dataFile)
+function [Stored_Entry] = newEntry(ID_A, ID_B, dir, dataFile)
 
 global Last_ID
 Last_ID = 0;
 global ID_Next_Station
 ID_Next_Station = 0;
-
-Car_ID_A = ID_A;
-Car_ID_B = ID_B;
 
 Stored_Entry = 0;
 
@@ -14,13 +11,13 @@ Race = readtable(dataFile);
 GUI_Data_A = './Output_GUI/GUI_Data_A.csv';
 GUI_Data_B = './Output_GUI/GUI_Data_B.csv';
 
-idxA = find(strcmp(Race.ID,Car_ID_A)); 
-idxB = find(strcmp(Race.ID,Car_ID_B)); 
+idxA = find(strcmp(Race.ID,ID_A)); 
+idxB = find(strcmp(Race.ID,ID_B)); 
 
 CarA = Race(idxA,:);
 CarB = Race(idxB,:);
-save('CarA.mat', "CarA")
-save('CarB.mat', "CarB")
+save('./Output_GUI/CarA.csv', "CarA")
+save('./Output_GUI/CarB.csv', "CarB")
               
 nameA = 'Car A';
 Gate1 = [nameA,': passed Station 1 '];
@@ -33,7 +30,7 @@ Gate5 = [nameB,': passed Station 2 '];
 Gate6 = [nameB,': passed Station 3 '];
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% Car A %%%%%%%%%%%%%%%%%%%%%%%%%%%%
-if ID_A
+if ismember(ID_A, CarA.ID)
     if dir == 1 %CCW
 
         for n = 1:length(idxA)
@@ -174,7 +171,7 @@ if ID_A
 end
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% Car B %%%%%%%%%%%%%%%%%%%%%%%%%%%%
-if ID_B
+if ismember(ID_B, CarB.ID)
     if dir == 1 %CCW
 
         for n = 1:length(idxB)

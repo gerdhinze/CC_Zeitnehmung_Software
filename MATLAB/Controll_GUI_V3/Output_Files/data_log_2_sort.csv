@@ -1,63 +1,71 @@
 Station,ID,Timestamp
-1,13ecb9ab,"11056
+3,start,"11143
 "
-2,13ecb9ab,"11240
+2,start,"11551
 "
-1,ID nicht erkannt,"11458
+3,start,"11867
 "
-3,13ecb9ab,"11513
+1,start,"12210
 "
-3,Lichtschranke,"11714
+2,start,"12435
 "
-3,Lichtschranke,"12715
+1,start,"13021
 "
-3,Lichtschranke,"13728
+1,83eb710e,"18235
 "
-1,13ecb9ab,"13765
+2,83eb710e,"18842
 "
-2,13ecb9ab,"13946
+3,83eb710e,"19363
 "
-3,13ecb9ab,"14147
+3,ID nicht erkannt,"19667
 "
-3,ID nicht erkannt,"14371
+2,ID nicht erkannt,"21598
 "
-3,Lichtschranke,"14743
+1,83eb710e,"21625
 "
-3,Lichtschranke,"15764
+2,83eb710e,"21626
 "
-1,ID nicht erkannt,"16358
+3,83eb710e,"21985
 "
-1,13ecb9ab,"16385
+2,83eb710e,"23604
 "
-2,13ecb9ab,"16388
+3,83eb710e,"23751
 "
-3,13ecb9ab,"16397
+1,ID nicht erkannt,"23766
 "
-2,ID nicht erkannt,"16503
+1,83eb710e,"23794
 "
-3,Lichtschranke,"16766
+3,83eb710e,"25141
 "
-3,Lichtschranke,"17779
+2,83eb710e,"25175
 "
-3,Lichtschranke,"18791
+2,ID nicht erkannt,"25348
 "
-3,Lichtschranke,"19804
+1,83eb710e,"25481
 "
-3,Lichtschranke,"20817
+3,start,"53634
 "
-3,Lichtschranke,"21829
+2,start,"54204
 "
-3,Lichtschranke,"22842
+1,start,"54791
 "
-3,Lichtschranke,"23855
+1,83eb710e,"57096
 "
-3,Lichtschranke,"24872
+2,83eb710e,"57115
 "
-3,Lichtschranke,"25885
+3,83eb710e,"57185
 "
-3,start,"8297
+3,ID nicht erkannt,"57464
 "
-2,start,"8834
+2,83eb710e,"58524
 "
-1,start,"9384
+3,83eb710e,"59714
+"
+1,83eb710e,"59757
+"
+2,83eb710e,"59757
+"
+3,Lichtschranke,"59800
+"
+3,ID nicht erkannt,"59941
 "
