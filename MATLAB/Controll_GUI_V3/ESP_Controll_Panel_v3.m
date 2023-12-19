@@ -15,7 +15,7 @@ stop_value = 0;
 %---------------------------------------------------------------------------------------------------------------
 % SETTING UP THE GUI INTERFACE
 %---------------------------------------------------------------------------------------------------------------
-controll_gui = uifigure('Name', 'Controll-GUI');
+controll_gui = uifigure('Name', 'Control-GUI');
 controll_gui.ToolBar = 'none';
 controll_gui.MenuBar = 'none';
 controll_gui.Color = 'white';
@@ -53,14 +53,14 @@ txtAreaESP3_rx = uitextarea(controll_gui, 'Position', [760 240 210 80], 'Editabl
 %---------------------------------------------------------------------------------------------------------------
 %FINDING AVALABLE PORTS
 %---------------------------------------------------------------------------------------------------------------
-txtPorts_Label = uilabel(controll_gui, 'Position', [50,560,130,40], 'Text', 'Port-Controll:','FontSize',20);
+txtPorts_Label = uilabel(controll_gui, 'Position', [50,560,130,40], 'Text', 'Port-Control:','FontSize',20);
 txtAreaPorts = uitextarea(controll_gui, 'Position', [50 450 100 110], 'Editable', false);
 
 % Get the list of available serial ports
 availablePorts = serialportlist("available");
 
 % Convert the cell array of port names to a string
-portsString = sprintf('Verfügb. Ports:\n%s\n', strjoin(availablePorts, '\n'));
+portsString = sprintf('Available Ports:\n%s\n', strjoin(availablePorts, '\n'));
 txtAreaPorts.Value = portsString;
 %---------------------------------------------------------------------------------------------------------------
 %SETTING UP ESP-CONNECTION
@@ -92,19 +92,19 @@ btnDisConnect3 = uibutton(controll_gui, 'push', 'Text', 'Disconnect', 'Position'
 %REALTIMES
 %---------------------------------------------------------------------------------------------------------------
 %textarea for realtime time
-txtrealtime_label = uilabel(controll_gui, 'Position', [50 410 200 40], 'Text', 'Synchronisierte Systemzeit:', 'FontSize',15);
+txtrealtime_label = uilabel(controll_gui, 'Position', [50 410 200 40], 'Text', 'Synchron. Systemtime:', 'FontSize',15);
 txtArea_realtime = uitextarea(controll_gui, 'Position', [50 380 100 40], 'Editable', false, 'Value', 'hh:mm:ss', 'FontSize', 17);
 
 %textarea for ESP1 - time
-txtrealtime_esp1_label = uilabel(controll_gui, 'Position', [300 470 130 40], 'Text', 'Synchron. Zeit:', 'FontSize',15);
+txtrealtime_esp1_label = uilabel(controll_gui, 'Position', [300 470 130 40], 'Text', 'Synchron. Time:', 'FontSize',15);
 txtArea_time_esp1 = uitextarea(controll_gui, 'Position', [300 450 150 30], 'Editable', false, 'Value', 'hh:mm:ss', 'FontSize', 15);
 
 %textarea for ESP2 - time
-txtrealtime_esp2_label = uilabel(controll_gui, 'Position', [530 470 130 40], 'Text', 'Synchron. Zeit:', 'FontSize',15);
+txtrealtime_esp2_label = uilabel(controll_gui, 'Position', [530 470 130 40], 'Text', 'Synchron. Time:', 'FontSize',15);
 txtArea_time_esp2 = uitextarea(controll_gui, 'Position', [530 450 150 30], 'Editable', false, 'Value', 'hh:mm:ss', 'FontSize', 15);
 
 %textarea for ESP3 - time
-txtrealtime_esp3_label = uilabel(controll_gui, 'Position', [760 470 130 40], 'Text', 'Synchron. Zeit:', 'FontSize',15);
+txtrealtime_esp3_label = uilabel(controll_gui, 'Position', [760 470 130 40], 'Text', 'Synchron. Time:', 'FontSize',15);
 txtArea_time_esp3 = uitextarea(controll_gui, 'Position', [760 450 150 30], 'Editable', false, 'Value', 'hh:mm:ss', 'FontSize', 15);
 %---------------------------------------------------------------------------------------------------------------
 %SETTING UP THE TIMER - 1s
@@ -131,13 +131,13 @@ btnSearchPorts = uibutton(controll_gui, 'push', 'Text', 'Search Ports', 'Positio
     @(btnSearchPorts, event) searchPortsCallback(txtAreaPorts, txtAreaCommand));
 %---------------------------------------------------------------------------------------------------------------
 %Label for Race controll
-txtLabel_race = uilabel(controll_gui, 'Position', [50 200 130 40], 'Text', 'Race-Controll:', 'FontSize', 20);
+txtLabel_race = uilabel(controll_gui, 'Position', [50 200 130 40], 'Text', 'Race-Control:', 'FontSize', 20);
 
 %Label for Dropdown menue
-txtLabel_dropdown = uilabel(controll_gui, 'Position', [50 180 180 30], 'Text', 'Teamnamen auswählen:', 'FontSize', 15);
+txtLabel_dropdown = uilabel(controll_gui, 'Position', [50 180 180 30], 'Text', 'Select Teamname:', 'FontSize', 15);
 
 %Getting values from *.csv file
-CCTM = readtable('CCTM2023.csv'); %Crazy Car Teilnehmer
+CCTM = readtable('CC_teamnames.csv'); %Crazy Car Teilnehmer
 
 %Dropdown menue
 serialPortDropdown = uidropdown(controll_gui, 'Position', [50 140 210 40], 'Items', CCTM.Teamname, 'ValueChangedFcn', ...
@@ -158,10 +158,10 @@ btnStart = uibutton(controll_gui, 'push', 'Text', 'Start', 'Position', [300 20 1
     txtAreaESP1_tx, txtAreaESP2_tx, txtAreaESP3_tx, txtAreaESP1_rx, txtAreaESP2_rx, txtAreaESP3_rx));
 %---------------------------------------------------------------------------------------------------------------
 %"read_log 1" button
-txtRead_log_Label = uilabel(controll_gui, 'Position', [530,200,130,40], 'Text', 'Daten-Controll','FontSize',20);
-txtLog_Label = uilabel(controll_gui, 'Position', [530 180 180 30], 'Text', 'Dateninteraktion:', 'FontSize', 15);
+txtRead_log_Label = uilabel(controll_gui, 'Position', [530,200,130,40], 'Text', 'Data-Control','FontSize',20);
+txtLog_Label = uilabel(controll_gui, 'Position', [530 180 180 30], 'Text', 'Datainteraction:', 'FontSize', 15);
 
-txtStatus_Label = uilabel(controll_gui, 'Position', [760 180 180 30], 'Text', 'Datenvergleich-Status:', 'FontSize', 15);
+txtStatus_Label = uilabel(controll_gui, 'Position', [760 180 180 30], 'Text', 'Datacomparison-Status:', 'FontSize', 15);
 txtAreaLog = uitextarea(controll_gui, 'Position', [760 140 150 40], 'Editable', false);
 
 btnRead_log_1 = uibutton(controll_gui, 'push', 'Text', '1. Read Logged-Data', 'Position', [530 160 150 20], 'ButtonPushedFcn', ...
@@ -261,7 +261,7 @@ function disconnectAllButtonCallback(txtAreaCommand, txtPort1, txtPort2, txtPort
         global esp1 esp2 esp3;
         global parity1 parity2 parity3;
 
-        [parity1, parity2, parity3] = contrButton.disconnect_esp_all(esp1, parity1, esp2, parity2, esp3, parity3);
+        [parity1, parity2, parity3] = contrButton.disconnect_ESP_all(esp1, parity1, esp2, parity2, esp3, parity3);
         disp('Alle Verbindungen getrennt.');
 
         %Change Backgroundcolour to red
@@ -419,7 +419,7 @@ function searchPortsCallback(txtAreaPorts, txtAreaCommand)
         availablePorts = serialportlist("available");
         
         % Convert the cell array of port names to a string
-        portsString = sprintf('Verfügb. Ports:\n%s\n', strjoin(availablePorts, '\n'));
+        portsString = sprintf('Available Ports:\n%s\n', strjoin(availablePorts, '\n'));
         
         % Display the ports in the uitextarea
         txtAreaPorts.Value = portsString;
@@ -622,14 +622,25 @@ end
 %---------------------------------------------------------------------------------------------------------------
 %Callback function for the "Algorithmus log data" button
 function Alg_logButtonCallback(txtAreaCommand)
-
-    % Initialize an array to store the first two IDs
-    id_A = '13ecb9ab';
-    id_B = '83eb710e';
+    % try
+    % Daten aus der CSV-Datei lesen
+    data = readtable('./Output_Files/ID_file_cleared.csv');
+    
+    % Die vorletzte und letzte Zeile auswählen
+    prelast_row = data(end-1, :);
+    last_row = data(end, :);
+    
+    % Die ID aus der zweiten Spalte der vorletzten und letzten Zeile extrahieren
+    id_A = (prelast_row.ID);
+    id_B = (last_row.ID);
 
     dataFile_2_sort = './Output_Files/data_log_2_sort.csv';
-
     algorithmus.newEntryLog(id_A, id_B, 1, dataFile_2_sort);
+
+    txtAreaCommand.Value = 'Geloggte Daten wurden ausgewertet';
+    % catch
+    %     errordlg('Fehler beim Auswerten der gelog. Daten.', 'Error');
+    % end
 end
 %---------------------------------------------------------------------------------------------------------------
 %Callback function for the "Compare log data" button

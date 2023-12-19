@@ -14,8 +14,8 @@ Race = readtable(dataFile);
 GUI_Data_A = './Output_GUI/GUI_Data_A.csv';
 GUI_Data_B = './Output_GUI/GUI_Data_B.csv';
 
-idxA = find(strcmp(Race.ID,Car_ID_A)); 
-idxB = find(strcmp(Race.ID,Car_ID_B)); 
+idxA = find(strcmp(Race.ID,ID_A)); 
+idxB = find(strcmp(Race.ID,ID_B)); 
 
 CarA = Race(idxA,:);
 CarB = Race(idxB,:);
@@ -33,7 +33,7 @@ Gate5 = [nameB,': passed Station 2 '];
 Gate6 = [nameB,': passed Station 3 '];
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% Car A %%%%%%%%%%%%%%%%%%%%%%%%%%%%
-if ID_A
+if ismember(ID_A, CarA.ID)
     if dir == 1 %CCW
 
         for n = 1:length(idxA)
@@ -174,7 +174,7 @@ if ID_A
 end
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% Car B %%%%%%%%%%%%%%%%%%%%%%%%%%%%
-if ID_B
+if ismember(ID_B, CarB.ID)
     if dir == 1 %CCW
 
         for n = 1:length(idxB)
