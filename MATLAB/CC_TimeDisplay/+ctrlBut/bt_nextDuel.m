@@ -9,8 +9,8 @@ function bt_nextDuel(src,callbackdata)
     set(findall(0,'Tag','lblTimeTwoSp2DODuelDisp'),'FontColor', [0.7,0.7,0.7]);
     set(findall(0,'Tag','lblTimeTwoDODuelDisp'),'FontColor', [0.7,0.7,0.7]);
 
-    set(findall(0,'Tag','lblTimeThreeDOSp1DuelDisp'),'FontColor', [0.7,0.7,0.7]);
-    set(findall(0,'Tag','lblTimeThreeDOSp2DuelDisp'),'FontColor', [0.7,0.7,0.7]);
+    set(findall(0,'Tag','lblTimeThreeSp1DODuelDisp'),'FontColor', [0.7,0.7,0.7]);
+    set(findall(0,'Tag','lblTimeThreeSp2DODuelDisp'),'FontColor', [0.7,0.7,0.7]);
     set(findall(0,'Tag','lblTimeThreeDODuelDisp'),'FontColor', [0.7,0.7,0.7]);
 
     set(findall(0,'Tag','lblTimeOneSp1DTDuelDisp'),'FontColor', [0.7,0.7,0.7]);
@@ -25,6 +25,15 @@ function bt_nextDuel(src,callbackdata)
     set(findall(0,'Tag','lblTimeThreeDTSp2DuelDisp'),'FontColor', [0.7,0.7,0.7]);
     set(findall(0,'Tag','lblTimeThreeDTDuelDisp'),'FontColor', [0.7,0.7,0.7]);
 
+    % Retrieve lampArray from app data
+    lampArray = getappdata(0, 'lampArray');
+
+    % Update LED colors based on the new TNData
+    if isfield(data, 'idx')
+        updateLEDsFromTNData(lampArray);
+    else
+        disp('Error: data.idx not found');
+    end
     
     if isempty(data.TNData)
         errordlg(['No Data loaded!']);
@@ -98,6 +107,10 @@ function bt_nextDuel(src,callbackdata)
                set(findall(0,'Tag','lblTimeThreeDTDuelDisp'),'Text',string(data.TNData.thiRndBO(data.idx+1)));
             
                set(findall(0,'Tag','imagDTDisp'),'Visible','on');
+
+               % Update LED colors based on the new TNData
+               updateLEDsFromTNData(lampArray);
+
            else                       
                if(data.idx+2 < size(data.TNData,1))
                     data.idx = data.idx + 2;
@@ -171,6 +184,9 @@ function bt_nextDuel(src,callbackdata)
                set(findall(0,'Tag','lblTimeThreeDTDuelDisp'),'Text',string(data.TNData.thiRndBO(data.idx+1)));
             
                set(findall(0,'Tag','imagDTDisp'),'Visible','on');
+
+               % Update LED colors based on the new TNData
+               updateLEDsFromTNData(lampArray);
            end 
 
             switch src.Parent.Tag
@@ -203,4 +219,11 @@ function bt_nextDuel(src,callbackdata)
     guidata(src,data);
     drawnow;  
 
+end
+
+function updateLEDsFromTNData(lampArray)
+    % Set all lamps in lampArray to grey
+    for i = 1:numel(lampArray)
+        set(lampArray(i), 'Color', [0.5, 0.5, 0.5]); % Grey color
+    end
 end
