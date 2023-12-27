@@ -177,7 +177,8 @@ btnRead_log_2 = uibutton(controll_gui, 'push', 'Text', '2. Read Logged-Data', 'P
 txtAreaCompLog = uitextarea(controll_gui, 'Position', [760 80 150 40], 'Editable', false);
 
 btnCompare_log = uibutton(controll_gui, 'push', 'Text', 'Logged-Data vs. Live-Data', 'Position', [530 80 150 40], 'ButtonPushedFcn', ...
-    @(btnCompare_log, event) compare_logButtonCallback(txtAreaCommand, txtAreaCompLog));
+    @(btnCompare_log, event) compare_logButtonCallback(txtAreaCommand, txtAreaCompLog, txtAreaESP1_tx, ...
+    txtAreaESP2_tx, txtAreaESP3_tx, txtAreaESP1_rx, txtAreaESP2_rx, txtAreaESP3_rx));
 %---------------------------------------------------------------------------------------------------------------
 %"delete_log" button
 btnDelete_log = uibutton(controll_gui, 'push', 'Text', 'Delete Logged-Data', 'Position', [530 20 150 40], 'ButtonPushedFcn', ...
@@ -621,10 +622,19 @@ function delete_logButtonCallback(txtAreaCommand, txtAreaESP1_tx, ...
 end
 %---------------------------------------------------------------------------------------------------------------
 %Callback function for the "Algorithmus log data" button
-function Alg_logButtonCallback(txtAreaCommand)
-    % try
+function Alg_logButtonCallback(txtAreaCommand, txtAreaESP1_tx, ...
+    txtAreaESP2_tx, txtAreaESP3_tx, txtAreaESP1_rx, txtAreaESP2_rx, txtAreaESP3_rx)
+    try
     % Daten aus der CSV-Datei lesen
     data = readtable('./Output_Files/ID_file_cleared.csv');
+
+    txtAreaESP1_tx.Value = '';
+    txtAreaESP2_tx.Value = '';
+    txtAreaESP3_tx.Value = '';
+
+    txtAreaESP1_rx.Value = '';
+    txtAreaESP2_rx.Value = '';
+    txtAreaESP3_rx.Value = '';
     
     % Die vorletzte und letzte Zeile auswählen
     prelast_row = data(end-1, :);
@@ -638,13 +648,14 @@ function Alg_logButtonCallback(txtAreaCommand)
     algorithmus.newEntryLog(id_A, id_B, 1, dataFile_2_sort);
 
     txtAreaCommand.Value = 'Geloggte Daten wurden ausgewertet';
-    % catch
-    %     errordlg('Fehler beim Auswerten der gelog. Daten.', 'Error');
-    % end
+    catch
+        errordlg('Fehler beim Auswerten der gelog. Daten.', 'Error');
+    end
 end
 %---------------------------------------------------------------------------------------------------------------
 %Callback function for the "Compare log data" button
-function compare_logButtonCallback(txtAreaCommand, txtAreaCompLog)
+function compare_logButtonCallback(txtAreaCommand, txtAreaCompLog, txtAreaESP1_tx, ...
+    txtAreaESP2_tx, txtAreaESP3_tx, txtAreaESP1_rx, txtAreaESP2_rx, txtAreaESP3_rx)
 
     dataFile_Race = './Output_Files/data_race.csv';
     dataFile_2 = './Output_Files/data_log_2.csv';
@@ -663,6 +674,14 @@ function compare_logButtonCallback(txtAreaCommand, txtAreaCompLog)
     disp(['Vorhandende Datei' dataFile_2_sort ' gelöscht']);
     delete(dataFile_2_sort);
     end
+
+    txtAreaESP1_tx.Value = '';
+    txtAreaESP2_tx.Value = '';
+    txtAreaESP3_tx.Value = '';
+
+    txtAreaESP1_rx.Value = '';
+    txtAreaESP2_rx.Value = '';
+    txtAreaESP3_rx.Value = '';
 
     txtAreaCommand.Value = ('Sortiere Dateien nach Timestamp');
     contrButton.readSortAndSaveCSV(dataFile_Race, dataFile_Race_sort);

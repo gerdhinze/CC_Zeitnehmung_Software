@@ -1,39 +1,47 @@
 Station,ID,Timestamp
-3,start,"11614
+3,start,"122910
 "
-2,start,"12230
+2,start,"123509
 "
-1,start,"12739
+1,start,"124192
 "
-1,73e048ab,"17448
+2,Lichtschranke,"125484
 "
-2,73e048ab,"21545
+3,83eb710e,"126050
 "
-3,Lichtschranke,"26677
+2,83eb710e,"126092
 "
-1,73e048ab,"39551
+1,83eb710e,"126319
 "
-3,start,"53774795
+2,Lichtschranke,"127227
 "
-2,start,"53774797
+3,83eb710e,"127667
 "
-1,start,"53774798
+2,83eb710e,"127786
 "
-1,73e048ab,"53781759
+1,83eb710e,"128001
 "
-1,ID nicht erkannt,"53782133
+2,Lichtschranke,"128743
 "
-2,73e048ab,"53782644
+2,13ecb9ab,"129427
 "
-3,73e048ab,"53783654
+3,13ecb9ab,"129460
 "
-3,Lichtschranke,"53783826
+2,ID nicht erkannt,"129485
 "
-1,c344e1aa,"53787855
+3,ID nicht erkannt,"129517
 "
-2,c344e1aa,"53788479
+1,13ecb9ab,"129608
 "
-3,Lichtschranke,"53788933
+1,ID nicht erkannt,"129637
 "
-3,c344e1aa,"53789036
+2,Lichtschranke,"130514
+"
+3,13ecb9ab,"131071
+"
+2,13ecb9ab,"131148
+"
+3,ID nicht erkannt,"131183
+"
+1,13ecb9ab,"131401
 "
