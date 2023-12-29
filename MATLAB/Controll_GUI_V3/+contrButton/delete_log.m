@@ -2,7 +2,6 @@ function[command, receive] = delete_log(esp, parity)
     command = '';
     receive = '';
     
-
     if parity
         command = 'delete_log';
         fprintf(esp, command);

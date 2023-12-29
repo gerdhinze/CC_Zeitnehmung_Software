@@ -21,14 +21,14 @@ function  start(txtAreaESP1_tx, txtAreaESP2_tx, txtAreaESP3_tx, txtAreaESP1_rx, 
         fprintf(esp2, command_esp2);
         fprintf(esp3, command_esp3);
 
-        % Daten aus der CSV-Datei lesen
+        % Read the scanned IDs of the *csv. file
         data = readtable('./Output_Files/ID_file_cleared.csv');
         
-        % Die vorletzte und letzte Zeile auswählen
+        % Choose always the last and prelist row
         prelast_row = data(end-1, :);
         last_row = data(end, :);
         
-        % Die ID aus der zweiten Spalte der vorletzten und letzten Zeile extrahieren
+        % Extract the IDs of that rows
         id_A = (prelast_row.ID);
         id_B = (last_row.ID);
 

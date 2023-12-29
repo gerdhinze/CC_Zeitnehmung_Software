@@ -1,14 +1,13 @@
 function processCSV(inputFile, outputFile)
-    % Lese die CSV-Datei
+    % Read the *csv.file
     data = readtable(inputFile);
     
-    % Entferne Zeilen mit leeren Zellen in einer der drei Spalten
+    % Delete rows with empty cells
     data(any(ismissing(data), 2), :) = [];
 
-     % Entferne doppelte Zeilen
+     % Delete ident rows
     data = unique(data, 'rows');
     
-    % Speichere den bearbeiteten Table in einer neuen CSV-Datei
     writetable(data, outputFile);
 end
 

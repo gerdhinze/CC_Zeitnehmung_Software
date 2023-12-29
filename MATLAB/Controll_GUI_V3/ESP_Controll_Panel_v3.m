@@ -256,7 +256,7 @@ function connectButton3Callback(txtPort3, txtAreaCommand)
     end
 end
 %---------------------------------------------------------------------------------------------------------------
-%Callback function for the disconnect button(s)
+%Callback function for the disconnect button
 function disconnectAllButtonCallback(txtAreaCommand, txtPort1, txtPort2, txtPort3)
     try
         global esp1 esp2 esp3;
@@ -322,8 +322,10 @@ function disconnectButton3Callback(txtPort3, txtAreaCommand)
 end
 %---------------------------------------------------------------------------------------------------------------
 % Callback function for the Sync button
-function syncButtonCallback(txtArea_realtime, txtArea_time_esp1, txtArea_time_esp2, txtArea_time_esp3, ...
-    txtAreaCommand, t, txtAreaESP1_tx, txtAreaESP2_tx, txtAreaESP3_tx, txtAreaESP1_rx, txtAreaESP2_rx, txtAreaESP3_rx)
+function syncButtonCallback(txtArea_realtime, txtArea_time_esp1, ...
+    txtArea_time_esp2, txtArea_time_esp3, txtAreaCommand, t, ...
+    txtAreaESP1_tx, txtAreaESP2_tx, txtAreaESP3_tx, txtAreaESP1_rx, ...
+    txtAreaESP2_rx, txtAreaESP3_rx)
     try
         global esp1 esp2 esp3;
         global parity1 parity2 parity3;
@@ -380,7 +382,8 @@ end
 %---------------------------------------------------------------------------------------------------------------
 %Callback function for the stop button
 function stopButtonCallback(txtAreaCommand, ...
-    txtAreaESP1_tx, txtAreaESP2_tx, txtAreaESP3_tx, txtAreaESP1_rx, txtAreaESP2_rx, txtAreaESP3_rx)
+    txtAreaESP1_tx, txtAreaESP2_tx, txtAreaESP3_tx, ...
+    txtAreaESP1_rx, txtAreaESP2_rx, txtAreaESP3_rx)
     try
         global esp1 esp2 esp3;
         global parity1 parity2 parity3;
@@ -486,8 +489,9 @@ end
 %---------------------------------------------------------------------------------------------------------------
 % Callback function for the "Start" button
 function startButtonCallback(txtAreaCommand,...
-    txtAreaESP1_tx, txtAreaESP2_tx, txtAreaESP3_tx, txtAreaESP1_rx, txtAreaESP2_rx, txtAreaESP3_rx)
-    % try
+    txtAreaESP1_tx, txtAreaESP2_tx, txtAreaESP3_tx, ...
+    txtAreaESP1_rx, txtAreaESP2_rx, txtAreaESP3_rx)
+    try
         global esp1 esp2 esp3;
         global parity1 parity2 parity3;
         global stop_value;
@@ -502,11 +506,12 @@ function startButtonCallback(txtAreaCommand,...
         txtAreaCommand.Value = 'Start des Rennens!';
         disp('Start des Rennens');
 
-        contrButton.start(txtAreaESP1_tx, txtAreaESP2_tx, txtAreaESP3_tx, txtAreaESP1_rx, txtAreaESP2_rx, txtAreaESP3_rx, dataFile_Race);
+        contrButton.start(txtAreaESP1_tx, txtAreaESP2_tx, txtAreaESP3_tx, ...
+            txtAreaESP1_rx, txtAreaESP2_rx, txtAreaESP3_rx, dataFile_Race);
        
-    % catch
-    %     errordlg('Fehler beim Starten des Systems.', 'Error');
-    % end
+    catch
+        errordlg('Fehler beim Starten des Systems.', 'Error');
+    end
 end
 %---------------------------------------------------------------------------------------------------------------
 %Callback function for the "read_log 1" button
@@ -625,7 +630,7 @@ end
 function Alg_logButtonCallback(txtAreaCommand, txtAreaESP1_tx, ...
     txtAreaESP2_tx, txtAreaESP3_tx, txtAreaESP1_rx, txtAreaESP2_rx, txtAreaESP3_rx)
     try
-    % Daten aus der CSV-Datei lesen
+    % Read data from the *.csv file
     data = readtable('./Output_Files/ID_file_cleared.csv');
 
     txtAreaESP1_tx.Value = '';
@@ -636,11 +641,11 @@ function Alg_logButtonCallback(txtAreaCommand, txtAreaESP1_tx, ...
     txtAreaESP2_rx.Value = '';
     txtAreaESP3_rx.Value = '';
     
-    % Die vorletzte und letzte Zeile auswählen
+    % Choose the last and prelist row
     prelast_row = data(end-1, :);
     last_row = data(end, :);
     
-    % Die ID aus der zweiten Spalte der vorletzten und letzten Zeile extrahieren
+    % Extract IDs from the last and prelast row
     id_A = (prelast_row.ID);
     id_B = (last_row.ID);
 
@@ -654,8 +659,9 @@ function Alg_logButtonCallback(txtAreaCommand, txtAreaESP1_tx, ...
 end
 %---------------------------------------------------------------------------------------------------------------
 %Callback function for the "Compare log data" button
-function compare_logButtonCallback(txtAreaCommand, txtAreaCompLog, txtAreaESP1_tx, ...
-    txtAreaESP2_tx, txtAreaESP3_tx, txtAreaESP1_rx, txtAreaESP2_rx, txtAreaESP3_rx)
+function compare_logButtonCallback(txtAreaCommand, txtAreaCompLog, ...
+    txtAreaESP1_tx, txtAreaESP2_tx, txtAreaESP3_tx, txtAreaESP1_rx, ...
+    txtAreaESP2_rx, txtAreaESP3_rx)
 
     dataFile_Race = './Output_Files/data_race.csv';
     dataFile_2 = './Output_Files/data_log_2.csv';
