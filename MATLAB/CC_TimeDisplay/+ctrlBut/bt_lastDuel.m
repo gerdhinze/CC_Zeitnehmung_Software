@@ -35,16 +35,16 @@ function bt_lastDuel(src,callbackdata)
                end
                set(findall(src.Parent,'Tag','lblDO'),'Text',data.TNData.Teamname(data.idx));
 
-               set(findall(src.Parent,'Tag','rndOneSp1DO'),'Value',string(data.TNData.firRndBO(data.idx)));
-               set(findall(src.Parent,'Tag','rndOneSp2DO'),'Value',string(data.TNData.firRndBO(data.idx)));
+               set(findall(src.Parent,'Tag','rndOneSp1DO'),'Value',string(data.TNData.firRndSplit1BO(data.idx)));
+               set(findall(src.Parent,'Tag','rndOneSp2DO'),'Value',string(data.TNData.firRndSplit2BO(data.idx)));
                set(findall(src.Parent,'Tag','rndOneDO'),'Value',string(data.TNData.firRndBO(data.idx)));
 
-               set(findall(src.Parent,'Tag','rndTwoSp1DO'),'Value',string(data.TNData.secRndBO(data.idx)));
-               set(findall(src.Parent,'Tag','rndTwoSp2DO'),'Value',string(data.TNData.secRndBO(data.idx)));
+               set(findall(src.Parent,'Tag','rndTwoSp1DO'),'Value',string(data.TNData.secRndSplit1BO(data.idx)));
+               set(findall(src.Parent,'Tag','rndTwoSp2DO'),'Value',string(data.TNData.secRndSplit2BO(data.idx)));
                set(findall(src.Parent,'Tag','rndTwoDO'),'Value',string(data.TNData.secRndBO(data.idx)));
 
-               set(findall(src.Parent,'Tag','rndThreeSp1DO'),'Value',string(data.TNData.thiRndBO(data.idx)));
-               set(findall(src.Parent,'Tag','rndThreeSp2DO'),'Value',string(data.TNData.thiRndBO(data.idx)));
+               set(findall(src.Parent,'Tag','rndThreeSp1DO'),'Value',string(data.TNData.thiRndSplit1BO(data.idx)));
+               set(findall(src.Parent,'Tag','rndThreeSp2DO'),'Value',string(data.TNData.thiRndSplit2BO(data.idx)));
                set(findall(src.Parent,'Tag','rndThreeDO'),'Value',string(data.TNData.thiRndBO(data.idx)));
 
                set(findall(src.Parent,'Tag','MeterOneDO'),'Value',num2str(data.TNData.firRndBOMT(data.idx)));        
