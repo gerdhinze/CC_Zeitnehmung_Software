@@ -19,10 +19,10 @@ function bt_loadBlockData(src,callbackdata)
             set(findall(src.Parent,'Tag','duelCnt'),'Text',num2str(data.duel));
 
             set(findall(src.Parent,'Tag','rndOneSp1DO'),'Value',string(data.TNData.firRndSplit1BO(data.idx)));  %first round first split time
-            set(findall(src.Parent,'Tag','rndOneSP2DO'),'Value',string(data.TNData.firRndSplit2BO(data.idx)));  %first round second split time
+            set(findall(src.Parent,'Tag','rndOneSp2DO'),'Value',string(data.TNData.firRndSplit2BO(data.idx)));  %first round second split time
             set(findall(src.Parent,'Tag','rndOneDO'),'Value',string(data.TNData.firRndBO(data.idx))); %first round finished
 
-            set(findall(src.Parent,'Tag','rndTwoSp2DO'),'Value',string(data.TNData.secRndSplit1BO(data.idx))); %second round first split time
+            set(findall(src.Parent,'Tag','rndTwoSp1DO'),'Value',string(data.TNData.secRndSplit1BO(data.idx))); %second round first split time
             set(findall(src.Parent,'Tag','rndTwoSp2DO'),'Value',string(data.TNData.secRndSplit2BO(data.idx))); %second round second split time
             set(findall(src.Parent,'Tag','rndTwoDO'),'Value',string(data.TNData.secRndBO(data.idx))); %second round finished
 
