@@ -20,9 +20,9 @@ function [time_esp, command, receive] = get_time(esp, parity)
             end
         end
     else
+        % Handle the case where parity is not equal to 1
         command = 'Keine Verbindung';
         receive = 'Keine Verbindung';
-        % Handle the case where parity is not equal to 1
         time_esp = '00:00:00';
     end
 end

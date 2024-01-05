@@ -137,7 +137,7 @@ txtLabel_race = uilabel(controll_gui, 'Position', [50 200 130 40], 'Text', 'Race
 txtLabel_dropdown = uilabel(controll_gui, 'Position', [50 180 180 30], 'Text', 'Select Teamname:', 'FontSize', 15);
 
 %Getting values from *.csv file
-CCTM = readtable('CC_teamnames.csv'); %Crazy Car Teilnehmer
+CCTM = readtable('CC_teamnames.csv'); %Crazy Car members
 
 %Dropdown menue
 serialPortDropdown = uidropdown(controll_gui, 'Position', [50 140 210 40], 'Items', CCTM.Teamname, 'ValueChangedFcn', ...
