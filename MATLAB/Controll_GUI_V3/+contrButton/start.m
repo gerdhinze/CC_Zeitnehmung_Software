@@ -2,7 +2,7 @@ function  start(txtAreaESP1_tx, txtAreaESP2_tx, txtAreaESP3_tx, txtAreaESP1_rx, 
     
     global esp1 esp2 esp3;
     global parity1 parity2 parity3;
-    global stop_value;
+    global stop_value dir;
 
     if parity1 && parity2 && parity3
         command_esp1 = 'start';
@@ -45,12 +45,14 @@ function  start(txtAreaESP1_tx, txtAreaESP2_tx, txtAreaESP3_tx, txtAreaESP1_rx, 
             % Process data from esp3
             txtAreaESP3_rx.Value = processEspData(esp3, dataFile);
             drawnow;
-              
+               
             %Algorithmus function
-            isfinish = algorithmus.newEntry(id_A, id_B, 1, dataFile);
+            data_race = './Output_Files/data_race.csv';
+            isfinish = algorithmus.newEntry('13ecb9ab', '73e048ab', dir, data_race); %char(id_A) char(id_B)
             
             %Send to GUI
             algorithmus.sendGUI(isfinish);
+           
         end
 
     else

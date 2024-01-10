@@ -1,13 +1,17 @@
-function [Stored_Entry] = newEntry(ID_A, ID_B, dir, dataFile)
+function [Stored_Entry, hCarANew] = newEntry(ID_A, ID_B, dir, dataFile)
 
+global dir;
 global Last_ID
 Last_ID = 0;
 global ID_Next_Station
 ID_Next_Station = 0;
 
+global hCarANew
+
 Stored_Entry = 0;
 
-Race = readtable(dataFile);
+Race = readtable('./Output_Files/data_race.csv');
+
 GUI_Data_A = './Output_GUI/GUI_Data_A.csv';
 GUI_Data_B = './Output_GUI/GUI_Data_B.csv';
 
@@ -15,9 +19,14 @@ idxA = find(strcmp(Race.ID,ID_A));
 idxB = find(strcmp(Race.ID,ID_B)); 
 
 CarA = Race(idxA,:);
+hCarA = height(CarA);
+
+
 CarB = Race(idxB,:);
-save('./Output_GUI/CarA.csv', "CarA")
-save('./Output_GUI/CarB.csv', "CarB")
+hCarB = height(CarB);
+
+%save('./Output_GUI/CarA.csv', "CarA") 
+%save('./Output_GUI/CarB.csv', "CarB") 
               
 nameA = 'Car A';
 Gate1 = [nameA,': passed Station 1 '];
@@ -29,8 +38,16 @@ Gate4 = [nameB,': passed Station 1 '];
 Gate5 = [nameB,': passed Station 2 '];
 Gate6 = [nameB,': passed Station 3 '];
 
+
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% Car A %%%%%%%%%%%%%%%%%%%%%%%%%%%%
-if ismember(ID_A, CarA.ID)
+
+%if (hCarA == 0) && (hCarANew == 0)
+%    hCarANew = 1;
+ 
+%elseif (hCarA > 0) && (hCarA == hCarANew)
+%    hCarANew = hCarANew+1;
+    
+if ID_A %ismember(ID_A{1}, CarA.ID) == 1
     if dir == 1 %CCW
 
         for n = 1:length(idxA)
@@ -89,7 +106,7 @@ if ismember(ID_A, CarA.ID)
                         % File exists, append data
                         writetable(newData, GUI_Data_A, 'WriteMode', 'append', 'WriteVariableNames', false);
                     end
-
+                    
                 end
                 if n == length(idxA)
                     Stored_Entry = 1;
@@ -158,6 +175,7 @@ if ismember(ID_A, CarA.ID)
                         % File exists, append data
                         writetable(newData, GUI_Data_A, 'WriteMode', 'append', 'WriteVariableNames', false);
                     end
+                   
                 end
                 if n == length(idxA)
                     Stored_Entry = 1;
@@ -169,9 +187,15 @@ if ismember(ID_A, CarA.ID)
         end
     end
 end
+%end
+
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% Car B %%%%%%%%%%%%%%%%%%%%%%%%%%%%
-if ismember(ID_B, CarB.ID)
+%if hCarB > 0
+%   hCarBNew = hCarB+1;
+%if hCarB < hCarBNew
+
+if ID_B %ismember(ID_B{1}, CarB.ID) == 1
     if dir == 1 %CCW
 
         for n = 1:length(idxB)
@@ -230,7 +254,7 @@ if ismember(ID_B, CarB.ID)
                         % File exists, append data
                         writetable(newData, GUI_Data_B, 'WriteMode', 'append', 'WriteVariableNames', false);
                     end
-
+                    
                 end
                 if n == length(idxB)
                     Stored_Entry = 1;
@@ -299,6 +323,7 @@ if ismember(ID_B, CarB.ID)
                         % File exists, append data
                         writetable(newData, GUI_Data_B, 'WriteMode', 'append', 'WriteVariableNames', false);
                     end
+                    
                 end
                 if n == length(idxB)
                     Stored_Entry = 1;
@@ -311,6 +336,9 @@ if ismember(ID_B, CarB.ID)
     end
 end
 end
+%end
+%end
+
 
 %-------------------------------------------------------------------------------------------------------
 function [dOut, dOutDisp, Last_ID] = directionCCW(ID_Previous_Station, ID_Station)
@@ -386,4 +414,75 @@ global Last_ID
 
       end
 end
+%-----------------------------------------------------------------------------------
+function [dOut, dOutDisp, Last_ID] = directionCW(ID_Previous_Station, ID_Station)
 
+global Last_ID
+global ID_Next_Station
+
+     if ID_Previous_Station == 2 && ID_Station == 1
+                if ID_Next_Station == ID_Station
+                    ID_Next_Station = 0; 
+                end 
+                dOut = 1;
+                dOutDisp = 'correct direction';
+                if Last_ID == ID_Station
+                    Last_ID = 0;
+                end
+        
+       elseif ID_Previous_Station == 3 && ID_Station == 2
+                if ID_Next_Station == ID_Station
+                    ID_Next_Station = 0; 
+                end 
+                dOut = 1;
+                dOutDisp = 'correct direction';
+                if Last_ID == ID_Station
+                    Last_ID = 0;
+                end
+                 
+       elseif ID_Previous_Station == 1 && ID_Station == 3
+                if ID_Next_Station == ID_Station
+                    ID_Next_Station = 0; 
+                end 
+                dOut = 1;
+                dOutDisp = 'correct direction';
+                if Last_ID == ID_Station
+                    Last_ID = 0;
+                end
+
+       elseif ID_Previous_Station == 3 && ID_Station == 1
+                dOut = 0;
+                dOutDisp = 'reverse direction';
+             
+       elseif ID_Previous_Station == 2 && ID_Station == 3
+                dOut = 0;
+                dOutDisp = 'reverse direction';
+            
+       elseif ID_Previous_Station == 1 && ID_Station == 2
+                dOut = 0;
+                dOutDisp = 'reverse direction';
+
+       elseif ID_Previous_Station == ID_Station
+             if Last_ID == 0
+                 dOut = 0;
+                 dOutDisp = 'reverse direction';
+                 Last_ID = ID_Previous_Station;
+                 if ID_Station == 1
+                     ID_Next_Station = 2;
+                 elseif ID_Station == 2
+                     ID_Next_Station = 3;
+                 elseif ID_Station == 3
+                     ID_Next_Station = 1;
+                 end
+
+              elseif Last_ID == ID_Station
+                 dOut = 0;
+                 dOutDisp = 'correct direction';
+                 Last_ID = 0;
+              elseif Last_ID ~= ID_Station
+                 dOut = 0;
+                 dOutDisp = 'correct direction';
+              end
+      end
+
+end

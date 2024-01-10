@@ -6,6 +6,7 @@ warning('off');
 global esp1 esp2 esp3;
 global parity1 parity2 parity3;
 global t stop_value;
+global dir;
 
 stop_value = 0;
 
@@ -134,12 +135,12 @@ btnSearchPorts = uibutton(controll_gui, 'push', 'Text', 'Search Ports', 'Positio
 txtLabel_race = uilabel(controll_gui, 'Position', [50 200 130 40], 'Text', 'Race-Control:', 'FontSize', 20);
 
 %Label for Dropdown menue
-txtLabel_dropdown = uilabel(controll_gui, 'Position', [50 180 180 30], 'Text', 'Select Teamname:', 'FontSize', 15);
+txtLabel_dropdown = uilabel(controll_gui, 'Position', [50 180 250 30], 'Text', 'Select Teamname & Direction:', 'FontSize', 15);
 
 %Getting values from *.csv file
 CCTM = readtable('CC_teamnames.csv'); %Crazy Car members
 
-%Dropdown menue
+%Dropdown menue for teams
 serialPortDropdown = uidropdown(controll_gui, 'Position', [50 140 210 40], 'Items', CCTM.Teamname, 'ValueChangedFcn', ...
     @(dropdown, event) selectedTeamCallback(dropdown, txtAreaCommand));
 %---------------------------------------------------------------------------------------------------------------
@@ -181,7 +182,7 @@ btnCompare_log = uibutton(controll_gui, 'push', 'Text', 'Logged-Data vs. Live-Da
     txtAreaESP2_tx, txtAreaESP3_tx, txtAreaESP1_rx, txtAreaESP2_rx, txtAreaESP3_rx));
 %---------------------------------------------------------------------------------------------------------------
 %"delete_log" button
-btnDelete_log = uibutton(controll_gui, 'push', 'Text', 'Delete Logged-Data', 'Position', [530 20 150 40], 'ButtonPushedFcn', ...
+btnDelete_log = uibutton(controll_gui, 'push', 'Text', 'Delete Logged-Data / Files', 'Position', [530 20 150 40], 'ButtonPushedFcn', ...
     @(btnDelete_log, event) delete_logButtonCallback(txtAreaCommand, txtAreaESP1_tx, txtAreaESP2_tx, txtAreaESP3_tx,...
     txtAreaESP1_rx, txtAreaESP2_rx, txtAreaESP3_rx));
 %---------------------------------------------------------------------------------------------------------------
@@ -189,6 +190,10 @@ btnDelete_log = uibutton(controll_gui, 'push', 'Text', 'Delete Logged-Data', 'Po
 btnAlg_log = uibutton(controll_gui, 'push', 'Text', 'Log.-Data ALG', ...
     'Position', [760 20 100 40], 'ButtonPushedFcn', @(btn, event) Alg_logButtonCallback(txtAreaCommand), ...
     'BackgroundColor', [0.8, 0.8, 1]);
+%---------------------------------------------------------------------------------------------------------------
+%Drodown for direction
+directionDropdown = uidropdown(controll_gui, 'Position', [50 80 210 40], 'Items', {'CCW','CW'}, 'ValueChangedFcn', ...
+    @(dropdown, event) directionCallback(dropdown, txtAreaCommand));
 %---------------------------------------------------------------------------------------------------------------
 %% 
 %##########################################################################
@@ -588,6 +593,31 @@ function delete_logButtonCallback(txtAreaCommand, txtAreaESP1_tx, ...
         dataFile_2 = './Output_Files/data_log_2.csv';
         dataFile_Race = './Output_Files/data_race.csv';
 
+        %GUI Output
+        GUI_Data_A = './Output_GUI/GUI_Data_A.csv';
+        GUI_Data_B = './Output_GUI/GUI_Data_B.csv';
+
+        rndOneSp1DO = './Output_GUI/rndOneSp1DO.mat';
+        rndOneSp2DO = './Output_GUI/rndOneSp2DO.mat';
+        rndOneDO = './Output_GUI/rndOneDO.mat';
+        rndTwoSp1DO = './Output_GUI/rndTwoSp1DO.mat';
+        rndTwoSp2DO = './Output_GUI/rndTwoSp2DO.mat';
+        rndTwoDO = './Output_GUI/rndTwoDO.mat';
+        rndThreeSp1DO = './Output_GUI/rndThreeSp1DO.mat';
+        rndThreeSp2DO = './Output_GUI/rndThreeSp2DO.mat';
+        rndThreeDO = './Output_GUI/rndThreeDO.mat';
+
+        rndOneSp1DT = './Output_GUI/rndOneSp1DT.mat';
+        rndOneSp2DT = './Output_GUI/rndOneSp2DT.mat';
+        rndOneDT = './Output_GUI/rndOneDT.mat';
+        rndTwoSp1DT = './Output_GUI/rndTwoSp1DT.mat';
+        rndTwoSp2DT = './Output_GUI/rndTwoSp2DT.mat';
+        rndTwoDT = './Output_GUI/rndTwoDT.mat';
+        rndThreeSp1DT = './Output_GUI/rndThreeSp1DT.mat';
+        rndThreeSp2DT = './Output_GUI/rndThreeSp2DT.mat';
+        rndThreeDT = './Output_GUI/rndThreeDT.mat';
+
+
         if exist(dataFile_1, 'file') == 2
         % Check if the file exists before attempting to delete it
         disp(['Vorhandende Datei' dataFile_1 ' gelöscht']);
@@ -605,6 +635,127 @@ function delete_logButtonCallback(txtAreaCommand, txtAreaESP1_tx, ...
         disp(['Vorhandende Datei' dataFile_Race ' gelöscht']);
         delete(dataFile_Race);
         end
+
+        if exist(GUI_Data_A, 'file') == 2
+        % Check if the file exists before attempting to delete it
+        disp(['Vorhandende Datei' GUI_Data_A ' gelöscht']);
+        delete(GUI_Data_A);
+        end
+
+        if exist(GUI_Data_B, 'file') == 2
+        % Check if the file exists before attempting to delete it
+        disp(['Vorhandende Datei' GUI_Data_B ' gelöscht']);
+        delete(GUI_Data_B);
+        end
+
+        if exist(rndOneSp1DO, 'file') == 2
+        % Check if the file exists before attempting to delete it
+        disp(['Vorhandende Datei' rndOneSp1DO ' gelöscht']);
+        delete(rndOneSp1DO);
+        end
+
+        if exist(rndOneSp2DO, 'file') == 2
+        % Check if the file exists before attempting to delete it
+        disp(['Vorhandende Datei' rndOneSp2DO ' gelöscht']);
+        delete(rndOneSp2DO);
+        end
+
+        if exist(rndOneDO, 'file') == 2
+        % Check if the file exists before attempting to delete it
+        disp(['Vorhandende Datei' rndOneDO ' gelöscht']);
+        delete(rndOneDO);
+        end
+
+        if exist(rndTwoSp1DO, 'file') == 2
+        % Check if the file exists before attempting to delete it
+        disp(['Vorhandende Datei' rndTwoSp1DO ' gelöscht']);
+        delete(rndTwoSp1DO);
+        end
+
+        if exist(rndTwoSp2DO, 'file') == 2
+        % Check if the file exists before attempting to delete it
+        disp(['Vorhandende Datei' rndTwoSp2DO ' gelöscht']);
+        delete(rndTwoSp2DO);
+        end
+
+        if exist(rndTwoDO, 'file') == 2
+        % Check if the file exists before attempting to delete it
+        disp(['Vorhandende Datei' rndTwoDO ' gelöscht']);
+        delete(rndTwoDO);
+        end
+
+        if exist(rndThreeSp1DO, 'file') == 2
+        % Check if the file exists before attempting to delete it
+        disp(['Vorhandende Datei' rndThreeSp1DO ' gelöscht']);
+        delete(rndThreeSp1DO);
+        end
+
+        if exist(rndThreeSp2DO, 'file') == 2
+        % Check if the file exists before attempting to delete it
+        disp(['Vorhandende Datei' rndThreeSp2DO ' gelöscht']);
+        delete(rndThreeSp2DO);
+        end
+
+        if exist(rndThreeDO, 'file') == 2
+        % Check if the file exists before attempting to delete it
+        disp(['Vorhandende Datei' rndThreeDO ' gelöscht']);
+        delete(rndThreeDO);
+        end
+
+         if exist(rndOneSp1DT, 'file') == 2
+        % Check if the file exists before attempting to delete it
+        disp(['Vorhandende Datei' rndOneSp1DT ' gelöscht']);
+        delete(rndOneSp1DT);
+        end
+
+        if exist(rndOneSp2DT, 'file') == 2
+        % Check if the file exists before attempting to delete it
+        disp(['Vorhandende Datei' rndOneSp2DT ' gelöscht']);
+        delete(rndOneSp2DT);
+        end
+
+        if exist(rndOneDT, 'file') == 2
+        % Check if the file exists before attempting to delete it
+        disp(['Vorhandende Datei' rndOneDT ' gelöscht']);
+        delete(rndOneDT);
+        end
+
+        if exist(rndTwoSp1DT, 'file') == 2
+        % Check if the file exists before attempting to delete it
+        disp(['Vorhandende Datei' rndTwoSp1DT ' gelöscht']);
+        delete(rndTwoSp1DT);
+        end
+
+        if exist(rndTwoSp2DT, 'file') == 2
+        % Check if the file exists before attempting to delete it
+        disp(['Vorhandende Datei' rndTwoSp2DT ' gelöscht']);
+        delete(rndTwoSp2DT);
+        end
+
+        if exist(rndTwoDT, 'file') == 2
+        % Check if the file exists before attempting to delete it
+        disp(['Vorhandende Datei' rndTwoDT ' gelöscht']);
+        delete(rndTwoDT);
+        end
+
+        if exist(rndThreeSp1DT, 'file') == 2
+        % Check if the file exists before attempting to delete it
+        disp(['Vorhandende Datei' rndThreeSp1DT ' gelöscht']);
+        delete(rndThreeSp1DT);
+        end
+
+        if exist(rndThreeSp2DT, 'file') == 2
+        % Check if the file exists before attempting to delete it
+        disp(['Vorhandende Datei' rndThreeSp2DT ' gelöscht']);
+        delete(rndThreeSp2DT);
+        end
+
+        if exist(rndThreeDT, 'file') == 2
+        % Check if the file exists before attempting to delete it
+        disp(['Vorhandende Datei' rndThreeDT ' gelöscht']);
+        delete(rndThreeDT);
+        end
+
 
         [command_esp1, respond_esp1] = contrButton.delete_log(esp1, parity1);
         [command_esp2, respond_esp2] = contrButton.delete_log(esp2, parity2);
@@ -650,7 +801,10 @@ function Alg_logButtonCallback(txtAreaCommand, txtAreaESP1_tx, ...
     id_B = (last_row.ID);
 
     dataFile_2_sort = './Output_Files/data_log_2_sort.csv';
-    algorithmus.newEntryLog(id_A, id_B, 1, dataFile_2_sort);
+    isfinish = algorithmus.newEntryLog('13ecb9ab', '73e048ab', dir, dataFile_2_sort);
+
+    %Send to GUI
+    algorithmus.sendGUI(isfinish);
 
     txtAreaCommand.Value = 'Geloggte Daten wurden ausgewertet';
     catch
@@ -705,6 +859,22 @@ function compare_logButtonCallback(txtAreaCommand, txtAreaCompLog, ...
             txtAreaCompLog.Value = 'Fehler - Daten nicht ident';
             txtAreaCompLog.BackgroundColor = [1, 0.8, 0.8];
         end
+end
+%---------------------------------------------------------------------------------------------------------------
+function directionCallback(dropdown, txtAreaCommand)
+    try
+        global dir;
+        dir_string = dropdown.Value;
+
+        if isequal(dir_string, 'CCW')
+            dir = 1;
+        else
+            dir = 2;
+        end
+        txtAreaCommand.Value = 'Rennrichtung wurde ausgewählt';
+    catch
+        errordlg('Fehler beim Auswählen der Rennrichtung.', 'Error');
+    end   
 end
 %---------------------------------------------------------------------------------------------------------------
 % Function to execute in each cycle
