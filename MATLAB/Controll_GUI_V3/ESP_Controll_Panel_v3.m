@@ -439,7 +439,7 @@ function searchPortsCallback(txtAreaPorts, txtAreaCommand)
     end
 end
 %---------------------------------------------------------------------------------------------------------------
-% Callback function for the  drop-down menu
+% Callback function for the  drop-down menu "Select Teamname"
 function selectedTeamCallback(dropdown, txtAreaCommand)
     selectedTeam = dropdown.Value;
     txtAreaCommand.Value = ['Ausgewähltes Team:' newline selectedTeam];
@@ -861,6 +861,7 @@ function compare_logButtonCallback(txtAreaCommand, txtAreaCompLog, ...
         end
 end
 %---------------------------------------------------------------------------------------------------------------
+% Callback function for the  drop-down menu "Select Race Direction"
 function directionCallback(dropdown, txtAreaCommand)
     try
         global dir;
