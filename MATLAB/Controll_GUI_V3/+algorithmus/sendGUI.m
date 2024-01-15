@@ -1,11 +1,19 @@
 function sendGUI(Stored)
 
 
-%%%%%%%%%%%%%% Data for Car A %%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%% Data for Car DO %%%%%%%%%%%%%%%%%%%
 
 if exist('./Output_GUI/GUI_Data_A.csv') == 2
     RaceDataA = readtable("./Output_GUI/GUI_Data_A.csv"); %./Output_GUI/CarA.csv
     hA = height(RaceDataA);
+
+    columnIndex = 3; % Replace with the actual column index
+  
+    % Convert the selected column to numeric values
+    RaceDataA.(RaceDataA.Properties.VariableNames{columnIndex}) = str2double(RaceDataA.(RaceDataA.Properties.VariableNames{columnIndex}));
+
+    % Apply the convert function to the time table
+    RaceDataA.Timestamp = arrayfun(@algorithmus.convertFormat, RaceDataA.(columnIndex), 'UniformOutput', false);
 
     for k = 1:hA
         if k == 1
@@ -58,11 +66,20 @@ if exist('./Output_GUI/GUI_Data_A.csv') == 2
     end
 end
 
-%%%%%%%%%%%%%% Data for Car B %%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%% Data for Car DT %%%%%%%%%%%%%%%%%%%
 
 if exist('./Output_GUI/GUI_Data_B.csv') == 2
     RaceDataB = readtable("./Output_GUI/GUI_Data_B.csv");
     hB = height(RaceDataB);
+
+    columnIndex = 3; % Replace with the actual column index
+  
+    % Convert the selected column to numeric values
+    RaceDataB.(RaceDataB.Properties.VariableNames{columnIndex}) = str2double(RaceDataB.(RaceDataB.Properties.VariableNames{columnIndex}));
+
+    % Apply the convert function to the time table
+    RaceDataB.Timestamp = arrayfun(@algorithmus.convertFormat, RaceDataB.(columnIndex), 'UniformOutput', false);
+
     
     for k = 1:hB
         if k == 1

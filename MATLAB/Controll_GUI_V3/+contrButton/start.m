@@ -48,10 +48,12 @@ function  start(txtAreaESP1_tx, txtAreaESP2_tx, txtAreaESP3_tx, txtAreaESP1_rx, 
                
             %Algorithmus function
             data_race = './Output_Files/data_race.csv';
-            isfinish = algorithmus.newEntry('13ecb9ab', '73e048ab', dir, data_race); %char(id_A) char(id_B)
+            
+            isfinish = algorithmus.newEntry('13ecb9ab', '83eb710e', dir, data_race); %char(id_A) char(id_B)
             
             %Send to GUI
             algorithmus.sendGUI(isfinish);
+            
            
         end
 

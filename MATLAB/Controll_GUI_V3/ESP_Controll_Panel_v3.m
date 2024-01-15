@@ -6,7 +6,7 @@ warning('off');
 global esp1 esp2 esp3;
 global parity1 parity2 parity3;
 global t stop_value;
-global dir;
+global dir hRace;
 
 stop_value = 0;
 
@@ -496,7 +496,7 @@ end
 function startButtonCallback(txtAreaCommand,...
     txtAreaESP1_tx, txtAreaESP2_tx, txtAreaESP3_tx, ...
     txtAreaESP1_rx, txtAreaESP2_rx, txtAreaESP3_rx)
-    try
+    % try
         global esp1 esp2 esp3;
         global parity1 parity2 parity3;
         global stop_value;
@@ -514,9 +514,9 @@ function startButtonCallback(txtAreaCommand,...
         contrButton.start(txtAreaESP1_tx, txtAreaESP2_tx, txtAreaESP3_tx, ...
             txtAreaESP1_rx, txtAreaESP2_rx, txtAreaESP3_rx, dataFile_Race);
        
-    catch
-        errordlg('Fehler beim Starten des Systems.', 'Error');
-    end
+    % catch
+    %     errordlg('Fehler beim Starten des Systems.', 'Error');
+    % end
 end
 %---------------------------------------------------------------------------------------------------------------
 %Callback function for the "read_log 1" button
@@ -801,7 +801,7 @@ function Alg_logButtonCallback(txtAreaCommand, txtAreaESP1_tx, ...
     id_B = (last_row.ID);
 
     dataFile_2_sort = './Output_Files/data_log_2_sort.csv';
-    isfinish = algorithmus.newEntryLog('13ecb9ab', '73e048ab', dir, dataFile_2_sort);
+    isfinish = algorithmus.newEntryLog('13ecb9ab', '83eb710e', dir, dataFile_2_sort);
 
     %Send to GUI
     algorithmus.sendGUI(isfinish);
