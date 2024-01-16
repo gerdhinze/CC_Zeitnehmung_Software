@@ -321,8 +321,10 @@ function ccHandle = initDuel(ccHandle)
     lampArray = [mylamp1, mylamp2, mylamp3, mylamp4, mylamp5, mylamp6, mylamp7, mylamp8, mylamp9, mylamp10, mylamp11, mylamp12, mylamp13, mylamp14, mylamp15, mylamp16, mylamp17, mylamp18];
     setLampsGrey(lampArray);
 
+    setappdata(0, 'lampArray', lampArray);
+
     % Start the race
-    startRace(lampArray);
+    %startRace(lampArray);
     
 end
 

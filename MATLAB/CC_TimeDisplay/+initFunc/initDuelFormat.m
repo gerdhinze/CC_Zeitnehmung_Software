@@ -19,10 +19,36 @@ function initDuelFormat(ccHandle,strShortCut)
     bt.nxtDuel = uibutton(ccHandle);
     bt.nxtDuel.Text = 'CheckDuel';
     bt.nxtDuel.Tag = ['checkDuel'];
-    bt.nxtDuel.Position = [500,300,100,25];
+    bt.nxtDuel.Position = [550,300,100,25];
     bt.nxtDuel.FontSize = 16;
     bt.nxtDuel.FontWeight = 'bold';
     bt.nxtDuel.ButtonPushedFcn = @ctrlBut.bt_checkDuel;
+
+    % Add LED to indicate Auto Update status
+    autoUpdateLED = uilamp(ccHandle);
+    autoUpdateLED.Position = [700, 300, 20, 20];
+    autoUpdateLED.Color = 'red'; % Default color (red = off)
+
+    % Store the LED in application data
+    setappdata(ccHandle, 'autoUpdateLED', autoUpdateLED);
+
+    % Auto Button
+    bt.autoUpdate = uibutton(ccHandle);
+    bt.autoUpdate.Text = 'Auto';
+    bt.autoUpdate.Tag = 'autoUpdate';
+    bt.autoUpdate.Position = [300, 300, 100, 25];
+    bt.autoUpdate.FontSize = 16;
+    bt.autoUpdate.FontWeight = 'bold';
+    bt.autoUpdate.ButtonPushedFcn = @ctrlBut.bt_autoupdate;
+
+    % Stop Button
+    bt.stopUpdate = uibutton(ccHandle);
+    bt.stopUpdate.Text = 'Stop';
+    bt.stopUpdate.Tag = 'stopUpdate';
+    bt.stopUpdate.Position = [400, 300, 100, 25];
+    bt.stopUpdate.FontSize = 16;
+    bt.stopUpdate.FontWeight = 'bold';
+    bt.stopUpdate.ButtonPushedFcn = @ctrlBut.bt_stop_autoupdate;
 
     %%%%%% FIRST CAR %%%%%%%%
 

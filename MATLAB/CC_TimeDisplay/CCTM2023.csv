@@ -1,14 +1,14 @@
-ID;Bewerb;Teamname;Bildungseinrichtung;Runden;Zeit;Meter;PictureUrl
-1;Schule;Wish-F1-Team;HTBLuVA Mödling;0;00:00,0;0;logo\WishF1Team.jpg
-2;Schule;Piston Cup Champions;HTBLuVA Salzburg;0;00:00,0;0;logo\PistonCupChampion.jpg
-3;Schule;Robot Challenge Team;HTBLuVA Mödling;0;00:00,0;0;logo\robotChallenge.png
-4;Schule;Schluckspechte;HTBLuVA Salzburg;0;00:00,0;0;logo\Schluckspechte.jpg
-5;Schule;1;HTBLuVA Salzburg;0;00:00,0;0;logo\eins.jpg
-6;Schule;Die Letzten;HTBLuVA Salzburg;0;00:00,0;0;logo\DieLetzten.jpg
-7;FH;CrashCar;FH Joanneum;0;00:00,0;0;logo\CrashCar.png
-8;FH;Britney Steers;FH Joanneum;0;00:00,0;0;logo\BritneySteers.jpg
-9;FH;Jurassic Kart;FH Joanneum;0;00:00,0;0;logo\JurassicKart.jpg
-10;FH;Running Gags;FH Joanneum;0;00:00,0;0;logo\runningGags.jpg
-11;FH;Team Temp.-Drift;FH-Joanneum;0;00:00,0;0;logo\Temperaturdrift.jpeg
-12;FH;Tunneleffekt;FH Joanneum;0;00:00,0;0;logo\Tunneleffekt.png
-13;FH;Red Devil Lobster;FH Joanneum;0;00:00,0;0;logo\reddevillobster.png
+ID;RFID;Bewerb;Teamname;Bildungseinrichtung;Runden;Zeit;Meter;PictureUrl
+1;J8154740;Schule;Wish-F1-Team;HTBLuVA Mödling;0;00:00,0;0;logo\WishF1Team.jpg
+2;K0819356;Schule;Piston Cup Champions;HTBLuVA Salzburg;0;00:00,0;0;logo\PistonCupChampion.jpg
+3;I2411490;Schule;Robot Challenge Team;HTBLuVA Mödling;0;00:00,0;0;logo\robotChallenge.png
+4;F9217036;Schule;Schluckspechte;HTBLuVA Salzburg;0;00:00,0;0;logo\Schluckspechte.jpg
+5;S1121970;Schule;1;HTBLuVA Salzburg;0;00:00,0;0;logo\eins.jpg
+6;K6309089;Schule;Die Letzten;HTBLuVA Salzburg;0;00:00,0;0;logo\DieLetzten.jpg
+7;Z0934332;FH;CrashCar;FH Joanneum;0;00:00,0;0;logo\CrashCar.png
+8;D2557455;FH;Britney Steers;FH Joanneum;0;00:00,0;0;logo\BritneySteers.jpg
+9;H3743483;FH;Jurassic Kart;FH Joanneum;0;00:00,0;0;logo\JurassicKart.jpg
+10;E6022827;FH;Running Gags;FH Joanneum;0;00:00,0;0;logo\runningGags.jpg
+11;O4270230;FH;Team Temp.-Drift;FH-Joanneum;0;00:00,0;0;logo\Temperaturdrift.jpeg
+12;D4058305;FH;Tunneleffekt;FH Joanneum;0;00:00,0;0;logo\Tunneleffekt.png
+13;A3165628 ;FH;Red Devil Lobster;FH Joanneum;0;00:00,0;0;logo\reddevillobster.png

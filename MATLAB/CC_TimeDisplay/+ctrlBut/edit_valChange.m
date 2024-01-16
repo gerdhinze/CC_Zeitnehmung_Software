@@ -1,46 +1,88 @@
 function edit_valChange(src,callbackdata)
 
     data = guidata(src.Parent); 
+
+    lampArray = getappdata(0, 'lampArray'); %LED Lampen
     
     switch src.Tag
         case 'rndOneSp1DO'
             data.TNData.firRndSplit1BO(data.idx) = duration(src.Value,'Format','mm:ss.SSS');
             set(findall(0,'Tag','lblTimeOneSp1DODuelDisp'),'Text',string(duration(src.Value,'Format','mm:ss.SSS')))
             set(findall(0,'Tag','lblTimeOneSp1DODuelDisp'),'FontColor', [0,0,0]);
+            
+            % Update LED colors
+            set(lampArray(1), 'Color', 'green'); % Set current LED to green
+            set(lampArray(2), 'Color', 'yellow'); % Set current LED to yellow
+            
         case 'rndOneSp2DO'
             data.TNData.firRndSplit2BO(data.idx) = duration(src.Value,'Format','mm:ss.SSS');
             set(findall(0,'Tag','lblTimeOneSp2DODuelDisp'),'Text',string(duration(src.Value,'Format','mm:ss.SSS')))
             set(findall(0,'Tag','lblTimeOneSp2DODuelDisp'),'FontColor', [0,0,0]);
+
+            % Update LED colors
+            set(lampArray(2), 'Color', 'green'); % Set current LED to green
+            set(lampArray(3), 'Color', 'yellow'); % Set current LED to yellow
+
         case 'rndOneDO'
             data.TNData.firRndBO(data.idx) = duration(src.Value,'Format','mm:ss.SSS');
             set(findall(0,'Tag','lblTimeOneDODuelDisp'),'Text',string(duration(src.Value,'Format','mm:ss.SSS')))
             set(findall(0,'Tag','lblTimeOneDODuelDisp'),'FontColor', [0,0,0]);
 
+            % Update LED colors
+            set(lampArray(3), 'Color', 'green'); % Set current LED to green
+            set(lampArray(4), 'Color', 'yellow'); % Set current LED to yellow
+
         case 'rndTwoSp1DO'
             data.TNData.secRndSplit1BO(data.idx) = duration(src.Value,'Format','mm:ss.SSS'); 
             set(findall(0,'Tag','lblTimeTwoSp1DODuelDisp'),'Text',string(duration(src.Value,'Format','mm:ss.SSS')))
             set(findall(0,'Tag','lblTimeTwoSp1DODuelDisp'),'FontColor', [0,0,0]);
+
+            % Update LED colors
+            set(lampArray(4), 'Color', 'green'); % Set current LED to green
+            set(lampArray(5), 'Color', 'yellow'); % Set current LED to yellow
+
         case 'rndTwoSp2DO'
             data.TNData.secRndSplit2BO(data.idx) = duration(src.Value,'Format','mm:ss.SSS'); 
             set(findall(0,'Tag','lblTimeTwoSp2DODuelDisp'),'Text',string(duration(src.Value,'Format','mm:ss.SSS')))
             set(findall(0,'Tag','lblTimeTwoSp2DODuelDisp'),'FontColor', [0,0,0]);
+
+            % Update LED colors
+            set(lampArray(5), 'Color', 'green'); % Set current LED to green
+            set(lampArray(6), 'Color', 'yellow'); % Set current LED to yellow
+
         case 'rndTwoDO'
             data.TNData.secRndBO(data.idx) = duration(src.Value,'Format','mm:ss.SSS'); 
             set(findall(0,'Tag','lblTimeTwoDODuelDisp'),'Text',string(duration(src.Value,'Format','mm:ss.SSS')))
             set(findall(0,'Tag','lblTimeTwoDODuelDisp'),'FontColor', [0,0,0]);
 
+            % Update LED colors
+            set(lampArray(6), 'Color', 'green'); % Set current LED to green
+            set(lampArray(7), 'Color', 'yellow'); % Set current LED to yellow
+
         case 'rndThreeSp1DO'
             data.TNData.thiRndSplit1BO(data.idx) = duration(src.Value,'Format','mm:ss.SSS'); 
             set(findall(0,'Tag','lblTimeThreeSp1DODuelDisp'),'Text',string(duration(src.Value,'Format','mm:ss.SSS')))
             set(findall(0,'Tag','lblTimeThreeSp1DODuelDisp'),'FontColor', [0,0,0]);
+
+            % Update LED colors
+            set(lampArray(7), 'Color', 'green'); % Set current LED to green
+            set(lampArray(8), 'Color', 'yellow'); % Set current LED to yellow
+
         case 'rndThreeSp2DO'
             data.TNData.thiRndSplit2BO(data.idx) = duration(src.Value,'Format','mm:ss.SSS'); 
             set(findall(0,'Tag','lblTimeThreeSp2DODuelDisp'),'Text',string(duration(src.Value,'Format','mm:ss.SSS')))
             set(findall(0,'Tag','lblTimeThreeSp2DODuelDisp'),'FontColor', [0,0,0]);
+
+            % Update LED colors
+            set(lampArray(8), 'Color', 'green'); % Set current LED to green
+            set(lampArray(9), 'Color', 'yellow'); % Set current LED to yellow
+
         case 'rndThreeDO'
             data.TNData.thiRndBO(data.idx) = duration(src.Value,'Format','mm:ss.SSS'); 
             set(findall(0,'Tag','lblTimeThreeDODuelDisp'),'Text',string(duration(src.Value,'Format','mm:ss.SSS')))
             set(findall(0,'Tag','lblTimeThreeDODuelDisp'),'FontColor', [0,0,0]);
+
+            set(lampArray(9), 'Color', 'green'); % Set current LED to green
 
         case 'rndOneSp1DT'
             data.TNData.firRndSplit1BO(data.idx+1) = duration(src.Value,'Format','mm:ss.SSS');    
