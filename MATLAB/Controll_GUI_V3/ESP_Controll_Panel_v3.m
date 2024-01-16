@@ -6,7 +6,9 @@ warning('off');
 global esp1 esp2 esp3;
 global parity1 parity2 parity3;
 global t stop_value;
-global dir hRace;
+global  dir;
+global hRace;
+dir = 1;
 
 stop_value = 0;
 
