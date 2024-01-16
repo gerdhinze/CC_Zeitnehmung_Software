@@ -217,7 +217,7 @@ function bt_autoupdate(src, callbackdata)
 
                  % Update the main data structure in the base workspace
                 guidata(src,data);
-                drawnow; 
+                %drawnow; 
 
                 delete(fullfile(folderPath, fileName)); % Delete the processed file
             end
