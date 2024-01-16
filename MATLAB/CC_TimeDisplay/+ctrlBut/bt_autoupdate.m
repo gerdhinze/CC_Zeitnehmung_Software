@@ -2,7 +2,7 @@ function bt_autoupdate(src, callbackdata)
     global stopUpdating;
     stopUpdating = false; % Initialize control variable
 
-    folderPath = 'C:\RaceFiles'; % Path to your files
+    folderPath = '../Controll_GUI_V3/Output_GUI'; % Path to your files
     lampArray = getappdata(0, 'lampArray'); % Retrieve LED Lampen
 
     % Retrieve the main data structure from the base workspace
