@@ -46,12 +46,15 @@ function bt_autoupdate(src, callbackdata)
                 set(lampArray(3), 'Color', 'yellow'); % Set next LED to yellow only if it's not green             
     
             case 'rndOneDO'
-                data.TNData.firRndBO(data.idx) = formattedTimeValue;
-                set(findall(0,'Tag','lblTimeOneDODuelDisp'),'Text',string(formattedTimeValue))
-    
+
                 % Update LED colors
                 set(lampArray(3), 'Color', 'green'); % Set current LED to green
                 set(lampArray(4), 'Color', 'yellow'); % Set next LED to yellow only if it's not green
+
+                data.TNData.firRndBO(data.idx) = formattedTimeValue;
+                set(findall(0,'Tag','lblTimeOneDODuelDisp'),'Text',string(formattedTimeValue))
+    
+
     
             case 'rndTwoSp1DO'
                 data.TNData.secRndSplit1BO(data.idx) = formattedTimeValue; 
@@ -70,12 +73,15 @@ function bt_autoupdate(src, callbackdata)
                 set(lampArray(6), 'Color', 'yellow'); % Set next LED to yellow only if it's not green
     
             case 'rndTwoDO'
-                data.TNData.secRndBO(data.idx) = formattedTimeValue; 
-                set(findall(0,'Tag','lblTimeTwoDODuelDisp'),'Text',string(formattedTimeValue))
-    
+
                 % Update LED colors
                 set(lampArray(6), 'Color', 'green'); % Set current LED to green
                 set(lampArray(7), 'Color', 'yellow'); % Set next LED to yellow only if it's not green
+
+                data.TNData.secRndBO(data.idx) = formattedTimeValue; 
+                set(findall(0,'Tag','lblTimeTwoDODuelDisp'),'Text',string(formattedTimeValue))
+    
+
     
             case 'rndThreeSp1DO'
                 data.TNData.thiRndSplit1BO(data.idx) = formattedTimeValue; 
@@ -94,10 +100,11 @@ function bt_autoupdate(src, callbackdata)
                 set(lampArray(9), 'Color', 'yellow'); % Set next LED to yellow only if it's not green
     
             case 'rndThreeDO'
+                set(lampArray(9), 'Color', 'green'); % Set current LED to green
                 data.TNData.thiRndBO(data.idx) = formattedTimeValue; 
                 set(findall(0,'Tag','lblTimeThreeDODuelDisp'),'Text',string(formattedTimeValue))
     
-                set(lampArray(9), 'Color', 'green'); % Set current LED to green
+                
     
             case 'rndOneSp1DT'
                 data.TNData.firRndSplit1BO(data.idx+1) = formattedTimeValue;   
