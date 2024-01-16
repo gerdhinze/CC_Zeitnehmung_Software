@@ -3,40 +3,48 @@ function sendGUI(Stored)
 %%%%%%%%%%%%%% Data for Car DO %%%%%%%%%%%%%%%%%%%
 
 if exist('./Output_GUI/GUI_Data_A.csv') == 2
+    % Generated Data for the GUI
     RaceDataA = readtable("./Output_GUI/GUI_Data_A.csv"); %./Output_GUI/CarA.csv
     hA = height(RaceDataA);
 
-    columnIndex = 3; % Replace with the actual column index
+    columnIndex = 3; % Column index of Timestamp
   
-    % Convert the selected column to numeric values
+    % Convert the column of the Timestamp to numeric values
     RaceDataA.(RaceDataA.Properties.VariableNames{columnIndex}) = str2double(RaceDataA.(RaceDataA.Properties.VariableNames{columnIndex}));
 
-
+    % Checks if the Race file exist
     if exist("Race") == 2
 
         Race = readtable("./Output_Files/data_race.csv");
 
-        % Convert the selected column to numeric values
+        % Convert the column of the Timestamp to numeric values
         Race.(Race.Properties.VariableNames{3}) = str2double(Race.(Race.Properties.VariableNames{3}));
 
+        % Select the Race Start time
         startTimeRace = Race{1,3};  
 
+        % Subtracts the start time from the race times
         RaceDataA.Timestamp = RaceDataA.Timestamp - startTimeRace;
+
+    % Checks if the Log file exist
     elseif exist("Log_data") == 2
     
         Log_data = readtable("./Output_Files/data_log_2_sort.csv");
 
-        % Convert the selected column to numeric values
+        % Convert the column of the Timestamp to numeric values
         Log_data.(Log_data.Properties.VariableNames{3}) = str2double(Log_data.(Log_data.Properties.VariableNames{3}));
 
+        % Select the Race Start time
         startTimeLog = Log_data{1,3};  
 
+        % Subtracts the start time from the race times
         RaceDataA.Timestamp = RaceDataA.Timestamp - startTimeLog;
     end
 
-    % Apply the convert function to the time table
+    % Apply the convert function to the Timestamp column
     RaceDataA.Timestamp = arrayfun(@algorithmus.convertFormat, RaceDataA.(columnIndex), 'UniformOutput', false);
 
+    % Generation of the mat files for the GUI
     for k = 1:hA
         if k == 1
             if exist('Output_GUI/rndOneSp1DO.mat') == 0
@@ -91,40 +99,48 @@ end
 %%%%%%%%%%%%%% Data for Car DT %%%%%%%%%%%%%%%%%%%
 
 if exist('./Output_GUI/GUI_Data_B.csv') == 2
+    % Generated Data for the GUI
     RaceDataB = readtable("./Output_GUI/GUI_Data_B.csv");
     hB = height(RaceDataB);
 
-    columnIndex = 3; % Replace with the actual column index
+    columnIndex = 3; % Column index of Timestamp
   
-    % Convert the selected column to numeric values
+    % Convert the column of the Timestamp to numeric values
     RaceDataB.(RaceDataB.Properties.VariableNames{columnIndex}) = str2double(RaceDataB.(RaceDataB.Properties.VariableNames{columnIndex}));
 
+    % Checks if the Race file exist
     if exist("Race") == 2
 
         Race = readtable("./Output_Files/data_race.csv");
 
-        % Convert the selected column to numeric values
+        % Convert the column of the Timestamp to numeric values
         Race.(Race.Properties.VariableNames{3}) = str2double(Race.(Race.Properties.VariableNames{3}));
 
+        % Select the Race Start time
         startTimeRace = Race{1,3};  
 
+        % Subtracts the start time from the race times
         RaceDataB.Timestamp = RaceDataB.Timestamp - startTimeRace;
+    
+    % Checks if the Log file exist
     elseif exist("Log_data") == 2
     
         Log_data = readtable("./Output_Files/data_log_2_sort.csv");
 
-        % Convert the selected column to numeric values
+        % Convert the column of the Timestamp to numeric values
         Log_data.(Log_data.Properties.VariableNames{3}) = str2double(Log_data.(Log_data.Properties.VariableNames{3}));
 
+        % Select the Race Start time
         startTimeLog = Log_data{1,3};  
 
+        % Subtracts the start time from the race times
         RaceDataB.Timestamp = RaceDataB.Timestamp - startTimeLog;
     end
 
-    % Apply the convert function to the time table
+    % Apply the convert function to the Timestamp column
     RaceDataB.Timestamp = arrayfun(@algorithmus.convertFormat, RaceDataB.(columnIndex), 'UniformOutput', false);
 
-    
+    % Generation of the mat files for the GUI
     for k = 1:hB
         if k == 1
             if exist('Output_GUI/rndOneSp1DT.mat') == 0
