@@ -9,7 +9,6 @@ function bt_autoupdate(src, callbackdata)
     data = guidata(src.Parent);
 
     % Loop to continuously check for new files
-    % Loop to continuously check for new files
     while ~stopUpdating
         files = dir(fullfile(folderPath, '*.mat'));
         for i = 1:length(files)
@@ -35,9 +34,8 @@ function bt_autoupdate(src, callbackdata)
                 
                 % Update LED colors
                 set(lampArray(1), 'Color', 'green'); % Set current LED to green
-                if ~strcmp(get(lampArray(2), 'Color'), 'green')
-                    set(lampArray(2), 'Color', 'yellow'); % Set next LED to yellow only if it's not green
-                end
+                set(lampArray(2), 'Color', 'yellow'); % Set next LED to yellow only if it's not green
+
                 
             case 'rndOneSp2DO'
                 data.TNData.firRndSplit2BO(data.idx) = formattedTimeValue;
@@ -45,9 +43,7 @@ function bt_autoupdate(src, callbackdata)
                 
                 % Update LED colors
                 set(lampArray(2), 'Color', 'green'); % Set current LED to green
-                if ~strcmp(get(lampArray(3), 'Color'), 'green')
-                    set(lampArray(3), 'Color', 'yellow'); % Set next LED to yellow only if it's not green
-                end
+                set(lampArray(3), 'Color', 'yellow'); % Set next LED to yellow only if it's not green             
     
             case 'rndOneDO'
                 data.TNData.firRndBO(data.idx) = formattedTimeValue;
@@ -55,10 +51,7 @@ function bt_autoupdate(src, callbackdata)
     
                 % Update LED colors
                 set(lampArray(3), 'Color', 'green'); % Set current LED to green
-                if ~strcmp(get(lampArray(4), 'Color'), 'green')
-                    set(lampArray(4), 'Color', 'yellow'); % Set next LED to yellow only if it's not green
-                end
-                drawnow;
+                set(lampArray(4), 'Color', 'yellow'); % Set next LED to yellow only if it's not green
     
             case 'rndTwoSp1DO'
                 data.TNData.secRndSplit1BO(data.idx) = formattedTimeValue; 
@@ -66,9 +59,7 @@ function bt_autoupdate(src, callbackdata)
     
                 % Update LED colors
                 set(lampArray(4), 'Color', 'green'); % Set current LED to green
-                if ~strcmp(get(lampArray(5), 'Color'), 'green')
-                    set(lampArray(5), 'Color', 'yellow'); % Set next LED to yellow only if it's not green
-                end
+                set(lampArray(5), 'Color', 'yellow'); % Set next LED to yellow only if it's not green
     
             case 'rndTwoSp2DO'
                 data.TNData.secRndSplit2BO(data.idx) = formattedTimeValue; 
@@ -76,9 +67,7 @@ function bt_autoupdate(src, callbackdata)
     
                 % Update LED colors
                 set(lampArray(5), 'Color', 'green'); % Set current LED to green
-                if ~strcmp(get(lampArray(6), 'Color'), 'green')
-                    set(lampArray(6), 'Color', 'yellow'); % Set next LED to yellow only if it's not green
-                end
+                set(lampArray(6), 'Color', 'yellow'); % Set next LED to yellow only if it's not green
     
             case 'rndTwoDO'
                 data.TNData.secRndBO(data.idx) = formattedTimeValue; 
@@ -86,10 +75,7 @@ function bt_autoupdate(src, callbackdata)
     
                 % Update LED colors
                 set(lampArray(6), 'Color', 'green'); % Set current LED to green
-                if ~strcmp(get(lampArray(7), 'Color'), 'green')
-                    set(lampArray(7), 'Color', 'yellow'); % Set next LED to yellow only if it's not green
-                end
-                drawnow;
+                set(lampArray(7), 'Color', 'yellow'); % Set next LED to yellow only if it's not green
     
             case 'rndThreeSp1DO'
                 data.TNData.thiRndSplit1BO(data.idx) = formattedTimeValue; 
@@ -97,9 +83,7 @@ function bt_autoupdate(src, callbackdata)
     
                 % Update LED colors
                 set(lampArray(7), 'Color', 'green'); % Set current LED to green
-                if ~strcmp(get(lampArray(8), 'Color'), 'green')
-                    set(lampArray(8), 'Color', 'yellow'); % Set next LED to yellow only if it's not green
-                end
+                set(lampArray(8), 'Color', 'yellow'); % Set next LED to yellow only if it's not green
     
             case 'rndThreeSp2DO'
                 data.TNData.thiRndSplit2BO(data.idx) = formattedTimeValue; 
@@ -107,16 +91,13 @@ function bt_autoupdate(src, callbackdata)
     
                 % Update LED colors
                 set(lampArray(8), 'Color', 'green'); % Set current LED to green
-                if ~strcmp(get(lampArray(9), 'Color'), 'green')
-                    set(lampArray(9), 'Color', 'yellow'); % Set next LED to yellow only if it's not green
-                end
+                set(lampArray(9), 'Color', 'yellow'); % Set next LED to yellow only if it's not green
     
             case 'rndThreeDO'
                 data.TNData.thiRndBO(data.idx) = formattedTimeValue; 
                 set(findall(0,'Tag','lblTimeThreeDODuelDisp'),'Text',string(formattedTimeValue))
     
                 set(lampArray(9), 'Color', 'green'); % Set current LED to green
-                drawnow;
     
             case 'rndOneSp1DT'
                 data.TNData.firRndSplit1BO(data.idx+1) = formattedTimeValue;   
@@ -137,7 +118,6 @@ function bt_autoupdate(src, callbackdata)
                 if ~strcmp(get(lampArray(12), 'Color'), 'green')
                     set(lampArray(12), 'Color', 'yellow'); % Set next LED to yellow only if it's not green
                 end
-                drawnow;
 
             case 'rndOneDT'
                 data.TNData.firRndBO(data.idx+1) = formattedTimeValue;    
@@ -178,7 +158,6 @@ function bt_autoupdate(src, callbackdata)
                 if ~strcmp(get(lampArray(16), 'Color'), 'green')
                     set(lampArray(16), 'Color', 'yellow'); % Set next LED to yellow only if it's not green
                 end
-                drawnow;
     
             case 'rndThreeSp1DT'
                 data.TNData.thiRndSplit1BO(data.idx+1) = formattedTimeValue;
@@ -205,7 +184,6 @@ function bt_autoupdate(src, callbackdata)
                 set(findall(0,'Tag','lblTimeThreeDTDuelDisp'),'Text',string(formattedTimeValue))
 
                 set(lampArray(18), 'Color', 'green'); % Set current LED to green
-                drawnow;
     
             case 'MeterOneDO'
                 data.TNData.firRndBOMT(data.idx) = str2double(src.Value);    
