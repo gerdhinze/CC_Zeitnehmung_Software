@@ -1,12 +1,10 @@
-function [Stored_Entry, hCarANew] = newEntry(ID_A, ID_B, dir, dataFile)
+function [Stored_Entry,hRace] = newEntry(ID_A, ID_B, dir, dataFile)
 
 global dir;
 global Last_ID
 Last_ID = 0;
 global ID_Next_Station
 ID_Next_Station = 0;
-
-global hCarANew
 
 Stored_Entry = 0;
 
@@ -15,18 +13,12 @@ Race = readtable('./Output_Files/data_race.csv');
 GUI_Data_A = './Output_GUI/GUI_Data_A.csv';
 GUI_Data_B = './Output_GUI/GUI_Data_B.csv';
 
-idxA = find(strcmp(Race.ID,ID_A)); 
+idxA = find(strcmp(Race.ID,ID_A));
 idxB = find(strcmp(Race.ID,ID_B)); 
 
+
 CarA = Race(idxA,:);
-hCarA = height(CarA);
-
-
 CarB = Race(idxB,:);
-hCarB = height(CarB);
-
-%save('./Output_GUI/CarA.csv', "CarA") 
-%save('./Output_GUI/CarB.csv', "CarB") 
               
 nameA = 'Car A';
 Gate1 = [nameA,': passed Station 1 '];
@@ -40,15 +32,10 @@ Gate6 = [nameB,': passed Station 3 '];
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% Car A %%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-%if (hCarA == 0) && (hCarANew == 0)
-%    hCarANew = 1;
- 
-%elseif (hCarA > 0) && (hCarA == hCarANew)
-%    hCarANew = hCarANew+1;
     
-if ID_A %ismember(ID_A{1}, CarA.ID) == 1
+if ID_A 
     if dir == 1 %CCW
+        delete(GUI_Data_A)
 
         for n = 1:length(idxA)
 
@@ -60,17 +47,18 @@ if ID_A %ismember(ID_A{1}, CarA.ID) == 1
                     disp(Gate1)
           
                 elseif StationCarA == 2
-                    disp(Gate2)
-                    headers = {'Station', 'ID', 'Timestampstamp'};
-     
+                    % Headers of the table
+                    headers = {'Station', 'ID', 'Timestamp'};
+                    
                     newData = table({CarA.Station(n)}, {CarA.ID(n)}, {CarA.Timestamp(n)}, 'VariableNames', headers);
         
                     if exist(GUI_Data_A) == 0
                         % File doesn't exist, create it with headers
                         writetable(newData, GUI_Data_A, 'WriteMode', 'overwrite');
+                        disp(Gate2)
                     else
-                        % File exists, append data
-                        writetable(newData, GUI_Data_A, 'WriteMode', 'append', 'WriteVariableNames', false);
+                        % File exists
+                        disp('')
                     end
               
                 elseif StationCarA == 3
@@ -78,16 +66,7 @@ if ID_A %ismember(ID_A{1}, CarA.ID) == 1
                 end
 
             elseif n >= 2    
-                if StationCarA == 1
-                    disp(Gate1)
-          
-                elseif StationCarA == 2
-                    disp(Gate2)
-              
-                elseif StationCarA == 3
-                    disp(Gate3)
-                end
-
+                
                 [dout, dOutDisp,Last_ID] = directionCCW(CarA.Station(n-1),CarA.Station(n));
                 disp(dOutDisp)
                 if Last_ID ~= 0
@@ -95,16 +74,50 @@ if ID_A %ismember(ID_A{1}, CarA.ID) == 1
                 end
 
                 if Last_ID == 0 && dout == 1 && ID_Next_Station == 0
+
                     headers = {'Station', 'ID', 'Timestamp'};
-     
                     newData = table({CarA.Station(n)}, {CarA.ID(n)}, {CarA.Timestamp(n)}, 'VariableNames', headers);
         
+                    %uniqueIdentifierColumn = 3;
+
+                    %Read the existing data from the CSV file
+                    %existingData_CarA = readtable(GUI_Data_A); 
+
+                    %existingCellData = existingData_CarA.(uniqueIdentifierColumn);
+                    %newCellData = newData.(uniqueIdentifierColumn);
+
+                    % Convert the existingData column to a cell array of strings
+                    %existingCellData = cellfun(@num2str, num2cell(existingData.(uniqueIdentifierColumn)), 'UniformOutput', false);
+
+                    % Convert the newData column to a cell array of strings
+                    %newCellData = cellfun(@str2double, num2cell(newData.(uniqueIdentifierColumn)), 'UniformOutput', false);
+
+                   
+
                     if exist(GUI_Data_A) == 0
                         % File doesn't exist, create it with headers
                         writetable(newData, GUI_Data_A, 'WriteMode', 'overwrite');
-                    else
-                        % File exists, append data
-                        writetable(newData, GUI_Data_A, 'WriteMode', 'append', 'WriteVariableNames', false);
+                    elseif exist(GUI_Data_A) == 2
+
+                         %existingIndices = ismember(existingCellData,newCellData);
+                         % Append only the non-existing data
+                         %dataToAppend = newData(~existingIndices, :); 
+
+                         %if size(existingData_CarA) < size(newData)+1
+                         %   disp('')
+                         %else
+                            % File exists, append data
+                            writetable(newData, GUI_Data_A, 'WriteMode', 'append', 'WriteVariableNames', false);
+                            if StationCarA == 1
+                                disp(Gate1)
+          
+                            elseif StationCarA == 2
+                                disp(Gate2)
+              
+                            elseif StationCarA == 3
+                                disp(Gate3)
+                            end
+                         %end
                     end
                     
                 end
@@ -132,7 +145,6 @@ if ID_A %ismember(ID_A{1}, CarA.ID) == 1
                     disp(Gate2)
               
                 elseif StationCarA == 3
-                    disp(Gate3)
                     headers = {'Station', 'ID', 'Timestamp'};
      
                     newData = table({CarA.Station(n)}, {CarA.ID(n)}, {CarA.Timestamp(n)}, 'VariableNames', headers);
@@ -140,9 +152,10 @@ if ID_A %ismember(ID_A{1}, CarA.ID) == 1
                     if exist(GUI_Data_A) == 0
                         % File doesn't exist, create it with headers
                         writetable(newData, GUI_Data_A, 'WriteMode', 'overwrite');
+                        disp(Gate3)
                     else
-                        % File exists, append data
-                        writetable(newData, GUI_Data_A, 'WriteMode', 'append', 'WriteVariableNames', false);
+                        % File exists
+                        disp('')
                     end
                 end   
 
@@ -183,19 +196,12 @@ if ID_A %ismember(ID_A{1}, CarA.ID) == 1
                     Stored_Entry = 0;
                 end
             end
-
         end
-    end
+     end
 end
-%end
-
-
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% Car B %%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%if hCarB > 0
-%   hCarBNew = hCarB+1;
-%if hCarB < hCarBNew
 
-if ID_B %ismember(ID_B{1}, CarB.ID) == 1
+if ID_B 
     if dir == 1 %CCW
 
         for n = 1:length(idxB)
@@ -208,7 +214,6 @@ if ID_B %ismember(ID_B{1}, CarB.ID) == 1
                     disp(Gate4)
           
                 elseif StationCarB == 2
-                    disp(Gate5)
                     headers = {'Station', 'ID', 'Timestamp'};
      
                     newData = table({CarB.Station(n)}, {CarB.ID(n)}, {CarB.Timestamp(n)}, 'VariableNames', headers);
@@ -216,9 +221,10 @@ if ID_B %ismember(ID_B{1}, CarB.ID) == 1
                     if exist(GUI_Data_B) == 0
                         % File doesn't exist, create it with headers
                         writetable(newData, GUI_Data_B, 'WriteMode', 'overwrite');
+                        disp(Gate5)
                     else
-                        % File exists, append data
-                        writetable(newData, GUI_Data_B, 'WriteMode', 'append', 'WriteVariableNames', false);
+                        % File exists
+                        disp('')
                     end
               
                 elseif StationCarB == 3
@@ -280,7 +286,6 @@ if ID_B %ismember(ID_B{1}, CarB.ID) == 1
                     disp(Gate5)
               
                 elseif StationCarB == 3
-                    disp(Gate6)
                     headers = {'Station', 'ID', 'Timestamp'};
      
                     newData = table({CarB.Station(n)}, {CarB.ID(n)}, {CarB.Timestamp(n)}, 'VariableNames', headers);
@@ -288,9 +293,10 @@ if ID_B %ismember(ID_B{1}, CarB.ID) == 1
                     if exist(GUI_Data_B) == 0
                         % File doesn't exist, create it with headers
                         writetable(newData, GUI_Data_B, 'WriteMode', 'overwrite');
+                        disp(Gate6)
                     else
-                        % File exists, append data
-                        writetable(newData, GUI_Data_B, 'WriteMode', 'append', 'WriteVariableNames', false);
+                        % File exists
+                        disp('')
                     end
                 end   
 
@@ -336,11 +342,8 @@ if ID_B %ismember(ID_B{1}, CarB.ID) == 1
     end
 end
 end
-%end
-%end
 
-
-%-------------------------------------------------------------------------------------------------------
+%---------------------------------------------CCW direction-------------------------------------------------------
 function [dOut, dOutDisp, Last_ID] = directionCCW(ID_Previous_Station, ID_Station)
 
 global ID_Next_Station
@@ -414,7 +417,8 @@ global Last_ID
 
       end
 end
-%-----------------------------------------------------------------------------------
+
+%---------------------------------------------CCW direction-------------------------------------------------------
 function [dOut, dOutDisp, Last_ID] = directionCW(ID_Previous_Station, ID_Station)
 
 global Last_ID
