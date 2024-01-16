@@ -26,7 +26,7 @@ function initDuelFormat(ccHandle,strShortCut)
 
     % Add LED to indicate Auto Update status
     autoUpdateLED = uilamp(ccHandle);
-    autoUpdateLED.Position = [700, 300, 20, 20]; % Adjust position as needed
+    autoUpdateLED.Position = [700, 300, 20, 20];
     autoUpdateLED.Color = 'red'; % Default color (red = off)
 
     % Store the LED in application data
