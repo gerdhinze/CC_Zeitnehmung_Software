@@ -1,12 +1,5 @@
 function sendGUI(Stored)
 
-Race = readtable("data_race_sort_1.csv");
-
-% Convert the selected column to numeric values
-Race.(Race.Properties.VariableNames{3}) = str2double(Race.(Race.Properties.VariableNames{3}));
-
-startTime = Race{1,3};  
-
 %%%%%%%%%%%%%% Data for Car DO %%%%%%%%%%%%%%%%%%%
 
 if exist('./Output_GUI/GUI_Data_A.csv') == 2
@@ -18,7 +11,28 @@ if exist('./Output_GUI/GUI_Data_A.csv') == 2
     % Convert the selected column to numeric values
     RaceDataA.(RaceDataA.Properties.VariableNames{columnIndex}) = str2double(RaceDataA.(RaceDataA.Properties.VariableNames{columnIndex}));
 
-     RaceDataA.Time = RaceDataA.Time - startTime;
+
+    if exist("Race") == 2
+
+        Race = readtable("./Output_Files/data_race.csv");
+
+        % Convert the selected column to numeric values
+        Race.(Race.Properties.VariableNames{3}) = str2double(Race.(Race.Properties.VariableNames{3}));
+
+        startTimeRace = Race{1,3};  
+
+        RaceDataA.Timestamp = RaceDataA.Timestamp - startTimeRace;
+    elseif exist("Log_data") == 2
+    
+        Log_data = readtable("./Output_Files/data_log_2_sort.csv");
+
+        % Convert the selected column to numeric values
+        Log_data.(Log_data.Properties.VariableNames{3}) = str2double(Log_data.(Log_data.Properties.VariableNames{3}));
+
+        startTimeLog = Log_data{1,3};  
+
+        RaceDataA.Timestamp = RaceDataA.Timestamp - startTimeLog;
+    end
 
     % Apply the convert function to the time table
     RaceDataA.Timestamp = arrayfun(@algorithmus.convertFormat, RaceDataA.(columnIndex), 'UniformOutput', false);
@@ -85,7 +99,27 @@ if exist('./Output_GUI/GUI_Data_B.csv') == 2
     % Convert the selected column to numeric values
     RaceDataB.(RaceDataB.Properties.VariableNames{columnIndex}) = str2double(RaceDataB.(RaceDataB.Properties.VariableNames{columnIndex}));
 
-    RaceDataB.Time = RaceDataB.Time - startTime;
+    if exist("Race") == 2
+
+        Race = readtable("./Output_Files/data_race.csv");
+
+        % Convert the selected column to numeric values
+        Race.(Race.Properties.VariableNames{3}) = str2double(Race.(Race.Properties.VariableNames{3}));
+
+        startTimeRace = Race{1,3};  
+
+        RaceDataB.Timestamp = RaceDataB.Timestamp - startTimeRace;
+    elseif exist("Log_data") == 2
+    
+        Log_data = readtable("./Output_Files/data_log_2_sort.csv");
+
+        % Convert the selected column to numeric values
+        Log_data.(Log_data.Properties.VariableNames{3}) = str2double(Log_data.(Log_data.Properties.VariableNames{3}));
+
+        startTimeLog = Log_data{1,3};  
+
+        RaceDataB.Timestamp = RaceDataB.Timestamp - startTimeLog;
+    end
 
     % Apply the convert function to the time table
     RaceDataB.Timestamp = arrayfun(@algorithmus.convertFormat, RaceDataB.(columnIndex), 'UniformOutput', false);
