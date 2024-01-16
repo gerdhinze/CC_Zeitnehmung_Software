@@ -23,15 +23,7 @@ function initDuelFormat(ccHandle,strShortCut)
     bt.nxtDuel.FontSize = 16;
     bt.nxtDuel.FontWeight = 'bold';
     bt.nxtDuel.ButtonPushedFcn = @ctrlBut.bt_checkDuel;
-
-    % Add LED to indicate Auto Update status
-    autoUpdateLED = uilamp(ccHandle);
-    autoUpdateLED.Position = [700, 300, 20, 20];
-    autoUpdateLED.Color = 'red'; % Default color (red = off)
-
-    % Store the LED in application data
-    setappdata(ccHandle, 'autoUpdateLED', autoUpdateLED);
-
+    
     % Auto Button
     bt.autoUpdate = uibutton(ccHandle);
     bt.autoUpdate.Text = 'Auto';
@@ -49,6 +41,7 @@ function initDuelFormat(ccHandle,strShortCut)
     bt.stopUpdate.FontSize = 16;
     bt.stopUpdate.FontWeight = 'bold';
     bt.stopUpdate.ButtonPushedFcn = @ctrlBut.bt_stop_autoupdate;
+    
 
     %%%%%% FIRST CAR %%%%%%%%
 
@@ -300,4 +293,3 @@ function initDuelFormat(ccHandle,strShortCut)
     lbl.TimeOneHeader.Position = [500,150,275,50];
     lbl.TimeOneHeader.HorizontalAlignment = 'center';
 end
-

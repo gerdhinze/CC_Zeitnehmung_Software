@@ -1,5 +1,7 @@
 function initDuelFormat(ccHandle,strShortCut)
 
+    global autoUpdateLED; % Assuming autoUpdateLED is made global
+
     bt.lstDuel = uibutton(ccHandle);
     bt.lstDuel.Text = '<';
     bt.lstDuel.Tag = ['lstDuel'];
@@ -24,6 +26,14 @@ function initDuelFormat(ccHandle,strShortCut)
     bt.nxtDuel.FontWeight = 'bold';
     bt.nxtDuel.ButtonPushedFcn = @ctrlBut.bt_checkDuel;
 
+    % Add LED to indicate Auto Update status
+    autoUpdateLED = uilamp(ccHandle);
+    autoUpdateLED.Position = [700, 300, 20, 20];
+    autoUpdateLED.Color = 'red';
+
+    % Store the LED and the handle in application data
+    setappdata(0, 'autoUpdateLED', autoUpdateLED);
+    
     % Auto Button
     bt.autoUpdate = uibutton(ccHandle);
     bt.autoUpdate.Text = 'Auto';
@@ -31,10 +41,9 @@ function initDuelFormat(ccHandle,strShortCut)
     bt.autoUpdate.Position = [300, 300, 100, 25];
     bt.autoUpdate.FontSize = 16;
     bt.autoUpdate.FontWeight = 'bold';
+    bt.autoUpdate.ButtonPushedFcn = @autoUpdateLED.Color = 'green';;
     bt.autoUpdate.ButtonPushedFcn = @ctrlBut.bt_autoupdate;
 
-    
-   
     % Stop Button
     bt.stopUpdate = uibutton(ccHandle);
     bt.stopUpdate.Text = 'Stop';
@@ -294,4 +303,3 @@ function initDuelFormat(ccHandle,strShortCut)
     lbl.TimeOneHeader.Position = [500,150,275,50];
     lbl.TimeOneHeader.HorizontalAlignment = 'center';
 end
-
