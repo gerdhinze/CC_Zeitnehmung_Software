@@ -1,11 +1,12 @@
-function formattedTime = convertFormat(milliseconds)
-    % Converts milliseconds to the format mm:ss:ttt
+function convertedTimestamp = convertFormat(milliseconds)
+     % Convert milliseconds to seconds
+    totalSeconds = milliseconds / 1000;
 
-    % Extract minutes, seconds, and milliseconds
-    minutes = floor(milliseconds / (60 * 1000));
-    seconds = floor((milliseconds - minutes * 60 * 1000) / 1000);
-    milliseconds = milliseconds - minutes * 60 * 1000 - seconds * 1000;
+    % Calculate minutes, seconds, and milliseconds
+    minutes = floor(totalSeconds / 60);
+    seconds = rem(round(totalSeconds), 60);
+    milliseconds = rem(milliseconds, 1000);
 
-    % Generate the formatted time string
-    formattedTime = sprintf('%02d:%02d:%03d', minutes, seconds, milliseconds);
+    % Format the result in mm:ss:SSS
+    convertedTimestamp = sprintf('%02d:%02d:%03d', minutes, seconds, milliseconds);
 end
