@@ -1,6 +1,5 @@
 function bt_autoupdate(src, callbackdata)
     global stopUpdating;
-
     stopUpdating = false; % Initialize control variable
 
     folderPath = 'C:\RaceFiles'; % Path to your files
@@ -9,6 +8,7 @@ function bt_autoupdate(src, callbackdata)
     % Retrieve the main data structure from the base workspace
     data = guidata(src.Parent);
 
+    % Loop to continuously check for new files
     % Loop to continuously check for new files
     while ~stopUpdating
         files = dir(fullfile(folderPath, '*.mat'));
@@ -103,72 +103,38 @@ function bt_autoupdate(src, callbackdata)
                 data.TNData.firRndSplit1BO(data.idx+1) = formattedTimeValue;   
                 set(findall(0,'Tag','lblTimeOneSp1DTDuelDisp'),'Text',string(formattedTimeValue))
 
-                % Update LED colors
-                set(lampArray(10), 'Color', 'green'); % Set current LED to green
-                set(lampArray(11), 'Color', 'yellow'); % Set current LED to yellow
-
             case 'rndOneSp2DT'
                 data.TNData.firRndSplit2BO(data.idx+1) = formattedTimeValue;    
                 set(findall(0,'Tag','lblTimeOneSp2DTDuelDisp'),'Text',string(formattedTimeValue))
-
-                % Update LED colors
-                set(lampArray(11), 'Color', 'green'); % Set current LED to green
-                set(lampArray(12), 'Color', 'yellow'); % Set current LED to yellow
 
             case 'rndOneDT'
                 data.TNData.firRndBO(data.idx+1) = formattedTimeValue;    
                 set(findall(0,'Tag','lblTimeOneDTDuelDisp'),'Text',string(formattedTimeValue))
 
-                % Update LED colors
-                set(lampArray(12), 'Color', 'green'); % Set current LED to green
-                set(lampArray(13), 'Color', 'yellow'); % Set current LED to yellow
     
             case 'rndTwoSp1DT'
                 data.TNData.secRndSplit1BO(data.idx+1) = formattedTimeValue;
                 set(findall(0,'Tag','lblTimeTwoSp1DTDuelDisp'),'Text',string(formattedTimeValue))
 
-                % Update LED colors
-                set(lampArray(13), 'Color', 'green'); % Set current LED to green
-                set(lampArray(14), 'Color', 'yellow'); % Set current LED to yellow
-
             case 'rndTwoSp2DT'
                 data.TNData.secRndSplit2BO(data.idx+1) = formattedTimeValue;
                 set(findall(0,'Tag','lblTimeTwoSp2DTDuelDisp'),'Text',string(formattedTimeValue))
 
-                % Update LED colors
-                set(lampArray(14), 'Color', 'green'); % Set current LED to green
-                set(lampArray(15), 'Color', 'yellow'); % Set current LED to yellow
-
             case 'rndTwoDT'
                 data.TNData.secRndBO(data.idx+1) = formattedTimeValue;
                 set(findall(0,'Tag','lblTimeTwoDTDuelDisp'),'Text',string(formattedTimeValue))
-
-                % Update LED colors
-                set(lampArray(15), 'Color', 'green'); % Set current LED to green
-                set(lampArray(16), 'Color', 'yellow'); % Set current LED to yellow
     
             case 'rndThreeSp1DT'
                 data.TNData.thiRndSplit1BO(data.idx+1) = formattedTimeValue;
                 set(findall(0,'Tag','lblTimeThreeSp1DTDuelDisp'),'Text',string(formattedTimeValue))
 
-                % Update LED colors
-                set(lampArray(16), 'Color', 'green'); % Set current LED to green
-                set(lampArray(17), 'Color', 'yellow'); % Set current LED to yellow
-
             case 'rndThreeSp2DT'
                 data.TNData.thiRndSplit2BO(data.idx+1) = formattedTimeValue;
                 set(findall(0,'Tag','lblTimeThreeSp2DTDuelDisp'),'Text',string(formattedTimeValue))
 
-                % Update LED colors
-                set(lampArray(17), 'Color', 'green'); % Set current LED to green
-                set(lampArray(18), 'Color', 'yellow'); % Set current LED to yellow
-
             case 'rndThreeDT'
                 data.TNData.thiRndBO(data.idx+1) = formattedTimeValue;
                 set(findall(0,'Tag','lblTimeThreeDTDuelDisp'),'Text',string(formattedTimeValue))
-
-                % Update LED colors
-                set(lampArray(18), 'Color', 'green'); % Set current LED to green
     
             case 'MeterOneDO'
                 data.TNData.firRndBOMT(data.idx) = str2double(src.Value);    
