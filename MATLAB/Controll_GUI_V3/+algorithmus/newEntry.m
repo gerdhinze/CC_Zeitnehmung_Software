@@ -35,6 +35,8 @@ Gate6 = [nameB,': passed Station 3 '];
     
 if ID_A 
     if dir == 1 %CCW
+
+        %Deletes the GUI_Data_A
         delete(GUI_Data_A)
 
         for n = 1:length(idxA)
@@ -133,6 +135,9 @@ if ID_A
 
     if dir == 2 %CW
 
+        %Deletes the GUI_Data_A
+        delete(GUI_Data_A)
+
         for n = 1:length(idxA)
     
             StationCarA = CarA.Station(n);
@@ -204,6 +209,10 @@ end
 if ID_B 
     if dir == 1 %CCW
 
+        %Deletes the GUI_Data_B
+        delete(GUI_Data_B)
+
+
         for n = 1:length(idxB)
 
     
@@ -273,6 +282,9 @@ if ID_B
     end
 
     if dir == 2 %CW
+
+        %Deletes the GUI_Data_B
+        delete(GUI_Data_B)
 
         for n = 1:length(idxB)
     
