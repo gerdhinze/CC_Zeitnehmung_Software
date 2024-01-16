@@ -58,6 +58,7 @@ function bt_autoupdate(src, callbackdata)
                 if ~strcmp(get(lampArray(4), 'Color'), 'green')
                     set(lampArray(4), 'Color', 'yellow'); % Set next LED to yellow only if it's not green
                 end
+                drawnow;
     
             case 'rndTwoSp1DO'
                 data.TNData.secRndSplit1BO(data.idx) = formattedTimeValue; 
@@ -88,6 +89,7 @@ function bt_autoupdate(src, callbackdata)
                 if ~strcmp(get(lampArray(7), 'Color'), 'green')
                     set(lampArray(7), 'Color', 'yellow'); % Set next LED to yellow only if it's not green
                 end
+                drawnow;
     
             case 'rndThreeSp1DO'
                 data.TNData.thiRndSplit1BO(data.idx) = formattedTimeValue; 
@@ -114,6 +116,7 @@ function bt_autoupdate(src, callbackdata)
                 set(findall(0,'Tag','lblTimeThreeDODuelDisp'),'Text',string(formattedTimeValue))
     
                 set(lampArray(9), 'Color', 'green'); % Set current LED to green
+                drawnow;
     
             case 'rndOneSp1DT'
                 data.TNData.firRndSplit1BO(data.idx+1) = formattedTimeValue;   
@@ -134,6 +137,7 @@ function bt_autoupdate(src, callbackdata)
                 if ~strcmp(get(lampArray(12), 'Color'), 'green')
                     set(lampArray(12), 'Color', 'yellow'); % Set next LED to yellow only if it's not green
                 end
+                drawnow;
 
             case 'rndOneDT'
                 data.TNData.firRndBO(data.idx+1) = formattedTimeValue;    
@@ -174,6 +178,7 @@ function bt_autoupdate(src, callbackdata)
                 if ~strcmp(get(lampArray(16), 'Color'), 'green')
                     set(lampArray(16), 'Color', 'yellow'); % Set next LED to yellow only if it's not green
                 end
+                drawnow;
     
             case 'rndThreeSp1DT'
                 data.TNData.thiRndSplit1BO(data.idx+1) = formattedTimeValue;
@@ -200,6 +205,7 @@ function bt_autoupdate(src, callbackdata)
                 set(findall(0,'Tag','lblTimeThreeDTDuelDisp'),'Text',string(formattedTimeValue))
 
                 set(lampArray(18), 'Color', 'green'); % Set current LED to green
+                drawnow;
     
             case 'MeterOneDO'
                 data.TNData.firRndBOMT(data.idx) = str2double(src.Value);    
