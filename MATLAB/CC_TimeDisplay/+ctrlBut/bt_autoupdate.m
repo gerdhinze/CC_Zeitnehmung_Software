@@ -23,7 +23,7 @@ function bt_autoupdate(src, callbackdata)
             
                 % Replace the last colon with a decimal point for milliseconds
                 timeString = regexprep(timeString, ':(?=\d+$)', '.');
-                formattedTimeValue = duration(timeString, 'InputFormat', 'mm:ss.SSS'); % Convert to duration
+                formattedTimeValue = timeString;% = duration(timeString, 'InputFormat', 'mm:ss.SSS'); % Convert to duration
                 
                 % Process and update based on variableName
                 switch variableName
