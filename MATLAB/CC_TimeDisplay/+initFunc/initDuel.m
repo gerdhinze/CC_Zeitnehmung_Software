@@ -53,7 +53,7 @@ function ccHandle = initDuel(ccHandle)
 
     mylamp3 = uilamp(tab.Duel); %first round finished
     mylamp3.Position = [75,330,80,80]; 
-    mylamp3.Color = 'red'; %
+    mylamp3.Color = 'green'; %
 
     mylamp4 = uilamp(tab.Duel); %second round first split time
     mylamp4.Position = [650,260,40,40];
