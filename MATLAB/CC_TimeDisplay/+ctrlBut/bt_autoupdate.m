@@ -36,7 +36,7 @@ function bt_autoupdate(src, callbackdata)
                 
                 % Update LED colors
                 set(findall(0,'Tag','Lamp1'),'color','green');
-                set(findall(0,'Tag','Lamp2'),'color','yellow');
+                %set(findall(0,'Tag','Lamp2'),'color','yellow');
                 
             case 'rndOneSp2DO'
                 data.TNData.firRndSplit2BO(data.idx) = formattedTimeValue;
@@ -44,7 +44,7 @@ function bt_autoupdate(src, callbackdata)
                 
                 % Update LED colors
                 set(findall(0,'Tag','Lamp2'),'color','green');
-                set(findall(0,'Tag','Lamp3'),'color','yellow');
+               % set(findall(0,'Tag','Lamp3'),'color','yellow');
     
             case 'rndOneDO'
                 data.TNData.firRndBO(data.idx) = formattedTimeValue;
@@ -52,7 +52,7 @@ function bt_autoupdate(src, callbackdata)
     
                 % Update LED colors
                 set(findall(0,'Tag','Lamp3'),'color','green');
-                set(findall(0,'Tag','Lamp4'),'color','yellow');
+                %set(findall(0,'Tag','Lamp4'),'color','yellow');
     
             case 'rndTwoSp1DO'
                 data.TNData.secRndSplit1BO(data.idx) = formattedTimeValue; 
@@ -60,7 +60,7 @@ function bt_autoupdate(src, callbackdata)
     
                 % Update LED colors
                 set(findall(0,'Tag','Lamp4'),'color','green');
-                set(findall(0,'Tag','Lamp5'),'color','yellow');
+                %set(findall(0,'Tag','Lamp5'),'color','yellow');
     
             case 'rndTwoSp2DO'
                 data.TNData.secRndSplit2BO(data.idx) = formattedTimeValue; 
@@ -68,7 +68,7 @@ function bt_autoupdate(src, callbackdata)
     
                 % Update LED colors
                 set(findall(0,'Tag','Lamp5'),'color','green');
-                set(findall(0,'Tag','Lamp6'),'color','yellow');
+                %set(findall(0,'Tag','Lamp6'),'color','yellow');
       
             case 'rndTwoDO'
                 data.TNData.secRndBO(data.idx) = formattedTimeValue; 
@@ -76,7 +76,7 @@ function bt_autoupdate(src, callbackdata)
     
                 % Update LED colors
                 set(findall(0,'Tag','Lamp6'),'color','green');
-                set(findall(0,'Tag','Lamp7'),'color','yellow');
+                %set(findall(0,'Tag','Lamp7'),'color','yellow');
     
             case 'rndThreeSp1DO'
                 data.TNData.thiRndSplit1BO(data.idx) = formattedTimeValue; 
@@ -84,7 +84,7 @@ function bt_autoupdate(src, callbackdata)
     
                 % Update LED colors
                 set(findall(0,'Tag','Lamp7'),'color','green');
-                set(findall(0,'Tag','Lamp8'),'color','yellow');
+                %set(findall(0,'Tag','Lamp8'),'color','yellow');
     
             case 'rndThreeSp2DO'
                 data.TNData.thiRndSplit2BO(data.idx) = formattedTimeValue; 
@@ -92,7 +92,7 @@ function bt_autoupdate(src, callbackdata)
     
                 % Update LED colors
                 set(findall(0,'Tag','Lamp8'),'color','green');
-                set(findall(0,'Tag','Lamp9'),'color','yellow');
+                %set(findall(0,'Tag','Lamp9'),'color','yellow');
     
             case 'rndThreeDO'
                 data.TNData.thiRndBO(data.idx) = formattedTimeValue; 
@@ -106,18 +106,18 @@ function bt_autoupdate(src, callbackdata)
 
                 % Update LED colors
                 set(findall(0,'Tag','Lamp10'),'color','green');
-                set(findall(0,'Tag','Lamp11'),'color','yellow');
+                %set(findall(0,'Tag','Lamp11'),'color','yellow');
 
 
                 % Update LED colors
                 set(findall(0,'Tag','Lamp11'),'color','green');
-                set(findall(0,'Tag','Lamp12'),'color','yellow');
+                %set(findall(0,'Tag','Lamp12'),'color','yellow');
 
                 set(findall(0,'Tag','lblTimeOneDTDuelDisp'),'Text',string(formattedTimeValue))
 
                 % Update LED colors
                 set(findall(0,'Tag','Lamp12'),'color','green');
-                set(findall(0,'Tag','Lamp13'),'color','yellow');
+                %set(findall(0,'Tag','Lamp13'),'color','yellow');
     
             case 'rndTwoSp1DT'
                 data.TNData.secRndSplit1BO(data.idx+1) = formattedTimeValue;
@@ -125,7 +125,7 @@ function bt_autoupdate(src, callbackdata)
 
                 % Update LED colors
                 set(findall(0,'Tag','Lamp13'),'color','green');
-                set(findall(0,'Tag','Lamp14'),'color','yellow');
+                %set(findall(0,'Tag','Lamp14'),'color','yellow');
 
             case 'rndTwoSp2DT'
                 data.TNData.secRndSplit2BO(data.idx+1) = formattedTimeValue;
@@ -133,7 +133,7 @@ function bt_autoupdate(src, callbackdata)
 
                 % Update LED colors
                 set(findall(0,'Tag','Lamp14'),'color','green');
-                set(findall(0,'Tag','Lamp15'),'color','yellow');
+                %set(findall(0,'Tag','Lamp15'),'color','yellow');
 
             case 'rndTwoDT'
                 data.TNData.secRndBO(data.idx+1) = formattedTimeValue;
@@ -141,7 +141,7 @@ function bt_autoupdate(src, callbackdata)
 
                 % Update LED colors
                 set(findall(0,'Tag','Lamp15'),'color','green');
-                set(findall(0,'Tag','Lamp16'),'color','yellow');
+                %set(findall(0,'Tag','Lamp16'),'color','yellow');
     
             case 'rndThreeSp1DT'
                 data.TNData.thiRndSplit1BO(data.idx+1) = formattedTimeValue;
@@ -149,7 +149,7 @@ function bt_autoupdate(src, callbackdata)
 
                 % Update LED colors
                 set(findall(0,'Tag','Lamp16'),'color','green');
-                set(findall(0,'Tag','Lamp17'),'color','yellow');
+                %set(findall(0,'Tag','Lamp17'),'color','yellow');
 
             case 'rndThreeSp2DT'
                 data.TNData.thiRndSplit2BO(data.idx+1) = formattedTimeValue;
@@ -157,11 +157,11 @@ function bt_autoupdate(src, callbackdata)
 
                 % Update LED colors
                 set(findall(0,'Tag','Lamp17'),'color','green');
-                set(findall(0,'Tag','Lamp18'),'color','yellow');
+                %set(findall(0,'Tag','Lamp18'),'color','yellow');
 
             case 'rndThreeDT'
                 data.TNData.thiRndBO(data.idx+1) = formattedTimeValue;
-                set(findall(0,'Tag','lblTimeThreeDTDuelDisp'),'Text',string(formattedTimeValue))
+                %set(findall(0,'Tag','lblTimeThreeDTDuelDisp'),'Text',string(formattedTimeValue))
 
                 set(findall(0,'Tag','Lamp18'),'color','green');
     
