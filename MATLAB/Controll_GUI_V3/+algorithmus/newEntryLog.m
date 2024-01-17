@@ -462,11 +462,11 @@ global ID_Next_Station
                  dOutDisp = 'reverse direction';
                  Last_ID = ID_Previous_Station;
                  if ID_Station == 1
-                     ID_Next_Station = 2;
-                 elseif ID_Station == 2
                      ID_Next_Station = 3;
-                 elseif ID_Station == 3
+                 elseif ID_Station == 2
                      ID_Next_Station = 1;
+                 elseif ID_Station == 3
+                     ID_Next_Station = 2;
                  end
 
               elseif Last_ID == ID_Station
