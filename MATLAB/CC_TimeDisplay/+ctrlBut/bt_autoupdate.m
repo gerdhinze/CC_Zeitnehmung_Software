@@ -166,7 +166,7 @@ function bt_autoupdate(src, callbackdata)
 
             case 'rndThreeDT'
                 data.TNData.thiRndBO(data.idx+1) = formattedTimeValue;
-                %set(findall(0,'Tag','lblTimeThreeDTDuelDisp'),'Text',string(formattedTimeValue))
+                set(findall(0,'Tag','lblTimeThreeDTDuelDisp'),'Text',string(formattedTimeValue))
 
                 set(findall(0,'Tag','Lamp18'),'color','green');
     
