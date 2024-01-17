@@ -1,4 +1,4 @@
-function [Stored_Entry,hRace] = newEntry(ID_A, ID_B, dir, dataFile)
+function [Stored_Entry] = newEntry(ID_A, ID_B, dir, dataFile)
 
 global dir;
 global Last_ID
@@ -13,13 +13,15 @@ Race = readtable('./Output_Files/data_race.csv');
 GUI_Data_A = './Output_GUI/GUI_Data_A.csv';
 GUI_Data_B = './Output_GUI/GUI_Data_B.csv';
 
+% Sort by car ID
 idxA = find(strcmp(Race.ID,ID_A));
 idxB = find(strcmp(Race.ID,ID_B)); 
 
-
+% Create sorted table
 CarA = Race(idxA,:);
 CarB = Race(idxB,:);
-              
+ 
+% Display Commandline
 nameA = 'Car A';
 Gate1 = [nameA,': passed Station 1 '];
 Gate2 = [nameA,': passed Station 2 '];
@@ -40,7 +42,6 @@ if ID_A
         delete(GUI_Data_A)
 
         for n = 1:length(idxA)
-
     
             StationCarA = CarA.Station(n);
 
@@ -69,8 +70,11 @@ if ID_A
 
             elseif n >= 2    
                 
+                % Direction algorithm for CCW
                 [dout, dOutDisp,Last_ID] = directionCCW(CarA.Station(n-1),CarA.Station(n));
                 disp(dOutDisp)
+
+                % Check Last ID
                 if Last_ID ~= 0
                     disp(Last_ID)
                 end
@@ -79,50 +83,27 @@ if ID_A
 
                     headers = {'Station', 'ID', 'Timestamp'};
                     newData = table({CarA.Station(n)}, {CarA.ID(n)}, {CarA.Timestamp(n)}, 'VariableNames', headers);
-        
-                    %uniqueIdentifierColumn = 3;
-
-                    %Read the existing data from the CSV file
-                    %existingData_CarA = readtable(GUI_Data_A); 
-
-                    %existingCellData = existingData_CarA.(uniqueIdentifierColumn);
-                    %newCellData = newData.(uniqueIdentifierColumn);
-
-                    % Convert the existingData column to a cell array of strings
-                    %existingCellData = cellfun(@num2str, num2cell(existingData.(uniqueIdentifierColumn)), 'UniformOutput', false);
-
-                    % Convert the newData column to a cell array of strings
-                    %newCellData = cellfun(@str2double, num2cell(newData.(uniqueIdentifierColumn)), 'UniformOutput', false);
-
-                   
 
                     if exist(GUI_Data_A) == 0
                         % File doesn't exist, create it with headers
                         writetable(newData, GUI_Data_A, 'WriteMode', 'overwrite');
-                    elseif exist(GUI_Data_A) == 2
-
-                         %existingIndices = ismember(existingCellData,newCellData);
-                         % Append only the non-existing data
-                         %dataToAppend = newData(~existingIndices, :); 
-
-                         %if size(existingData_CarA) < size(newData)+1
-                         %   disp('')
-                         %else
-                            % File exists, append data
-                            writetable(newData, GUI_Data_A, 'WriteMode', 'append', 'WriteVariableNames', false);
-                            if StationCarA == 1
-                                disp(Gate1)
+                    else
+                        % File exists, append data
+                        writetable(newData, GUI_Data_A, 'WriteMode', 'append', 'WriteVariableNames', false);
+                        if StationCarA == 1
+                            disp(Gate1)
           
-                            elseif StationCarA == 2
-                                disp(Gate2)
+                        elseif StationCarA == 2
+                            disp(Gate2)
               
-                            elseif StationCarA == 3
-                                disp(Gate3)
-                            end
-                         %end
+                        elseif StationCarA == 3
+                            disp(Gate3)
+                        end
+                         
                     end
                     
                 end
+                % Entry stored
                 if n == length(idxA)
                     Stored_Entry = 1;
                 else
@@ -175,8 +156,11 @@ if ID_A
                     disp(Gate3)
                 end
 
+                % Direction algorithm for CW
                 [dout, dOutDisp,Last_ID] = directionCW(CarA.Station(n-1),CarA.Station(n));
                 disp(dOutDisp)
+
+                % Check Last ID
                 if Last_ID ~= 0
                     disp(Last_ID)
                 end
@@ -195,6 +179,7 @@ if ID_A
                     end
                    
                 end
+                % Entry stored
                 if n == length(idxA)
                     Stored_Entry = 1;
                 else
@@ -205,7 +190,6 @@ if ID_A
      end
 end
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% Car B %%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
 if ID_B 
     if dir == 1 %CCW
 
@@ -251,8 +235,11 @@ if ID_B
                     disp(Gate6)
                 end
 
+                % Direction algorithm for CCW
                 [dout, dOutDisp,Last_ID] = directionCCW(CarB.Station(n-1),CarB.Station(n));
                 disp(dOutDisp)
+
+                % Check Last ID
                 if Last_ID ~= 0
                     disp(Last_ID)
                 end
@@ -271,6 +258,7 @@ if ID_B
                     end
                     
                 end
+                % Entry stored
                 if n == length(idxB)
                     Stored_Entry = 1;
                 else
@@ -323,8 +311,11 @@ if ID_B
                     disp(Gate6)
                 end
 
+                % Direction algorithm for CW
                 [dout, dOutDisp,Last_ID] = directionCW(CarB.Station(n-1),CarB.Station(n));
                 disp(dOutDisp)
+
+                % Check Last ID
                 if Last_ID ~= 0
                     disp(Last_ID)
                 end
@@ -343,6 +334,7 @@ if ID_B
                     end
                     
                 end
+                % Entry stored
                 if n == length(idxB)
                     Stored_Entry = 1;
                 else
@@ -358,7 +350,9 @@ end
 %---------------------------------------------CCW direction-------------------------------------------------------
 function [dOut, dOutDisp, Last_ID] = directionCCW(ID_Previous_Station, ID_Station)
 
+% Next Station ID for vaild round
 global ID_Next_Station
+% ID of the station (1st turn)
 global Last_ID
 
       if ID_Previous_Station == 1 && ID_Station == 2
@@ -430,10 +424,12 @@ global Last_ID
       end
 end
 
-%---------------------------------------------CCW direction-------------------------------------------------------
+%---------------------------------------------CW direction-------------------------------------------------------
 function [dOut, dOutDisp, Last_ID] = directionCW(ID_Previous_Station, ID_Station)
 
+% ID of the station (1st turn)
 global Last_ID
+% Next Station ID for vaild round
 global ID_Next_Station
 
      if ID_Previous_Station == 2 && ID_Station == 1

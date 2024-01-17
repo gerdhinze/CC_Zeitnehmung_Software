@@ -1,5 +1,3 @@
 # Ignorierte Dateien und Verzeichnisse
-.\MATLAB\Controll_GUI_V3\Output_GUI
-.\MATLAB\Controll_GUI_V3\Output_Files
 .\MATLAB\Controll_GUI_V3\CarA.mat
 .\MATLAB\Controll_GUI_V3\CarB.mat

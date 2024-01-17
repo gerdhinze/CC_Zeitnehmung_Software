@@ -12,12 +12,15 @@ Race = readtable(dataFile);
 GUI_Data_A = './Output_GUI/GUI_Data_A.csv';
 GUI_Data_B = './Output_GUI/GUI_Data_B.csv';
 
+% Sort by car ID
 idxA = find(strcmp(Race.ID,ID_A)); 
 idxB = find(strcmp(Race.ID,ID_B)); 
 
+% Create sorted table
 CarA = Race(idxA,:);
 CarB = Race(idxB,:);
-              
+ 
+% Display Commandline
 nameA = 'Car A';
 Gate1 = [nameA,': passed Station 1 '];
 Gate2 = [nameA,': passed Station 2 '];
@@ -29,6 +32,7 @@ Gate5 = [nameB,': passed Station 2 '];
 Gate6 = [nameB,': passed Station 3 '];
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% Car A %%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
 if ID_A 
     if dir == 1 %CCW
 
@@ -70,8 +74,11 @@ if ID_A
                     disp(Gate3)
                 end
 
+                % Direction algorithm for CCW
                 [dout, dOutDisp,Last_ID] = directionCCW(CarA.Station(n-1),CarA.Station(n));
                 disp(dOutDisp)
+
+                % Check Last ID
                 if Last_ID ~= 0
                     disp(Last_ID)
                 end
@@ -90,6 +97,7 @@ if ID_A
                     end
 
                 end
+                % Entry stored
                 if n == length(idxA)
                     Stored_Entry = 1;
                 else
@@ -139,8 +147,11 @@ if ID_A
                     disp(Gate3)
                 end
 
+                % Direction algorithm for CW
                 [dout, dOutDisp,Last_ID] = directionCW(CarA.Station(n-1),CarA.Station(n));
                 disp(dOutDisp)
+
+                % Check Last ID
                 if Last_ID ~= 0
                     disp(Last_ID)
                 end
@@ -158,6 +169,7 @@ if ID_A
                         writetable(newData, GUI_Data_A, 'WriteMode', 'append', 'WriteVariableNames', false);
                     end
                 end
+                % Entry stored
                 if n == length(idxA)
                     Stored_Entry = 1;
                 else
@@ -213,6 +225,8 @@ if ID_B
 
                 [dout, dOutDisp,Last_ID] = directionCCW(CarB.Station(n-1),CarB.Station(n));
                 disp(dOutDisp)
+
+                % Check Last ID
                 if Last_ID ~= 0
                     disp(Last_ID)
                 end
@@ -231,6 +245,7 @@ if ID_B
                     end
 
                 end
+                % Entry stored
                 if n == length(idxB)
                     Stored_Entry = 1;
                 else
@@ -280,8 +295,11 @@ if ID_B
                     disp(Gate6)
                 end
 
+                % Direction algorithm for CW
                 [dout, dOutDisp,Last_ID] = directionCW(CarB.Station(n-1),CarB.Station(n));
                 disp(dOutDisp)
+
+                % Check Last ID
                 if Last_ID ~= 0
                     disp(Last_ID)
                 end
@@ -299,6 +317,7 @@ if ID_B
                         writetable(newData, GUI_Data_B, 'WriteMode', 'append', 'WriteVariableNames', false);
                     end
                 end
+                % Entry stored
                 if n == length(idxB)
                     Stored_Entry = 1;
                 else
@@ -311,10 +330,12 @@ if ID_B
 end
 end
 
-%-------------------------------------------------------------------------------------------------------
+%---------------------------------------------CCW direction-------------------------------------------------------
 function [dOut, dOutDisp, Last_ID] = directionCCW(ID_Previous_Station, ID_Station)
 
+% Next Station ID for vaild round
 global ID_Next_Station
+% ID of the station (1st turn)
 global Last_ID
 
       if ID_Previous_Station == 1 && ID_Station == 2
@@ -385,10 +406,12 @@ global Last_ID
 
       end
 end
-%-----------------------------------------------------------------------------------
+%---------------------------------------------CW direction-------------------------------------------------------
 function [dOut, dOutDisp, Last_ID] = directionCW(ID_Previous_Station, ID_Station)
 
+% ID of the station (1st turn)
 global Last_ID
+% Next Station ID for vaild round
 global ID_Next_Station
 
      if ID_Previous_Station == 2 && ID_Station == 1
