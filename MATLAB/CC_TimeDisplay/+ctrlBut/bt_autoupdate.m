@@ -108,11 +108,16 @@ function bt_autoupdate(src, callbackdata)
                 set(findall(0,'Tag','Lamp10'),'color','green');
                 %set(findall(0,'Tag','Lamp11'),'color','yellow');
 
+            case 'rndOneSp2DT'
+                data.TNData.firRndSplit2BO(data.idx+1) = formattedTimeValue;    
+                set(findall(0,'Tag','lblTimeOneSp2DTDuelDisp'),'Text',string(formattedTimeValue))
 
                 % Update LED colors
                 set(findall(0,'Tag','Lamp11'),'color','green');
                 %set(findall(0,'Tag','Lamp12'),'color','yellow');
 
+            case 'rndOneDT'
+                data.TNData.firRndBO(data.idx+1) = formattedTimeValue;    
                 set(findall(0,'Tag','lblTimeOneDTDuelDisp'),'Text',string(formattedTimeValue))
 
                 % Update LED colors
