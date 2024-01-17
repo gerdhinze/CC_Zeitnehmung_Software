@@ -163,7 +163,7 @@ if ID_A
         
                     if exist(GUI_Data_A) == 0
                         % File doesn't exist, create it with headers
-                        writetable(newData, GUI_Data, 'WriteMode', 'overwrite');
+                        writetable(newData, GUI_Data_A, 'WriteMode', 'overwrite');
                     else
                         % File exists, append data
                         writetable(newData, GUI_Data_A, 'WriteMode', 'append', 'WriteVariableNames', false);
