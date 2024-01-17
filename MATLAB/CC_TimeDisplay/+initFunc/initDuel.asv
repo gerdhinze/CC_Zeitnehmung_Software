@@ -46,47 +46,39 @@ function ccHandle = initDuel(ccHandle)
     mylamp1 = uilamp(tab.Duel); %first round first split time
     mylamp1.Position = [650,380,40,40];
     mylamp1.Color = 'green'; %
-    mylamp1.Tag = 'Lamp1';
+    my
 
     mylamp2 = uilamp(tab.Duel); %first round second split time
     mylamp2.Position = [650,320,40,40];
     mylamp2.Color = 'green'; %
-    mylamp2.Tag = 'Lamp2';
 
     mylamp3 = uilamp(tab.Duel); %first round finished
     mylamp3.Position = [75,330,80,80]; 
     mylamp3.Color = 'green'; %
-    mylamp3.Tag = 'Lamp3';
 
     mylamp4 = uilamp(tab.Duel); %second round first split time
     mylamp4.Position = [650,260,40,40];
     mylamp4.Color = 'green'; %
-    mylamp4.Tag = 'Lamp4';
 
     mylamp5 = uilamp(tab.Duel); %second round second split time
     mylamp5.Position = [650,200,40,40];
     mylamp5.Color = 'green'; %
-    mylamp5.Tag = 'Lamp5';
 
     mylamp6 = uilamp(tab.Duel); %second round finished
     mylamp6.Position = [75,210,80,80];
     mylamp6.Color = 'green'; %
-    mylamp6.Tag = 'Lamp6';
 
     mylamp7 = uilamp(tab.Duel); %third round first split time
     mylamp7.Position = [650,140,40,40];
     mylamp7.Color = 'green'; %
-    mylamp7.Tag = 'Lamp7';
 
     mylamp8 = uilamp(tab.Duel); %third round second split time
     mylamp8.Position = [650,80,40,40];
     mylamp8.Color = 'green'; %
-    mylamp8.Tag = 'Lamp8';
 
     mylamp9 = uilamp(tab.Duel); %thrid round finished
     mylamp9.Position = [75,90,80,80];
     mylamp9.Color = 'green'; %
-    mylamp9.Tag = 'Lamp9';
 
 
     %%%%%%%%%%%% SECOND CAR LED %%%%%%%%%%%%%%%%%%
@@ -94,47 +86,38 @@ function ccHandle = initDuel(ccHandle)
     mylamp10 = uilamp(tab.Duel); %first round first split time
     mylamp10.Position = [1575,380,40,40];
     mylamp10.Color = 'green'; %
-    mylamp10.Tag = 'Lamp10';
 
     mylamp11 = uilamp(tab.Duel); %first round second split time
     mylamp11.Position = [1575,320,40,40];
     mylamp11.Color = 'green'; %
-    mylamp11.Tag = 'Lamp10';
 
     mylamp12 = uilamp(tab.Duel); %first round finished
     mylamp12.Position = [1000,330,80,80];
     mylamp12.Color = 'green'; %
-    mylamp12.Tag = 'Lamp10';
     
     mylamp13 = uilamp(tab.Duel); %second round first split time
     mylamp13.Position = [1575,260,40,40];
     mylamp13.Color = 'green'; %
-    mylamp13.Tag = 'Lamp10';
 
     mylamp14 = uilamp(tab.Duel); %second round second split time
     mylamp14.Position = [1575,200,40,40];
     mylamp14.Color = 'green'; %
-    mylamp14.Tag = 'Lamp10';
 
     mylamp15 = uilamp(tab.Duel);%second round finished
     mylamp15.Position = [1000,210,80,80];
     mylamp15.Color = 'green'; %
-    mylamp15.Tag = 'Lamp10';
 
     mylamp16 = uilamp(tab.Duel); %third round first split time
     mylamp16.Position = [1575,140,40,40];
     mylamp16.Color = 'green'; %
-    mylamp16.Tag = 'Lamp10';
 
     mylamp17 = uilamp(tab.Duel); %third round second split time
     mylamp17.Position = [1575,80,40,40];
     mylamp17.Color = 'green'; %
-    mylamp17.Tag = 'Lamp10';
 
     mylamp18 = uilamp(tab.Duel); %thrid round finished
     mylamp18.Position = [1000,90,80,80];
     mylamp18.Color = 'green'; %
-    mylamp18.Tag = 'Lamp10';
 
 %%%%%%%%%%%%%%%% FIRST CAR %%%%%%%%%%%%%%%%%%%
 

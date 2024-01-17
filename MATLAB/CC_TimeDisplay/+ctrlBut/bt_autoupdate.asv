@@ -5,6 +5,8 @@ function bt_autoupdate(src, callbackdata)
     folderPath = '../Controll_GUI_V3/Output_GUI'; % Path to your files
     lampArray = getappdata(0, 'lampArray'); % Retrieve LED Lampen
 
+    set(findall(0,'Tag','AutoupdateLED'),'color','green');
+
     % Retrieve the main data structure from the base workspace
     data = guidata(src.Parent);
 
@@ -33,14 +35,16 @@ function bt_autoupdate(src, callbackdata)
                 set(findall(0,'Tag','lblTimeOneSp1DODuelDisp'),'Text',string(formattedTimeValue))
                 
                 % Update LED colors
-                set(lampArray(1), 'Color', 'green'); % Set current LED to green
+                set(findall(0,'Tag','Lamp1'),'color','green');
+                set(findall(0,'Tag','Lamp2'),'color','yellow');
                 
             case 'rndOneSp2DO'
                 data.TNData.firRndSplit2BO(data.idx) = formattedTimeValue;
                 set(findall(0,'Tag','lblTimeOneSp2DODuelDisp'),'Text',string(formattedTimeValue))
                 
                 % Update LED colors
-                set(lampArray(2), 'Color', 'green'); % Set current LED to green
+                set(findall(0,'Tag','Lamp2'),'color','green');
+                set(findall(0,'Tag','Lamp3'),'color','yellow');
     
             case 'rndOneDO'
                 data.TNData.firRndBO(data.idx) = formattedTimeValue;
