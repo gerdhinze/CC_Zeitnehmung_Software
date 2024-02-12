@@ -45,6 +45,13 @@ private:
     std::map<unsigned long/*nfc id*/, unsigned long/*timestamp*/> _last_events;
 };
 
+// Deklaration der Funktionen vor ihrer Verwendung
+unsigned long timeStringToMilliseconds(String timeStr);
+void sync_time_ms(unsigned long current_time_by_user);
+unsigned long get_time_in_ms();
+void print_time(unsigned long ms);
+boolean InitalizeFileSystem();
+
 //Globals
 //Stationsnummer wir im Log und Seriel mitgesendet. Wichtig für gültige Daten. Sonst funktioniert der Algorytmus für Zwischenzeizen nich. Muss für jede Station eingestellt werden
 int station = 3;
